@@ -6,6 +6,12 @@
     <meta name="author" content="Etienne Bacher" />
     <meta name="date" content="2022-08-04" />
     <script src="rselenium_files/header-attrs-2.14/header-attrs.js"></script>
+    <script src="rselenium_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="rselenium_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="rselenium_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="rselenium_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+    <link href="rselenium_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan_themer.css" type="text/css" />
   </head>
   <body>
@@ -337,9 +343,30 @@ The previous example was not a *dynamic* page: we could have used the link to th
 Let's now dive into a more complex example, where RSelenium is the only way to scrape.
 
 
+---
+
+# How to know when Selenium is needed?
+
+.color2[*Using RSelenium is slower than using "classic" scraping methods*], so it's important to check all possibilities before using it.
+
+.h-1em[]
+
+Use Selenium if:
+
+* the HTML you want is not directly accessible, i.e need some interactions (clicking on a button, connect to a website...)
+
+* the URL doesn't change with the inputs
+
+* you can't access the data directly in the "network" tab of the console
+
+
+---
+
+# Example: Sao Paulo immigration museum
 
 
 
+ASK MARTIN FIRST
 
 
 
@@ -391,36 +418,54 @@ all_contributors &lt;- c(bullet_points, blockquote, others)
 
 
 
-.fs-13[
+.fs-9[
 
 ```
-##   [1] "Douglas Bates"          "John Chambers"          "Peter Dalgaard"         "Robert Gentleman"       "Kurt Hornik"           
-##   [6] "Ross Ihaka"             "Tomas Kalibera"         "Michael Lawrence"       "Friedrich Leisch"       "Uwe Ligges"            
-##  [11] "Thomas Lumley"          "Martin Maechler"        "Sebastian Meyer"        "Paul Murrell"           "Martyn Plummer"        
-##  [16] "Brian Ripley"           "Deepayan Sarkar"        "Duncan Temple Lang"     "Luke Tierney"           "Simon Urbanek"         
-##  [21] "Valerio Aimale"         "Suharto Anggono"        "Thomas Baier"           "Gabe Becker"            "Henrik Bengtsson"      
-##  [26] "Roger Biv"              "Ben Bolker"             "David Brahm"            "Göran Broström"         "Patrick Burns"         
-##  [31] "Vince Carey"            "Saikat DebRoy"          "Matt Dowle"             "Brian D’Urso"           "Lyndon Drake"          
-##  [36] "Dirk Eddelbuettel"      "Claus Ekstrom"          "Sebastian Fischmeister" "John Fox"               "Paul Gilbert"          
-##  [41] "Yu Gong"                "Gabor Grothendieck"     "Frank E Harrell Jr"     "Peter M Haverty"        "Torsten Hothorn"       
-##  [46] "Robert King"            "Kjetil Kjernsmo"        "Roger Koenker"          "Philippe Lambert"       "Jan de Leeuw"          
-##  [51] "Jim Lindsey"            "Patrick Lindsey"        "Catherine Loader"       "Gordon Maclean"         "Arni Magnusson"        
-##  [56] "John Maindonald"        "David Meyer"            "Ei-ji Nakama"           "Jens Oehlschägel"       "Steve Oncley"          
-##  [61] "Richard O’Keefe"        "Hubert Palme"           "Roger D Peng"           "José C Pinheiro"        "Tony Plate"            
-##  [66] "Anthony Rossini"        "Jonathan Rougier"       "Petr Savicky"           "Günther Sawitzki"       "Marc Schwartz"         
-##  [71] "Arun Srinivasan"        "Detlef Steuer"          "Bill Simpson"           "Gordon Smyth"           "Adrian Trapletti"      
-##  [76] "Terry Therneau"         "Rolf Turner"            "Bill Venables"          "Gregory R Warnes"       "Andreas Weingessel"    
-##  [81] "Morten Welinder"        "James Wettenhall"       "Simon Wood"             " Achim Zeileis"         "J D Beasley"           
-##  [86] "David J Best"           "Richard Brent"          "Kevin Buhr"             "Michael A Covington"    "Bill Clevel"           
-##  [91] "Robert Clevel,"         "G W Cran"               "C G Ding"               "Ulrich Drepper"         "Paul Eggert"           
-##  [96] "J O Evans"              "David M Gay"            "H Frick"                "G W Hill"               "Richard H Jones"       
-## [101] "Eric Grosse"            "Shelby Haberman"        "Bruno Haible"           "John Hartigan"          "Andrew Harvey"         
-## [106] "Trevor Hastie"          "Min Long Lam"           "George Marsaglia"       "K J Martin"             "Gordon Matzigkeit"     
-## [111] "C R Mckenzie"           "Jean McRae"             "Cyrus Mehta"            "Fionn Murtagh"          "John C Nash"           
-## [116] "Finbarr O’Sullivan"     "R E Odeh"               "William Patefield"      "Nitin Patel"            "Alan Richardson"       
-## [121] "D E Roberts"            "Patrick Royston"        "Russell Lenth"          "Ming-Jen Shyu"          "Richard C Singleton"   
-## [126] "S G Springer"           "Supoj Sutanthavibul"    "Irma Terpenning"        "G E Thomas"             "Rob Tibshirani"        
-## [131] "Wai Wan Tsang"          "Berwin Turlach"         "Gary V Vaughan"         "Michael Wichura"        "Jingbo Wang"           
+##   [1] "Douglas Bates"          "John Chambers"          "Peter Dalgaard"        
+##   [4] "Robert Gentleman"       "Kurt Hornik"            "Ross Ihaka"            
+##   [7] "Tomas Kalibera"         "Michael Lawrence"       "Friedrich Leisch"      
+##  [10] "Uwe Ligges"             "Thomas Lumley"          "Martin Maechler"       
+##  [13] "Sebastian Meyer"        "Paul Murrell"           "Martyn Plummer"        
+##  [16] "Brian Ripley"           "Deepayan Sarkar"        "Duncan Temple Lang"    
+##  [19] "Luke Tierney"           "Simon Urbanek"          "Valerio Aimale"        
+##  [22] "Suharto Anggono"        "Thomas Baier"           "Gabe Becker"           
+##  [25] "Henrik Bengtsson"       "Roger Biv"              "Ben Bolker"            
+##  [28] "David Brahm"            "Göran Broström"         "Patrick Burns"         
+##  [31] "Vince Carey"            "Saikat DebRoy"          "Matt Dowle"            
+##  [34] "Brian D’Urso"           "Lyndon Drake"           "Dirk Eddelbuettel"     
+##  [37] "Claus Ekstrom"          "Sebastian Fischmeister" "John Fox"              
+##  [40] "Paul Gilbert"           "Yu Gong"                "Gabor Grothendieck"    
+##  [43] "Frank E Harrell Jr"     "Peter M Haverty"        "Torsten Hothorn"       
+##  [46] "Robert King"            "Kjetil Kjernsmo"        "Roger Koenker"         
+##  [49] "Philippe Lambert"       "Jan de Leeuw"           "Jim Lindsey"           
+##  [52] "Patrick Lindsey"        "Catherine Loader"       "Gordon Maclean"        
+##  [55] "Arni Magnusson"         "John Maindonald"        "David Meyer"           
+##  [58] "Ei-ji Nakama"           "Jens Oehlschägel"       "Steve Oncley"          
+##  [61] "Richard O’Keefe"        "Hubert Palme"           "Roger D Peng"          
+##  [64] "José C Pinheiro"        "Tony Plate"             "Anthony Rossini"       
+##  [67] "Jonathan Rougier"       "Petr Savicky"           "Günther Sawitzki"      
+##  [70] "Marc Schwartz"          "Arun Srinivasan"        "Detlef Steuer"         
+##  [73] "Bill Simpson"           "Gordon Smyth"           "Adrian Trapletti"      
+##  [76] "Terry Therneau"         "Rolf Turner"            "Bill Venables"         
+##  [79] "Gregory R Warnes"       "Andreas Weingessel"     "Morten Welinder"       
+##  [82] "James Wettenhall"       "Simon Wood"             " Achim Zeileis"        
+##  [85] "J D Beasley"            "David J Best"           "Richard Brent"         
+##  [88] "Kevin Buhr"             "Michael A Covington"    "Bill Clevel"           
+##  [91] "Robert Clevel,"         "G W Cran"               "C G Ding"              
+##  [94] "Ulrich Drepper"         "Paul Eggert"            "J O Evans"             
+##  [97] "David M Gay"            "H Frick"                "G W Hill"              
+## [100] "Richard H Jones"        "Eric Grosse"            "Shelby Haberman"       
+## [103] "Bruno Haible"           "John Hartigan"          "Andrew Harvey"         
+## [106] "Trevor Hastie"          "Min Long Lam"           "George Marsaglia"      
+## [109] "K J Martin"             "Gordon Matzigkeit"      "C R Mckenzie"          
+## [112] "Jean McRae"             "Cyrus Mehta"            "Fionn Murtagh"         
+## [115] "John C Nash"            "Finbarr O’Sullivan"     "R E Odeh"              
+## [118] "William Patefield"      "Nitin Patel"            "Alan Richardson"       
+## [121] "D E Roberts"            "Patrick Royston"        "Russell Lenth"         
+## [124] "Ming-Jen Shyu"          "Richard C Singleton"    "S G Springer"          
+## [127] "Supoj Sutanthavibul"    "Irma Terpenning"        "G E Thomas"            
+## [130] "Rob Tibshirani"         "Wai Wan Tsang"          "Berwin Turlach"        
+## [133] "Gary V Vaughan"         "Michael Wichura"        "Jingbo Wang"           
 ## [136] "M A Wong"
 ```
 ]
@@ -430,7 +475,8 @@ all_contributors &lt;- c(bullet_points, blockquote, others)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
+"highlightStyle": "googlecode",
+"highlightLanguage": "r",
 "highlightLines": true,
 "countIncrementalSlides": false
 });

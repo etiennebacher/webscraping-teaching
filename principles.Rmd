@@ -12,11 +12,22 @@ output:
     includes:
       after_body: "ub_theme.html"
     nature:
-      highlightStyle: github
+      highlightStyle: googlecode
+      highlightLanguage: r
       highlightLines: true
       countIncrementalSlides: false
 ---
 
+```{r xaringanExtra-clipboard, echo=FALSE, eval=TRUE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
 
 class: section
 
@@ -133,14 +144,15 @@ for (i in -1:1) {
   print(i)
   x <- try(dummy_fun(i), silent = TRUE) #<<
   
-  if (inherits(x, "try-error")) {
-    NULL
-  } else {
-    x
-  }
+  if (inherits(x, "try-error")) { #<<
+    NULL #<<
+  } else { #<<
+    x #<<
+  } #<<
 }
 ```
 
+Note: you could also use `try()` directly in `dummy_fun()`.
 
 ---
 

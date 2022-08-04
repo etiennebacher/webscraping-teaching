@@ -13,7 +13,8 @@ output:
     includes:
       after_body: "ub_theme.html"
     nature:
-      highlightStyle: github
+      highlightStyle: googlecode
+      highlightLanguage: r
       highlightLines: true
       countIncrementalSlides: false
 ---
@@ -24,7 +25,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-
+```{r xaringanExtra-clipboard, echo=FALSE, eval=TRUE}
+htmltools::tagList(
+  xaringanExtra::use_clipboard(
+    button_text = "<i class=\"fa fa-clipboard\"></i>",
+    success_text = "<i class=\"fa fa-check\" style=\"color: #90BE6D\"></i>",
+    error_text = "<i class=\"fa fa-times-circle\" style=\"color: #F94144\"></i>"
+  ),
+  rmarkdown::html_dependency_font_awesome()
+)
+```
 
 # Introduction
 
@@ -319,9 +329,30 @@ The previous example was not a *dynamic* page: we could have used the link to th
 Let's now dive into a more complex example, where RSelenium is the only way to scrape.
 
 
+---
+
+# How to know when Selenium is needed?
+
+.color2[*Using RSelenium is slower than using "classic" scraping methods*], so it's important to check all possibilities before using it.
+
+.h-1em[]
+
+Use Selenium if:
+
+* the HTML you want is not directly accessible, i.e need some interactions (clicking on a button, connect to a website...)
+
+* the URL doesn't change with the inputs
+
+* you can't access the data directly in the "network" tab of the console
+
+
+---
+
+# Example: Sao Paulo immigration museum
 
 
 
+ASK MARTIN FIRST
 
 
 
@@ -373,7 +404,7 @@ all_contributors <- c(bullet_points, blockquote, others)
 ```{r appendix, eval=TRUE, echo = FALSE}
 ```
 
-.fs-13[
+.fs-9[
 ```{r eval=TRUE, echo = FALSE}
 all_contributors[1:136] 
 ```

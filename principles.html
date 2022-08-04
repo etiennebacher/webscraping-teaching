@@ -6,6 +6,12 @@
     <meta name="author" content="Etienne Bacher" />
     <meta name="date" content="2022-08-04" />
     <script src="principles_files/header-attrs-2.14/header-attrs.js"></script>
+    <script src="principles_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="principles_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="principles_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="principles_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+    <link href="principles_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan_themer.css" type="text/css" />
   </head>
   <body>
@@ -26,6 +32,7 @@ class: center, middle, inverse, title-slide
 ]
 
 ---
+
 
 
 
@@ -171,11 +178,11 @@ for (i in -1:1) {
   print(i)
 * x &lt;- try(dummy_fun(i), silent = TRUE)
   
-  if (inherits(x, "try-error")) {
-    NULL
-  } else {
-    x
-  }
+* if (inherits(x, "try-error")) {
+*   NULL
+* } else {
+*   x
+* }
 }
 ```
 
@@ -185,6 +192,7 @@ for (i in -1:1) {
 ## [1] 1
 ```
 
+Note: you could also use `try()` directly in `dummy_fun()`.
 
 ---
 
@@ -220,7 +228,8 @@ class(x)
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
+"highlightStyle": "googlecode",
+"highlightLanguage": "r",
 "highlightLines": true,
 "countIncrementalSlides": false
 });
