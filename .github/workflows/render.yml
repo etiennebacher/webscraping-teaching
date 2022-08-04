@@ -21,7 +21,7 @@ jobs:
       - uses: r-lib/actions/setup-renv@v2
 
       - name: Render README
-        run: Rscript -e 'install.packages("renderthis"); renderthis::to_pdf("principles.html"); renderthis::to_pdf("rselenium.html")'
+        run: Rscript -e 'install.packages(c("renderthis", "remotes")); remotes::install_github("rstudio/chromote"); renderthis::to_pdf("principles.html"); renderthis::to_pdf("rselenium.html")'
 
       - name: Commit Results
         run: |
