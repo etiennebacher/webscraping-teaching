@@ -7,8 +7,10 @@ on:
 name: Render slides in PDF
 
 jobs:
-  render-readme:
+  render-slides:
     runs-on: macOS-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repo
