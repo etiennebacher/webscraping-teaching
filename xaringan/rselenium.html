@@ -407,6 +407,9 @@ Etienne Bacher
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
+<!-- Print to PDF -->
+<!-- Follow this: https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf -->
+<!-- Use chrome and not firefox -->
 <div class="callout callout-important no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
@@ -425,6 +428,7 @@ Etienne Bacher
 <li><p>if no, scrape (politely)</p></li>
 </ul>
 </div>
+<!-- https://talks.andrewheiss.com/2022-seacen/presentation/#/general-principles -->
 </section>
 <section id="introduction-1" class="slide level2">
 <h2>Introduction</h2>
@@ -484,7 +488,7 @@ Etienne Bacher
 <p><br></p>
 <div class="fragment">
 <p><strong>Dynamic webpage</strong>: the website uses JavaScript to fetch data from their server and <em>dynamically</em> update the page.</p>
-<p>Example: <a href="https://www.premierleague.com/stats/top/players/goal_assist">Premier League stats</a>.</p>
+<p>Example: see later.</p>
 </div>
 </section></section>
 <section>
@@ -512,12 +516,7 @@ Etienne Bacher
 </section>
 <section class="slide level2">
 
-<p><br></p>
-<p>Of course, static webscraping can be challenging because we have to write good loops, good error handling, the HTML itself can be hard to clean, etc.</p>
-<div class="fragment">
-<p><br></p>
-<p>But in dynamic pages, there’s no obvious way to see that the inputs are different (see <a href="https://www.premierleague.com/stats/top/players/goal_assist">Premier League stats</a>).</p>
-</div>
+<p>But in dynamic pages, there’s no obvious way to see that the inputs are different:</p>
 </section>
 <section class="slide level2">
 
@@ -602,13 +601,13 @@ Etienne Bacher
 </div>
 <div class="fragment">
 <p>This will print a bunch of messages and open a “marionette browser”.</p>
-<p><img data-src="img/marionette2.png"></p>
+<p><img data-src="marionette2.png"></p>
 </div>
 </section>
 <section id="get-started-2" class="slide level2">
 <h2>Get started</h2>
 <p>From now on, everything we do is calling <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
-<p><img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"></p>
+<p><img src="rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"></p>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Or whatever you called it in the previous step.</p></li></ol></aside></section></section>
 <section>
 <section id="exercise-1" class="title-slide slide level1 center">
@@ -637,7 +636,7 @@ Etienne Bacher
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>remote_driver<span class="sc">$</span><span class="fu">navigate</span>(<span class="st">"https://r-project.org"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
-<img data-src="img/rproject.png" class="r-stretch"></section>
+<img data-src="rproject.png" class="r-stretch"></section>
 <section id="click-on-contributors" class="slide level2">
 <h2>Click on “Contributors”</h2>
 <p>This requires two things:</p>
@@ -659,14 +658,14 @@ Etienne Bacher
 <li><code>Ctrl</code> + <code>Shift</code> + <code>C</code></li>
 </ul>
 <div class="fragment">
-<p><img data-src="img/console.png"></p>
+<p><img data-src="console.png"></p>
 </div>
 </section>
 <section class="slide level2">
 
 <p>Then, hover the element we’re interested in: the link “Contributors”.</p>
 
-<img data-src="img/console_2.png" class="r-stretch"></section>
+<img data-src="console_2.png" class="r-stretch"></section>
 <section class="slide level2">
 
 <p>How can we find this with <code>RSelenium</code>?</p>
@@ -734,7 +733,7 @@ Etienne Bacher
 
 <p>We are now on the right page!</p>
 
-<img data-src="img/contributors.png" class="r-stretch"></section>
+<img data-src="contributors.png" class="r-stretch"></section>
 <section class="slide level2">
 
 <p><br></p>
@@ -744,7 +743,7 @@ Etienne Bacher
 </div>
 <p><br></p>
 <div class="fragment">
-<p>To read it with <code>{rvest}</code>:</p>
+<p>To read it with <code>rvest</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>x <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
 <span id="cb8-2"><a href="#cb8-2"></a>rvest<span class="sc">::</span><span class="fu">read_html</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -757,6 +756,7 @@ Etienne Bacher
 <div class="fragment">
 <p><strong>No!</strong></p>
 <p>Instead, we save the HTML in an external file, and we will be able to access it in another script (and offline) to manipulate it as we want.</p>
+<!-- ^[Although, in this case, it wouldn't cost too much to treat it directly in the same script.] -->
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">write</span>(x, <span class="at">file =</span> <span class="st">"contributors.html"</span>)</span>
 <span id="cb9-2"><a href="#cb9-2"></a><span class="co"># Later and in another script</span></span>

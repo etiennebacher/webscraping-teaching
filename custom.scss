@@ -1,0 +1,12 @@
+/*-- scss:defaults --*/
+
+$theme-white: #d6dbdb;
+
+:root {
+	--r-heading-letter-spacing: 0.1rem !important;
+	--r-heading-font-weight: 400 !important;
+	--r-main-color: #{$theme-white} !important;
+}
+
+/*-- scss:rules --*/
+

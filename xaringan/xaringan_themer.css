@@ -1,0 +1,511 @@
+/*****************************************/
+/* Unofficial Xaringan theme of the      */
+/* University of Bordeaux                */
+/*                                       */
+/* Script created by Laurent Bergé       */
+/*                                       */
+/* V 1.0 (Fall 2021)                     */
+/*                                       */
+/* MIT licence                           */
+/* Feel free to use/adapt                */
+/* Please cite if copy/pasting :-)       */
+/*                                       */
+/* To be used with the JS contained in   */
+/* ub_theme.html                         */
+/*****************************************/
+
+
+/*
+Two main sources of inspiration:
+ - Metropolis theme (Patrick Schratz)
+ - default theme (Yihui Xie)
+
+It departs from them quite heavily at some point.
+*/
+
+
+@import url(https://fonts.googleapis.com/css?family=Poppins:400,400i,500,500i,600,600i,700,700i,800,800i|Maven+Pro:300,400,500,600,700|M+PLUS+Rounded+1c:300,400,500,700,800,900|Fira+Sans:400,400i,500,500i,600,600i,700,700i,800,800i|Source+Code+Pro:500|Roboto+Slab:200,300,400,500,600,700|Oleo+Script+Swash+Caps|Lato);
+
+
+:root {
+  /* colors */
+  --color_theme: #192E5B;
+  --color_theme_light: #1D49A8;
+  --color_theme_lightest: #C9D6F2;
+  --color_theme_dark: #142448;
+
+  --color_theme_pair1: #F94060;
+
+  --color_theme_pair2: #9E911B;
+
+  --color_inline_bg: #F3F7DC;
+  --color_code_bg: #f2f0f0;
+
+
+  --fg_theme: #FAFAFA;
+  --white: #FAFAFA;
+  --black: #1A292C;
+
+  /* Main fonts */
+  --font_text: "Lato", Poppins, sans-serif;
+  --font_h1: "Lato", "Fira Sans", sans-serif;
+  --font_title: "Lato", "Roboto Slab", sans-serif;
+  --font_title_h3: "Lato", "M PLUS Rounded 1c", sans-serif;
+  --font_mono: "Source Code Pro", monospace;
+
+  --font-size-default: 19px;
+
+  /* Header */
+  --header_height: 80px;
+
+  /* versus */
+  --versus_font: "Oleo Script Swash Caps", cursive, sans-serif;
+}
+
+
+
+body {
+  font-family: var(--font_text);
+}
+
+/* general */
+
+.remark-slide-content {
+  padding: 3em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+
+  background-color: var(--white);
+  font-size: var(--font-size-default);
+}
+
+pre {
+  font-size: var(--font-size-default);
+}
+
+.remark-slide-content.with-header {
+  padding-top: var(--header_height);
+}
+
+
+/* Header band */
+
+.remark-slide-content h1 {
+  font-size: 40px;
+
+  background-color: var(--color_theme);
+
+  margin: 0;
+  line-height: var(--header_height);
+  padding: 0px 20px 0px 15px;
+
+  display: block;
+  position: fixed;
+  width: 100vw;
+  height: 80px;
+  top: 0%;
+  left: 0%;
+
+  font-family: var(--font_h1);
+  color: var(--white);
+
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.remark-slide-content h2 {
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--color_theme);
+  padding: 0px;
+  margin: 15px 0px 25px -10px;
+}
+
+.remark-slide-content h3 {
+  font-size: 30px;
+  font-weight: 500;
+  margin: 15px 0px 22px -10px;
+}
+
+
+
+/* section */
+
+
+
+.section {
+  margin: 0;
+  background-color: var(--color_theme);
+}
+
+.section h1 {
+  font-family: var(--font_h1);
+  color: var(--white);
+  font-size: 45px;
+  font-weight: 700;
+
+  position: fixed;
+  top: 40%;
+  left: 2.5%;
+  letter-spacing: 3px;
+}
+
+.section .remark-slide-number {
+  display: none;
+}
+
+/* slide number */
+
+.remark-slide-number {
+  font-size: 0.8rem;
+}
+
+
+/* tables */
+
+.remark-slide table {
+  margin: auto;
+  border-top: 2px solid var(--black);
+  border-bottom: 2px solid var(--black);
+}
+
+.remark-slide table thead th {
+  border-bottom: 2px solid var(--black);
+}
+
+th, td {
+  padding: 5px;
+}
+
+.remark-slide thead, .remark-slide tfoot, .remark-slide tr:nth-child(even) {
+  background: var(--color_theme_lightest);
+}
+
+
+/* links */
+
+
+a, a > code {
+  color: var(--color_theme_pair1);
+  text-decoration: none;
+}
+
+a {
+  border-bottom: 1px dashed var(--color_theme_pair1);
+}
+
+
+/* color pairs */
+
+/* I initially used: pair1, bold-pair1, it-pair1, strong-pair1 */
+/* But they may be too long to type in practice, so I changed to the short version */
+
+.color1, .bold1, .it1, .strong1 {
+  color: var(--color_theme_pair1);
+}
+
+.color2, .bold2, .it2, .strong2 {
+  color: var(--color_theme_pair2);
+}
+
+.bold1, .strong1, .bold2, .strong2 {
+  font-weight: bold;
+}
+
+.it1, .strong1, .it2, .strong2 {
+  font-style: italic;
+}
+
+.comment {
+	color: var(--color_theme_pair2);
+}
+
+.comment::before {
+	content: "(";
+	color: var(--black);
+}
+
+.comment::after {
+	content: ")";
+	color: var(--black);
+}
+
+
+/* code */
+
+.remark-code, .remark-inline-code, .remark-code-inline {
+  font-family: var(--font_mono);
+  background-color: var(--color_code_bg) !important;
+}
+
+.remark-inline-code {
+  color: var(--color_theme_light);
+  border-radius: 3px;
+  padding: 3px;
+}
+
+
+/* other utilities */
+
+blockquote {
+  border-left: 5px solid var(--color_theme_lightest);
+  margin-left: 3em;
+  padding-left: 1em;
+}
+
+
+img, video, iframe {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* two-columns */
+
+.pull-left {
+  float: left;
+  width: 48%;
+}
+.pull-right {
+  float: right;
+  width: 48%;
+}
+.pull-right + * {
+  clear: both;
+}
+
+
+  /***************/
+ /* Title slide */
+/***************/
+
+
+.title-slide {
+    all: initial;
+
+    /* style */
+    background-color: var(--white);
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.title-slide h1, .title-slide h2, .title-slide h3 {
+    all: initial;
+    display: block;
+    margin-left: 50px;
+    padding-top: 1px;
+    font-family: var(--font_title);
+    color: var(--color_theme);
+}
+
+.title-slide h1 {
+    font-size: 50px;
+    font-weight: 600;
+    padding-top: 30%;
+    margin-bottom: 15px;
+}
+
+.title-slide h2 {
+    font-size: 30px;
+    font-weight: 400;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+}
+
+.title-slide h3 {
+    font-size: 20px;
+    font-weight: 400;
+    padding-bottom: 20px;
+    margin-bottom: 15px;
+}
+
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+
+/* panelsets */
+
+.panelset {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 3em;
+  padding-right: 3em;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: calc(100% - 3em - 3em);
+  height: calc(100% - 15px - 15px);
+
+}
+
+.panelset.with-header {
+	padding-top: var(--header_height);
+
+	height: calc(100% - 15px - var(--header_height));
+}
+
+.container-names {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
+}
+
+.container-content {
+  width: 100%;
+  padding: 0px 10px;
+}
+
+.panel-name, .panel-name-active {
+  background-color: transparent;
+  border: 2px solid var(--color_theme);
+  border-radius: 10px;
+
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+
+  text-align: center;
+
+  transition: 0.4s;
+}
+
+.panel-name:hover, .panel-name-active  {
+  background-color: var(--color_theme);
+  color: var(--fg_theme);
+}
+
+.panel-content {
+  padding: 0px 10px;
+  width: calc(100% - 20px);
+  height: 100%;
+  display: none;
+}
+
+
+/* BLOCKS */
+
+.block {
+    display: block;
+    border-radius: 10px;
+    background-color: var(--color_theme_lightest);
+    margin: 10px 0;
+}
+
+.block-title {
+    background-color: var(--color_theme);
+    border-radius: 10px 10px 0 0;
+    padding: 0.3em 0.5em;
+
+    /* font-size: 30px;
+    font-family: var(--font_h1); */
+    color: var(--white);
+    font-weight: 500;
+    letter-spacing: 2px;
+}
+
+.block-content {
+    padding: 0em 1em 0.5em 0.5em;
+}
+
+.block-no-title {
+	padding: 0.5em;
+}
+
+.block-content > p {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+/* Versus */
+
+.versus-container {
+    width: 100%;
+    margin-left: 2em;
+}
+
+.versus-vs {
+    position: relative;
+    left: -1em;
+    font-family: var(--versus_font);
+    margin: -5px 0;
+}
+
+
+/* Footers */
+
+.footer-container {
+	position: fixed;
+	bottom: 1em;
+	font-size: 15px;
+}
+
+.source-name {
+	font-style: italic;
+}
+
+/* Multi-column */
+
+.leftcol {
+  float: left;
+  box-sizing: border-box;
+  width: 50%;
+  padding-right: 0.5em;
+}
+
+.rightcol {
+  float: right;
+  box-sizing: border-box;
+  width: 50%;
+  padding-left: 0.5em;
+}
+
+.rightcol + * {
+  clear: both;
+}
+
+.column {
+	padding: 0 0.5em;
+}
+
+.column-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 0 -2em;
+}
+
+
+/*******************************************************************************
+******************************* Utilities **************************************
+*******************************************************************************/
+
+.overflow {overflow: auto;}
+
+.invisible {opacity: 0;}
+
+.strike {text-decoration: line-through;}
+.underline {text-decoration: underline;}
+
+.h100 {height: 100%;}
+
+.center {text-align: center;}
+
+.ta-right {text-align: right;}
+.ta-center {text-align: center;}
+/* .right.center is stg that remark.js parses and it adds a block display which may not be what we want. */
+
+
+
+
+
+
+
+
+
+
+
+
+

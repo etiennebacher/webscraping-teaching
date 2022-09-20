@@ -1,0 +1,1842 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Principles of webscraping</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Etienne Bacher" />
+    <meta name="date" content="2022-09-05" />
+    <script src="principles_files/header-attrs-2.14/header-attrs.js"></script>
+    <script src="principles_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="principles_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="principles_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"<i class=\"fa fa-clipboard\"><\/i>","success":"<i class=\"fa fa-check\" style=\"color: #90BE6D\"><\/i>","error":"<i class=\"fa fa-times-circle\" style=\"color: #F94144\"><\/i>"})</script>
+    <link href="principles_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+    <link href="principles_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan_themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Principles of webscraping
+]
+.author[
+### Etienne Bacher
+]
+.institute[
+### LISER
+]
+.date[
+### 2022-09-05
+]
+
+---
+
+
+
+
+class: section
+
+&lt;h1 style="font-size: 40px"&gt;The three laws of &lt;span style="text-decoration: line-through;"&gt;robotics&lt;/span&gt; webscraping&lt;/h1&gt;
+
+
+---
+
+# The three laws of webscraping
+
+.fs-25[
+1. Don't be in a hurry
+
+2. Separate the scraping from the formatting
+
+3. Anticipate failure
+]
+
+
+---
+
+# 1. Don't be in hurry
+
+.fs-25[
+The scraping shouldn't be too fast for two main reasons:
+
+1. For the website owner: don't flood the server with requests (not all websites you want to scrape are owned by a big company);
+
+2. For you: don't get kicked out / banned.
+]
+
+
+---
+
+# 2. Separate the scraping from the formatting
+
+.center[**Scraping takes time (cf previous slide).**]
+
+.h-1em[]
+
+You should minimize the risk of crashing and losing your progress, which means minimizing the operations at each iteration.
+
+--
+
+We have:
+1. lots of storing space on our laptops
+2. not a lot of time
+
+.color2[*Save the raw HTML in external files first. You will be able to clean it later (and offline).*]
+
+
+---
+
+# 3. Anticipate failure
+
+Minimizing the risk of failures doesn't mean that there won't be any failures.
+
+.h-1em[]
+
+Your code should be resilient to these failures and keep running.
+
+.h-1em[]
+
+In R, this can be done with `try()` and `tryCatch()`.
+
+---
+
+# 3. Anticipate failure
+
+Let's create a dummy function that takes `x` and:
+* returns `x*2` if `x &gt;= 0`
+* errors if `x &lt; 0`
+
+```r
+dummy_fun &lt;- function(x) {
+  if (x &lt; 0) stop("x is not big enough")
+  return(x*2)
+}
+dummy_fun(-1)
+```
+
+```
+## Error in dummy_fun(-1): x is not big enough
+```
+
+```r
+dummy_fun(1)
+```
+
+```
+## [1] 2
+```
+
+---
+
+# 3. Anticipate failure
+
+What happens if we loop through this function from -1 to 1? 
+
+
+```r
+for (i in -1:1) {
+  print(i)
+  dummy_fun(i)
+}
+```
+
+```
+## [1] -1
+```
+
+```
+## Error in dummy_fun(i): x is not big enough
+```
+
+--
+
+.h-1em[]
+
+Because the function doesn't handle errors, .color2[*the error stops the whole loop*] (we never run `dummy_fun(0)` and `dummy_fun(1)`).
+
+---
+
+# 3. Anticipate failure
+
+
+```r
+x &lt;- try(dummy_fun(-1), silent = TRUE)
+class(x)
+```
+
+```
+## [1] "try-error"
+```
+
+--
+
+
+```r
+for (i in -1:1) {
+  print(i)
+* x &lt;- try(dummy_fun(i), silent = TRUE)
+  
+* if (inherits(x, "try-error")) {
+*   NULL
+* } else {
+*   x
+* }
+}
+```
+
+```
+## [1] -1
+## [1] 0
+## [1] 1
+```
+
+Note: you could also use `try()` directly in `dummy_fun()`.
+
+---
+
+# 3. Anticipate failure
+
+
+```r
+x &lt;- tryCatch(
+  dummy_fun(-1),
+  error = function(e) {
+    print("This is a custom error message")
+    print(paste("Original error:", e))
+  }
+)
+```
+
+```
+## [1] "This is a custom error message"
+## [1] "Original error: Error in dummy_fun(-1): x is not big enough\n"
+```
+
+```r
+class(x)
+```
+
+```
+## [1] "character"
+```
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "googlecode",
+"highlightLanguage": "r",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<script>
+
+/*****************************************/
+/* Unofficial Xaringan theme of the      */
+/* University of Bordeaux                */
+/*                                       */
+/* Script created by Laurent Bergé       */
+/* All original code                     */
+/*                                       */
+/* V 1.0 (Fall 2021)                     */
+/*                                       */
+/* MIT licence                           */
+/* Feel free to use/adapt                */
+/* Please cite if copy/pasting :-)       */
+/*****************************************/
+
+/* IMPORTANT:
+* - Works with the CSS stylesheet contained in ub_theme.css
+*/
+
+
+/* DISCLAIMER:
+*  - I created this code to serve my own uses which very likely differ from yours.
+*    Hence there is no garantee that it will work appropriately for your uses.
+* - That's my first venture into JS, so please be indulgent! ;-)
+*/
+
+
+
+function settings_callback(){
+	// the order is important
+
+	// create the panel sets
+	setup_panelset();
+
+	// add with-header to slides with header
+	setup_slide_header();
+
+	// set up title page author section
+	setup_title_page();
+
+	// create the block environments
+	setup_blocks();
+
+	// create the versus environments
+	setup_versus();
+
+	// automatic CSS: ex fs-32px
+	setup_css();
+
+	// create the footnotes
+	setup_footnotes();
+
+	// set up the column environment
+	setup_columns();
+
+	// vertical spacing: ex .h-100px[]
+	setup_vspace();
+
+	// text autofit
+	setup_autofit();
+
+	// adjust the images heights
+	setup_images();
+
+	// adjust the height of the text // LAST
+	setup_auto_height();
+}
+
+window.addEventListener("load", settings_callback);
+
+
+
+//
+// Panelsets
+//
+
+
+function showPane() {
+    let panel_set = this.parentElement.parentElement;
+
+    let id = this.getAttribute("panelid");
+    all_panel_contents = panel_set.getElementsByClassName("panel-content");
+    all_panel_names = panel_set.querySelectorAll("div[class^=panel-name]");
+
+    for(let i=0 ; i<all_panel_contents.length ; i++){
+        if(i == id){
+            all_panel_contents[i].style.display = "block";
+            all_panel_names[i].setAttribute("class", "panel-name-active");
+        } else {
+            all_panel_contents[i].style.display = "none";
+            all_panel_names[i].setAttribute("class", "panel-name");
+        }
+    }
+}
+
+function setup_panelset(){
+
+    let brace_open = /p> *\{/;
+    let brace_close = /\}/;
+
+    let all_panelsets = document.getElementsByClassName("panelset");
+
+    for(let i=0 ; i<all_panelsets.length ; i++){
+
+        let all_panes = all_panelsets[i].getElementsByClassName("pane");
+        let n_panes = all_panes.length;
+
+        // the title is within a <p> element
+
+        let new_name, new_html;
+        let all_names = [];
+        let all_contents = [];
+        let all_classes = [];
+        for(let j=0 ; j<n_panes ; j++){
+
+            let my_html = all_panes[j].innerHTML;
+            let my_class = all_panes[j].className;
+
+            if(my_html.length === 0 || !brace_open.test(my_html) || !brace_close.test(my_html)){
+                new_name = "No title ("+ (j + 1).toString() + ")";
+                new_html = my_html;
+
+            } else {
+                let pos_end = my_html.search(brace_close);
+                new_name = my_html.substring(0, pos_end).trim();
+
+                let pos_start = new_name.search(/\{/);
+                new_name = new_name.substring(pos_start + 1, new_name.length);
+
+                new_html = "<p>" + my_html.substring(pos_end + 1, my_html.length).trim();
+                new_html.replace(/<p>[^<]<\/p>/, "");
+            }
+
+            all_names.push(new_name);
+            all_contents.push(new_html);
+            all_classes.push(my_class);
+        }
+
+        // we remove the pane nodes
+        all_panelsets[i].innerHTML = "";
+
+        // We add the with-header class if needed (we need it in CSS)
+        let parent = all_panelsets[i].parentElement;
+        let my_h1 = parent.getElementsByTagName("H1");
+        if(my_h1.length > 0){
+            all_panelsets[i].classList.add("with-header");
+        }
+
+
+        // now we create some containers
+
+        //
+        // Name container
+        //
+
+        // first for the names
+        let div_cont_names = document.createElement("div");
+        div_cont_names.setAttribute("class", "container-names");
+
+        let all_div_names = [];
+
+        for(let j=0 ; j<n_panes ; j++){
+            let div_name = document.createElement("div");
+            div_name.innerText = all_names[j];
+            div_name.setAttribute("panelid", j);
+            div_name.addEventListener("click", showPane);
+
+            if(j == 0){
+              div_name.setAttribute("class", "panel-name-active");
+            } else {
+              div_name.setAttribute("class", "panel-name");
+            }
+
+            div_cont_names.appendChild(div_name);
+        }
+
+
+        //
+        // content container
+        //
+
+        // then for the contents
+        let div_cont_content = document.createElement("div");
+        div_cont_content.setAttribute("class", "container-content");
+
+        for(let j=0 ; j<n_panes ; j++){
+            let div_content = document.createElement("div");
+            div_content.innerHTML = all_contents[j];
+
+            // we pass along the extra classes
+            div_content.className = "panel-content " + all_classes[j];
+            div_content.classList.remove("pane");
+
+            // div_content.setAttribute("class", "panel-content");
+
+            if(j == 0){
+                div_content.style.display = "block";
+            } else {
+                div_content.style.display = "none";
+            }
+
+            div_cont_content.appendChild(div_content);
+        }
+
+        // we add them
+        all_panelsets[i].appendChild(div_cont_names);
+        all_panelsets[i].appendChild(div_cont_content);
+
+    }
+
+    //
+    // Now that the new document is generated, we style it a bit
+    //
+
+    for(let i=0 ; i<all_panelsets.length ; i++){
+
+      //
+      // Resizing the buttons
+      //
+
+      let all_panel_names = all_panelsets[i].querySelectorAll("div[class^=panel-name]");
+      let n_panes = all_panel_names.length;
+
+      let max_width = 0;
+      for(let j=0 ; j<n_panes ; j++){
+        if(max_width < all_panel_names[j].clientWidth){
+          max_width = all_panel_names[j].clientWidth;
+        }
+      }
+
+      // setting the new width
+
+      let panel_name_style = getComputedStyle(all_panel_names[0]);
+      let pad_width_txt = " - " + panel_name_style.paddingLeft + " - " + panel_name_style.paddingRight + ")";
+
+      for(let j=0 ; j<n_panes ; j++){
+        all_panel_names[j].style.width = "calc(2px + " + max_width.toString() + "px" + pad_width_txt;
+      }
+
+      //
+      // Setting the contents height
+      //
+
+      let container_content = all_panelsets[i].querySelector("div.container-content");
+      let container_names = all_panelsets[i].querySelector("div.container-names");
+
+      let style_ps = getComputedStyle(all_panelsets[i]);
+      let total_height = all_panelsets[i].clientHeight + "px - " + style_ps.paddingTop + " - " + style_ps.paddingBottom;
+
+      let style_cn = getComputedStyle(container_names);
+      let container_names_height = container_names.offsetHeight + "px + " + style_cn.marginTop + " + " + style_cn.marginBottom;
+
+      let style_cc = getComputedStyle(container_content);
+      // let container_content_height = style_cc.paddingTop + " + " + style_cc.paddingBottom + " + " + style_cc.marginTop + " + " + style_cc.marginBottom;
+      let container_content_height = style_cc.marginTop + " + " + style_cc.marginBottom;
+
+      let new_height = "calc(" + total_height + " - (" + container_names_height + ") - (" + container_content_height +") )";
+
+      container_content.style.height = new_height;
+
+
+    }
+
+}
+
+//
+// Header slides
+//
+
+// We tag slides with header + auto-shrink
+
+function setup_slide_header(){
+	// We add the with-header class to slides having headers
+	let all_slides = document.querySelectorAll("div.remark-slide-content");
+	for(let i=0 ; i<all_slides.length ; i++){
+		let slide = all_slides[i];
+		if(slide.getElementsByTagName("H1").length > 0){
+			slide.classList.add("with-header");
+			slide.getElementsByTagName("H1")[0].classList.add("auto-shrink");
+		}
+	}
+}
+
+//
+// Automatic height adjustment
+//
+
+/* to get the dimension of an element: https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Determining_the_dimensions_of_elements */
+
+function setup_auto_height(){
+
+  let all_slide_containers = document.querySelectorAll(".remark-slide-container");
+  //let all_slides = document.querySelectorAll(".remark-slide-content:not(.title-slide)");
+
+  //
+  // Automatically setting the default text at 33% of the total slide height
+  //
+
+
+  let SLIDE_CONTENT_SHARE_TRIGGER = 0.70;
+  let OPTIMAL_HEIGHT = 0.70;
+
+  // we catch the continuation
+  let i_start_continue = 0;
+
+  for(let i=0 ; i<all_slide_containers.length ; i++){
+
+    // let my_slide = all_slides[i];
+    let all_contents = all_slide_containers[i].querySelectorAll(".remark-slide-content");
+
+    if(all_contents.length == 0 || all_contents[0].className.includes("title-slide")){
+    	continue;
+    }
+
+    // we skip panelsets
+    if(all_contents[0].querySelectorAll(".panelset").length > 0){
+    	continue;
+    }
+
+    i_start_continue = i;
+    while(all_slide_containers[i].className.includes("has-continuation")){
+    	i++;
+    }
+
+    // we take the final slide
+    let my_slide = all_slide_containers[i].querySelector(".remark-slide-content");
+
+    let all_elements = my_slide.children;
+    let my_height = 0;
+    let first = true;
+    let first_spaceTop = 0;
+
+    // we consider only one set of floating elements
+    let is_float = false;
+    let float_height = 0;
+    let margin_prev = 0;
+    for(elem of all_elements){
+      if(elem.tagName == "H1"){
+        continue;
+      }
+
+      let style = getComputedStyle(elem);
+      let current_height = parseInt(elem.offsetHeight);
+
+      let margin_top = parseInt(style.marginTop);
+      if(margin_prev > margin_top){
+      	current_height += margin_prev;
+      } else {
+      	current_height += margin_top;
+      }
+
+      margin_prev = parseInt(style.marginBottom);
+
+      if(first){
+      	// use to find the location of the text on the slide later
+        first = false;
+        first_spaceTop = parseInt(style.marginTop) + parseInt(style.borderTopWidth) + parseInt(style.paddingTop);
+      }
+
+      // Handling floats
+      if(style.float != "none"){
+
+        if(is_float){
+          if(current_height < float_height){
+            // we don't add it since lower
+            current_height = 0;
+          } else {
+            // == we add the highest value
+            current_height -= float_height;
+          }
+        }
+
+        if(!is_float){
+          is_float = true;
+          float_height = current_height;
+        }
+
+      }
+
+      my_height += current_height;
+
+    }
+
+    my_height += margin_prev;
+
+    if(my_height === 0) continue;
+
+    // we compute the slide height for each slide because they may vary
+    let slide_style = getComputedStyle(my_slide);
+    let slide_height = parseInt(my_slide.clientHeight) - parseInt(slide_style.paddingTop) - parseInt(slide_style.paddingBottom);
+
+    let frac_height = 1.0 * my_height / slide_height;
+
+	let done = false;
+    if(frac_height < SLIDE_CONTENT_SHARE_TRIGGER){
+      let slide_paddingTop = parseInt(slide_style.paddingTop);
+
+      let top_space_share = 1.0 * (slide_paddingTop + first_spaceTop) / slide_height;
+
+      if(top_space_share < OPTIMAL_HEIGHT){
+      	done = true;
+
+      	for(let j=i_start_continue ; j<=i ; j++){
+      		let my_div = document.createElement("div");
+
+        	let div_height = 1.0 * (1 - OPTIMAL_HEIGHT) * parseInt(my_slide.clientHeight) - (slide_paddingTop + first_spaceTop);
+
+        	my_div.style.height = div_height.toFixed(0).toString() + "px";
+
+			my_slide = all_slide_containers[j].querySelector(".remark-slide-content");
+        	my_slide.insertBefore(my_div, my_slide.children[0]);
+      	}
+      }
+    }
+
+    if(!done){
+
+    	for(let j=i_start_continue ; j<=i ; j++){
+      		let my_div = document.createElement("div");
+
+        	let div_height = 0.5 * (slide_height - my_height);
+
+        	my_div.style.height = div_height.toFixed(0).toString() + "px";
+
+			my_slide = all_slide_containers[j].querySelector(".remark-slide-content");
+        	my_slide.insertBefore(my_div, my_slide.children[0]);
+      	}
+    }
+
+  }
+}
+
+//
+// title slide: h3 always bottom left (with or w/t h2)
+//
+
+
+function setup_title_page(){
+  let title_slide = document.getElementsByClassName("title-slide");
+
+  if(title_slide.length > 0){
+    title_slide = title_slide[0];
+
+    let title_slide_elements = title_slide.children;
+    let n_elem = title_slide_elements.length;
+
+    let my_div = document.createElement("div");
+
+    let i=0;
+    while(i < title_slide.children.length){
+
+      if(title_slide.children[i].tagName == "H3"){
+        // we remove it
+        let h3_rm = title_slide.removeChild(title_slide.children[i]);
+        my_div.appendChild(h3_rm);
+
+      } else {
+        i++;
+      }
+    }
+
+    // style of the div
+    my_div.setAttribute("class", "title-slide-author");
+
+    title_slide.appendChild(my_div);
+
+  }
+}
+
+
+//
+// Handling images
+//
+
+function setup_images(){
+
+	let all_imgs = document.querySelectorAll("p>img");
+
+	/* Sometimes images are contained in <p> and this is VERY annoying since you cannot
+	set the height of the image any more. So we unnest these images.*/
+
+	for(let i=0 ; i<all_imgs.length ; i++){
+
+		let img = all_imgs[i];
+		let p = img.parentElement;
+
+		// we don't unnest if there are multiple elements (we may be mistaken!)
+		let n_elem = p.getElementsByTagName('*').length;
+
+		if(n_elem == 1){
+			let parent = p.parentElement;
+			parent.replaceChild(img, p);
+		}
+	}
+
+	// Cleaning artefacts: empty <p></p>
+	let all_p = document.querySelectorAll("div.panel-content>p");
+	for(let i=0 ; i<all_p.length ; i++){
+
+		let p = all_p[i];
+
+		if(p.innerHTML == ""){
+			let parent = p.parentElement;
+			parent.removeChild(p);
+			// update
+			i -= 1;
+			all_p = document.querySelectorAll("div.panel-content>p");
+		}
+	}
+
+
+	// Now we look at the images that are last
+	// The user never wants them to overflow
+	// So we nest them in a div with set height = remaining height
+	// + center
+
+	// A) within panelsets
+
+	all_imgs = document.querySelectorAll("div.panel-content>img");
+	for(let i=0 ; i<all_imgs.length ; i++){
+
+		let img = all_imgs[i];
+		let parent = img.parentElement;
+
+		// We need to display the hidden panels
+		let display_value = parent.style.display;
+		parent.style.display = "block";
+
+		if(parent.className.includes("no-auto")){
+			continue;
+		}
+
+		if(i < (all_imgs.length - 1) && all_imgs[i + 1].parentElement == parent){
+			continue;
+		}
+
+		let all_elem = parent.children;
+		let elem_height = 0;
+		let margin_prev = 0;
+		let is_span = false;
+		let display_value_span = "";
+		for(let j=0 ; j<all_elem.length ; j++){
+			let elem = all_elem[j];
+
+			if(elem == img) continue;
+
+			if(elem.offsetHeight == ""){
+				// This is a span => tricky
+				// so far we make the wrong assumption that spans should be treated as divs
+				// To correct later: include successive spans in a div, then check that div height
+				is_span = true;
+				display_value_span = elem.style.display;
+
+				elem.style.display = "block";
+			}
+
+			elem_height += parseInt(elem.offsetHeight);
+
+			let elem_style = getComputedStyle(elem);
+			let margin_top = parseInt(elem_style.marginTop)
+
+			if(margin_top > margin_prev){
+				elem_height += margin_top;
+			} else {
+				elem_height += margin_prev;
+			}
+
+			margin_prev = parseInt(elem_style.marginBottom);
+
+			if(is_span){
+				is_span = false;
+				elem.style.display = display_value_span;
+			}
+		}
+
+		// last increment
+		elem_height += margin_prev;
+
+		let parent_style = getComputedStyle(parent);
+		let parent_height = parseInt(parent.clientHeight) + parseInt(parent_style.paddingTop) + parseInt(parent_style.paddingBottom);
+
+		let img_height = parent_height - elem_height;
+		if(img_height < 0){
+			img_height = 50;
+		}
+
+		let my_div = document.createElement("div");
+		my_div.style.height = img_height.toFixed(0).toString() + "px";
+		my_div.style.textAlign = "center";
+
+		let img_clone = img.cloneNode(true);
+		my_div.appendChild(img_clone);
+
+		parent.replaceChild(my_div, img);
+
+		parent.style.display = display_value;
+
+	}
+
+
+	// B) within regular slides => beware of the header!
+	// This is almost identical to the previous code
+	// but we first delete the image to get the proper height
+
+	all_imgs = document.querySelectorAll("div.remark-slide-content>img");
+	for(let i=0 ; i<all_imgs.length ; i++){
+
+		let img = all_imgs[i];
+		let parent = img.parentElement;
+
+		if(parent.className.includes("no-auto")){
+			continue;
+		}
+
+		// The automatic sizing only applies to the last image
+		// if there are 2+ images, the user is responsible of setting the size
+		// of the first images
+		if(i < (all_imgs.length - 1) && all_imgs[i + 1].parentElement == parent){
+			continue;
+		}
+
+		let all_elem = parent.children;
+		let elem_height = 0;
+		let margin_prev = 0;
+		let is_span = false;
+		let display_value_span = "";
+		for(let j=0 ; j<(all_elem.length - 1) ; j++){
+			// noe: the last element is always the slide number
+
+			let elem = all_elem[j];
+
+			if(elem == img) continue;
+
+			if(elem.tagName == "H1"){
+				continue;
+			}
+
+			if(elem.offsetHeight == ""){
+				// This is a span => tricky
+				// so far we make the wrong assumption that spans should be treated as divs
+				// To correct later: include successive spans in a div, then check that div height
+				is_span = true;
+				display_value_span = elem.style.display;
+
+				elem.style.display = "block";
+			}
+
+			elem_height += parseInt(elem.offsetHeight);
+
+			let elem_style = getComputedStyle(elem);
+			let margin_top = parseInt(elem_style.marginTop)
+
+			if(margin_top > margin_prev){
+				elem_height += margin_top;
+			} else {
+				elem_height += margin_prev;
+			}
+
+			margin_prev = parseInt(elem_style.marginBottom);
+
+			if(is_span){
+				is_span = false;
+				elem.style.display = display_value_span;
+			}
+		}
+
+		// last increment
+		elem_height += margin_prev;
+
+		// To get the real window height, we need to remove the image first
+
+		// The div we will insert later
+		let my_div = document.createElement("div");
+		my_div.style.textAlign = "center";
+
+		let img_clone = img.cloneNode(true);
+
+		// Now the proper height following image removal
+		parent.replaceChild(my_div, img);
+
+		let parent_style = getComputedStyle(parent);
+		let parent_height = parseInt(parent.clientHeight) - parseInt(parent_style.paddingTop)  - parseInt(parent_style.paddingBottom);
+
+		let img_height = parent_height - elem_height;
+		if(img_height < 0){
+			img_height = 50;
+		}
+
+		// Now we append the saved image if needed
+
+		if(img_height < img_clone.height){
+			my_div.style.height = img_height.toFixed(0).toString() + "px";
+		}
+
+		my_div.appendChild(img_clone);
+
+		if(img_clone.height < img_height){
+			// means width-max has precedence => we don't set the height
+			my_div.style.height = "";
+		}
+
+		// update
+		all_imgs = document.querySelectorAll("div.remark-slide-content>img");
+		i -= 1;
+
+	}
+
+}
+
+
+//
+// Autofit text
+//
+
+
+function setup_autofit(){
+    let all_elem = document.querySelectorAll(".auto-shrink, .auto-fit");
+
+    // element that will get the text to compute its width
+    let div_cont = document.createElement("div");
+    div_cont.style.padding = "0 0 0 0";
+    div_cont.style.margin = "0 0 0 0";
+    div_cont.style.offset = "0 0 0 0";
+    div_cont.style.border = "unset";
+    div_cont.style.position = "fixed";
+
+    let FONT_MIN = 8;
+    let FONT_MAX = 500;
+    let is_fit = false;
+    let is_smaller = false;
+    let is_fixed = false;
+
+    for(elem of all_elem){
+        let elem_style = getComputedStyle(elem);
+
+        let parent = elem.parentElement;
+
+        is_fixed = elem_style.position == "fixed";
+        let parent_style = getComputedStyle(parent);
+        let	target_width = parseInt(parent.clientWidth)
+
+        if(is_fixed){
+        	// weird but it's better to take the parent element
+        } else {
+        	 target_width -= parseInt(parent_style.paddingLeft) +
+        	                 parseInt(parent_style.paddingRight);
+        }
+
+        let elem_new = elem.cloneNode(true);
+        elem_new.style.whiteSpace = "nowrap";
+        elem_new.style.display = "block";
+        elem_new.style.position = "static";
+        elem_new.style.width = "auto";
+        div_cont.appendChild(elem_new);
+        div_cont.style.position = "fixed";
+
+        parent.replaceChild(div_cont, elem);
+
+        let current_width = parseInt(div_cont.clientWidth);
+
+        is_fit = elem.classList.contains("auto-fit");
+        is_smaller = current_width < target_width;
+
+        if(!is_fit && is_smaller){
+            parent.replaceChild(elem, div_cont);
+            div_cont.innerHTML = "";
+            continue;
+        }
+
+        let sty = getComputedStyle(elem_new);
+        let fs = parseInt(sty.fontSize);
+
+        if(is_fixed && !is_smaller){
+        	// We start from the smallest font
+        	fs = FONT_MIN;
+        	elem_new.style.fontSize = fs + "px";
+            current_width = parseInt(div_cont.clientWidth);
+            is_smaller = true;
+        	is_fit = true;
+        }
+
+        // Shrinking (lazy algorithm)
+        let old_width = current_width;
+        while(target_width < current_width && fs > FONT_MIN){
+            fs--;
+            elem_new.style.fontSize = fs + "px";
+            current_width = parseInt(div_cont.clientWidth);
+
+            if(current_width == old_width){
+            	fs++;
+                break;
+            }
+            old_width = current_width;
+        }
+
+        if(is_fit && is_smaller){
+            while(target_width > current_width && fs < FONT_MAX){
+                fs++;
+                elem_new.style.fontSize = fs + "px";
+                current_width = parseInt(div_cont.clientWidth);
+
+                if(current_width == old_width){
+                    fs++;
+                    break;
+                }
+                old_width = current_width;
+            }
+            fs--;
+        }
+
+        elem.style.fontSize = fs + "px";
+
+        parent.replaceChild(elem, div_cont);
+        div_cont.innerHTML = "";
+    }
+}
+
+
+//
+// Adding blocks
+//
+
+
+function setup_blocks(){
+
+	let all_blocks = document.querySelectorAll(".block, .theorem, .definition");
+
+	let brace_open = /(p>|^) *\{/;
+    let brace_close = /\}/;
+
+	for(block of all_blocks){
+
+		let my_html = block.innerHTML;
+
+        if(my_html.length === 0 || !brace_open.test(my_html) || !brace_close.test(my_html)){
+
+        	if(block.classList.contains("definition")){
+        		block.classList.remove("definition");
+        		block.classList.add("block");
+        		new_name = "Definition";
+        	} else if(block.classList.contains("theorem")){
+        		block.classList.remove("theorem");
+        		block.classList.add("block");
+        		new_name = "Theorem";
+        	} else {
+        		new_name = "NOT A TITLE";
+        	}
+
+            new_html = my_html;
+
+        } else {
+            let pos_end = my_html.search(brace_close);
+            new_name = my_html.substring(0, pos_end).trim();
+
+            let pos_start = new_name.search(/\{/);
+            new_name = new_name.substring(pos_start + 1, new_name.length);
+
+            new_html = "<p>" + my_html.substring(pos_end + 1, my_html.length).trim();
+
+            if(! /p> *\{/.test(my_html)){
+            	new_html += "</p>";
+            }
+
+            new_html.replace(/<p>[^<]<\/p>/, "");
+        }
+
+        // we clean the block
+        block.innerHTML = "";
+
+        // And now we recreate its content
+		let div_block_title = document.createElement("div");
+		let div_block_content = document.createElement("div");
+
+		div_block_title.innerHTML = new_name;
+		div_block_title.classList.add("block-title");
+
+		div_block_content.innerHTML = new_html;
+		div_block_content.classList.add("block-content");
+
+		if(new_name == "NOT A TITLE"){
+			div_block_content.classList.add("block-no-title");
+		} else {
+			block.appendChild(div_block_title);
+		}
+
+		block.appendChild(div_block_content);
+	}
+}
+
+
+//
+// Versus class
+//
+
+
+function setup_versus(){
+	let all_versus = document.querySelectorAll(".versus");
+
+	for(versus of all_versus){
+
+		let all_vs = versus.querySelectorAll(".vs");
+		let n = all_vs.length;
+
+		if(n == 0){
+			versus.innerHTML = "<p style='color:red'>Wrong formatting of the versus class. No vs element found.</p>";
+			continue;
+		}
+
+		versus = span_to_div(versus);
+
+		let vs_container = document.createElement("div");
+		vs_container.className = versus.className;
+		vs_container.classList.add("versus-container");
+		vs_container.classList.remove("versus");
+
+		for(let i=0 ; i<n ; i++){
+
+			let my_vs_content = document.createElement("div");
+			my_vs_content.className = all_vs[i].className;
+			my_vs_content.classList.add("versus-content");
+			my_vs_content.classList.remove("vs");
+			my_vs_content.innerHTML = all_vs[i].innerHTML;
+
+			vs_container.appendChild(my_vs_content);
+
+			if(i < (n-1)){
+				let my_vs = document.createElement("div");
+				my_vs.className = "versus-vs";
+				my_vs.innerHTML = "vs";
+				vs_container.appendChild(my_vs);
+			}
+		}
+
+		versus.parentElement.replaceChild(vs_container, versus);
+	}
+}
+
+
+//
+// AUTO CSS
+//
+
+// SOURCE: https://gist.github.com/bobspace/2712980
+const CSS_COLOR_NAMES = [
+  "AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque",
+  "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue",
+  "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson",
+  "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGrey",
+  "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "DarkOrange",
+  "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue",
+  "DarkSlateGray", "DarkSlateGrey", "DarkTurquoise", "DarkViolet", "DeepPink",
+  "DeepSkyBlue", "DimGray", "DimGrey", "DodgerBlue", "FireBrick", "FloralWhite",
+  "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "GoldenRod",
+  "Gray", "Grey", "Green", "GreenYellow", "HoneyDew", "HotPink", "IndianRed",
+  "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen",
+  "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenRodYellow",
+  "LightGray", "LightGrey", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen",
+  "LightSkyBlue", "LightSlateGray", "LightSlateGrey", "LightSteelBlue", "LightYellow",
+  "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquaMarine", "MediumBlue",
+  "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen",
+  "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose",
+  "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange",
+  "OrangeRed", "Orchid", "PaleGoldenRod", "PaleGreen", "PaleTurquoise", "PaleVioletRed",
+  "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple",
+  "RebeccaPurple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon",
+  "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue",
+  "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle",
+  "Tomato", "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen",
+];
+
+const CSS_COLOR_NAMES_LOWER = CSS_COLOR_NAMES.map(element => element.toLowerCase());
+
+function parse_color(color_name){
+
+	let i = CSS_COLOR_NAMES_LOWER.indexOf(color_name.toLowerCase());
+	if(i == -1){
+		// we try harder
+		css_colors_trim = CSS_COLOR_NAMES_LOWER.map(el => el.substring(0, color_name.length));
+		i = css_colors_trim.indexOf(color_name.toLowerCase());
+	}
+
+	let new_color = "";
+	if(i == -1){
+		// hexa
+		new_color = "#" + color_name;
+	} else {
+		new_color = CSS_COLOR_NAMES[i];
+	}
+
+	return new_color;
+}
+
+function parse_size(size, unit){
+	// unit: default unit when unit is missing
+
+	let new_size = size;
+	if(/\d$/.test(size)){
+		new_size += unit;
+	}
+
+	return new_size;
+}
+
+function parse_line(line){
+	let all_lines = line.split("_");
+
+	let new_line = "";
+	let valid = ["underline", "overline", "line-through", "ul", "ol", "lt"];
+	let dict = {ol: "overline", ul: "underline", lt: "line-through"};
+	for(l of all_lines){
+		if(valid.includes(l)){
+			if(Object.getOwnPropertyNames(dict).includes(l)){
+				new_line += dict[l] + " ";
+			} else {
+				new_line += l + " ";
+			}
+		}
+	}
+
+	return new_line;
+}
+
+function setup_css(){
+	let all_types = ["color", "bg-color", "fs", "td-line", "w", "h"];
+
+	for(type of all_types){
+		let selector = "[class*=" + type + "-]";
+		let all_elements = document.querySelectorAll(selector);
+
+		let re_class = RegExp("(^| )" + type + "-");
+
+		for(el of all_elements){
+
+			// we can't have exactly what we want with the CSS selector
+			// so we need to do that (or at least I didn't find an easier solution)
+			// Solution would be to have unbreakable space in CSS selector attribute
+			// but I don't know how to do
+			if(!re_class.test(el.className)){
+				continue;
+			}
+
+			let value = extract_class_suffix(el, type + "-");
+
+			if(type == "color"){
+				let color = parse_color(value);
+				el.style.color = color;
+
+			} else if(type == "bg-color"){
+				let color = parse_color(value);
+				el.style.backgroundColor = color;
+
+			} else if(type == "fs"){
+				let size = parse_size(value, "px");
+				el.style.fontSize = size;
+
+				let all_inline = el.querySelectorAll(".remark-code-line");
+				for(e of all_inline){
+					e.style.fontSize = size;
+				}
+
+			} else if(type == "td-line"){
+				let line = parse_line(value);
+				el.style.textDecorationLine = line;
+
+			} else if(type == "w"){
+				let width = parse_size(value, "%");
+				el.style.width = width;
+
+				let style = getComputedStyle(el);
+				if(style.display == "inline"){
+					// inline don't have width => if the user adds a width it's bc
+					// she really wants it to have a width! So be it!
+					el.style.display = "inline-block";
+				}
+
+			} else if(type == "h"){
+				let height = parse_size(value, "%");
+				el.style.height = height;
+
+			}
+		}
+	}
+
+
+}
+
+
+//
+// Vertical spaces
+//
+
+// we format .h-50px[] spans into divs
+
+function setup_vspace(){
+	let all_heights = document.querySelectorAll("[class^=h-]");
+	let n = all_heights.length;
+
+	for(let i=0 ; i<n ; i++){
+
+		let el_height = all_heights[i];
+
+		let class_name = el_height.className;
+		if(class_name.search(/(^| )h-\d/) == -1){
+			continue;
+		}
+
+		if(el_height.tagName == "DIV"){
+			continue;
+		}
+
+		// we adjust for empty and for img only
+		let all_children = el_height.children;
+
+		if(all_children.length > 1 || (all_children.length == 1 && all_children[0].tagName != "IMG")){
+			continue;
+		}
+
+		/*
+		if(el_height.innerHTML != ""){
+			continue;
+		}
+		*/
+
+		span_to_div(el_height);
+
+		// span_to_div modifies the DOM, and other vspace span can be in there
+		all_heights = document.querySelectorAll("[class^=h-]");
+	}
+}
+
+//
+// footnotes
+//
+
+
+function setup_footnotes(){
+	let all_footer_slides = find_all_slides(".footer, .footnote, .source");
+
+	for(slide of all_footer_slides){
+
+		// I need to create footnotes per panel panes (when relevant)
+		let all_containers = slide.querySelectorAll(".panel-content");
+		if(all_containers.length == 0){
+			all_containers = [slide];
+		}
+
+		for(container of all_containers){
+			let all_footers = container.querySelectorAll(".footer, .footnote, .source");
+
+			// footnote index
+			let id_fn = 1;
+
+			let footer_container = document.createElement("div");
+			footer_container.className = "footer-container";
+
+			for(let i=0 ; i<all_footers.length ; i++){
+				let my_footer = all_footers[i];
+				let footnote_text = my_footer.innerHTML;
+
+				if(my_footer.classList.contains("footnote")){
+					let footnote_value = "";
+					if(/^ *\{/.test(footnote_text)){
+						footnote_value = footnote_text.replace(/^ *\{/, "");
+						footnote_value = footnote_value.replace(/\}.*/, "");
+						footnote_text = footnote_text.replace(/^[^}]+\}/, "");
+					} else {
+						footnote_value = id_fn.toString();
+						id_fn++;
+					}
+
+					// Handling shortcuts
+					if(/^ *(s|S)tar *$/.test(footnote_value)){
+						footnote_value = "&#9733;"
+					} else if(/^ *(a|A)ltstar *$/.test(footnote_value)){
+						footnote_value = "&#9734;"
+					}
+
+					footnote_value = "<sup>" + footnote_value + "</sup>";
+
+					let span = document.createElement("span");
+					span.innerHTML = footnote_value;
+
+					let div = document.createElement("div");
+					div.innerHTML = footnote_value + ": " + footnote_text;
+					div.className = my_footer.className;
+
+					footer_container.appendChild(div);
+					my_footer.parentElement.replaceChild(span, my_footer);
+
+				} else {
+					let div = document.createElement("div");
+					div.className = my_footer.className;
+
+					if(my_footer.classList.contains("source")){
+						footnote_text = "<span class='source-name'>Source:</span> " + footnote_text;
+					}
+
+					div.innerHTML = footnote_text;
+
+					footer_container.appendChild(div);
+					my_footer.remove(my_footer);
+				}
+			}
+
+			if(container.children.length == 0){
+				container.appendChild(footer_container);
+			} else {
+				// we put it at the beginning so that the algorithm for
+				// image height setting works
+				container.insertBefore(footer_container, container.children[0]);
+			}
+		}
+	}
+}
+
+
+//
+// Columns
+//
+
+function setup_columns(){
+	// custom sized columns
+	let all_cols = document.querySelectorAll(class_selector("leftcol-"));
+
+	for(let i=0 ; i<all_cols.length ; i++){
+		let my_col = all_cols[i];
+
+		my_col = span_to_div(my_col);
+
+		let size = extract_class_suffix(my_col, "leftcol-");
+
+		my_col.classList.remove("leftcol-" + size);
+		my_col.classList.add("leftcol");
+
+		if(/\d$/.test(size)){
+			size += "%";
+		}
+
+		my_col.style.width = size;
+
+		let slide = find_slide(my_col);
+
+		let is_panel = slide.querySelector(".panel-content") != null;
+		let display_bak = "";
+
+		container = slide;
+		if(is_panel){
+			// we need to display the panel to compute the width
+			container = find_parent(my_col, "panel-content");
+			display_bak = container.style.display;
+			container.style.display = "block";
+		}
+
+		let rightcol_all = container.querySelectorAll(".rightcol");
+
+		// finding the right one, coming after my_col
+		let rightcol = null;
+		if(rightcol_all.length == 1){
+			rightcol = rightcol_all[0];
+		} else {
+
+			let all_leftcols_slide = container.querySelectorAll(".leftcol");
+			let index = 0;
+			for(; index < all_leftcols_slide.length ; index++){
+				if(my_col == all_leftcols_slide[index]){
+					break;
+				}
+			}
+
+			if(index < rightcol_all.length){
+				rightcol = rightcol_all[index];
+			} else {
+				// PRoBLEM => but OK...
+				console.log("PROBLEM (column): the rightcol could not be matched to the leftcol");
+				rightcol = rightcol_all[rightcol_all.length];
+			}
+
+		}
+
+		if(rightcol != null){
+			// we set the size of the right column
+
+			rightcol = span_to_div(rightcol);
+
+			let parent = rightcol.parentElement;
+	        let parent_style = getComputedStyle(parent);
+	        let	parent_width = parseInt(parent.clientWidth) -
+	             parseInt(parent_style.paddingLeft) - parseInt(parent_style.paddingRight);
+
+	        let new_width = parent_width - parseInt(my_col.clientWidth) - 5;
+	        rightcol.style.width = new_width + "px";
+		}
+
+		if(is_panel){
+			container.style.display = display_bak;
+		}
+
+	}
+
+	// Now the column environment
+	let all_col_slides = find_all_slides(class_selector("column-"));
+
+	for(slide of all_col_slides){
+		let all_cols = slide.querySelectorAll(class_selector("column-"));
+
+		let div_col_container = document.createElement("div");
+
+		let first = true;
+		for(my_col of all_cols){
+
+			let size = extract_class_suffix(my_col, "column-");
+			my_col.classList.remove("column-" + size);
+			my_col.classList.add("column");
+
+			if(/\d$/.test(size)){
+				size += "%";
+			}
+
+			my_col.style.width = size;
+
+			let col_clone = my_col.cloneNode(true);
+			if(first){
+				let par = my_col.parentElement;
+				par.replaceChild(div_col_container, my_col);
+			} else {
+				my_col.remove();
+				first = false;
+			}
+
+			div_col_container.appendChild(col_clone);
+		}
+
+		div_col_container.classList.add("column-container");
+
+
+	}
+
+}
+
+
+
+/*******************************************************************************
+********************************** UTILITIES ***********************************
+*******************************************************************************/
+
+
+function find_parent(el, cl){
+	let parent = el.parentElement;
+
+	while(!parent.classList.contains(cl)){
+		parent = parent.parentElement;
+	}
+
+	return parent;
+}
+
+function find_slide(el){
+	// returns the slide of the element
+	let parent = el.parentElement;
+	while(!parent.classList.contains("remark-slide-content")){
+		parent = parent.parentElement;
+	}
+
+	return parent;
+}
+
+function find_all_slides(selector){
+
+	let all_elements = document.querySelectorAll(selector);
+
+	let all_slides = [];
+	for(el of all_elements){
+		let slide = find_slide(el);
+		if(!all_slides.includes(slide)){
+			all_slides.push(slide);
+		}
+	}
+
+	return all_slides;
+}
+
+function extract_class_suffix(el, pattern){
+	// class: color-blue => blue
+
+	let class_name = el.className;
+
+	let re = RegExp("(^| )" + pattern);
+	if(!re.test(class_name)){
+		return null;
+	}
+
+	let re_ante = RegExp("(^|.* )" + pattern);
+	let res = class_name.replace(re_ante, "");
+
+	return res.replace(/ .*/, "");
+}
+
+
+function class_selector(x){
+	return "[class^=" + x + "], [class*=' " + x + "']";
+}
+
+
+function span_to_div(el){
+	// If the element is a div: nothing
+	// If it's a span, we look at the parent, several cases:
+	// <p>el</p> => we dissolve the parent
+	// <p> A el </p> => <p> A </p> el
+	// <p> A el B >/p> => <p> A </p> el <p> B </p>
+
+	if(el.tagName != "SPAN"){
+		return el;
+	}
+
+	let par = el.parentElement;
+
+	if(par.tagName != "P"){
+		return el;
+	}
+
+	let el_new = document.createElement("div");
+	el_new.className = el.className;
+
+	let all_styles = [...el.style];
+	for(style of all_styles){
+		el_new.style[style] = el.style[style];
+	}
+
+	el_new.innerHTML = el.innerHTML;
+
+	let grand_par = par.parentElement;
+	let n = par.childNodes.length;
+
+	if(n == 1){
+		grand_par.replaceChild(el_new, par);
+
+	} else {
+		let index = [...par.childNodes].indexOf(el);
+
+		let ante = document.createElement("p");
+		let post = document.createElement("p");
+
+		for(let i=0 ; i<index ; i++){
+			ante.appendChild(par.childNodes[i].cloneNode(true));
+		}
+
+		for(let i=(index + 1) ; i<n ; i++){
+			post.appendChild(par.childNodes[i].cloneNode(true));
+		}
+
+		if(post.childNodes.length > 0){
+			grand_par.replaceChild(post, par);
+			grand_par.insertBefore(el_new, post);
+		} else {
+			grand_par.replaceChild(el_new, par);
+		}
+
+		if(ante.childNodes.length > 0){
+			grand_par.insertBefore(ante, el_new);
+		}
+
+	}
+
+	// el is not needed any more
+	el.remove();
+
+	return el_new;
+}
+
+
+
+
+
+</script>
+
+
+
+
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
