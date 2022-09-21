@@ -419,7 +419,7 @@ Etienne Bacher
 <ul>
 <li><p>if yes, is there a package?</p>
 <ul>
-<li><p>if yes, use the package</p></li>
+<li><p>if yes, use the package (e.g <code>guardian</code>, <code>WDI</code>)</p></li>
 <li><p>if no, build the API queries yourself with <code>{httr2}</code></p></li>
 </ul></li>
 <li><p>if no, scrape (politely)</p></li>
@@ -566,6 +566,11 @@ Etienne Bacher
 <li><p>click on something</p></li>
 <li><p>enter values</p></li>
 <li><p>go to previous/next page</p></li>
+</ul>
+<p style="margin-bottom: -1em">
+</p>
+<p><br></p>
+<ul>
 <li><p>refresh the page</p></li>
 <li><p>get all the HTML that is currently displayed</p></li>
 </ul>
@@ -624,8 +629,8 @@ Etienne Bacher
 <li>open the browser;</li>
 <li>go to <a href="https://r-project.org" class="uri">https://r-project.org</a>;</li>
 <li>in the left sidebar, click on the link “Contributors”;</li>
-<li>and voilà!</li>
 </ul>
+<p>and voilà!</p>
 </div>
 <div class="fragment">
 <p>How can we do these steps programmatically?</p>
@@ -637,7 +642,7 @@ Etienne Bacher
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>remote_driver<span class="sc">$</span><span class="fu">navigate</span>(<span class="st">"https://r-project.org"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
-<img data-src="img/rproject.png" class="r-stretch"></section>
+<img src="img/rproject.png" alt="drawing" style="width:75% !important; text-align: center !important" class="r-stretch"></section>
 <section id="click-on-contributors" class="slide level2">
 <h2>Click on “Contributors”</h2>
 <p>This requires two things:</p>
@@ -659,7 +664,7 @@ Etienne Bacher
 <li><code>Ctrl</code> + <code>Shift</code> + <code>C</code></li>
 </ul>
 <div class="fragment">
-<p><img data-src="img/console.png"></p>
+<p><img data-src="img/console.png" style="width:75.0%"></p>
 </div>
 </section>
 <section class="slide level2">
@@ -787,12 +792,14 @@ Etienne Bacher
 <h2>Before using RSelenium</h2>
 <p><em>Using RSelenium is slower than using “classic” scraping methods</em>, so it’s important to check all possibilities before using it.</p>
 <p><br></p>
+<div class="fragment">
 <p>Use Selenium if:</p>
 <ul>
 <li><p>the HTML you want is not directly accessible, i.e needs some interactions (clicking on a button, connect to a website…)</p></li>
 <li><p>the URL doesn’t change with the inputs</p></li>
 <li><p>you can’t access the data directly in the “network” tab of the console</p></li>
 </ul>
+</div>
 </section>
 <section id="example-sao-paulo-immigration-museum" class="slide level2">
 <h2>Example: Sao Paulo immigration museum</h2>
@@ -806,7 +813,53 @@ Etienne Bacher
 <li>make an example</li>
 <li>generalize and polish the code</li>
 </ol>
+</section>
+<section id="steps" class="slide level2">
+<h2>Steps</h2>
+<p><br></p>
+<ol type="1">
+<li>Open the website</li>
+<li>Enter “PORTUGUESA” in the input box</li>
+<li>Wait a bit for the page to load</li>
+<li>Open every modal “Ver Mais”</li>
+</ol>
+</section>
+<section id="check-that-we-need-selenium" class="slide level2">
+<h2>Check that we need Selenium</h2>
+<ol type="1">
+<li>Is there an API?</li>
+</ol>
+<div class="fragment fade-in" data-fragment-index="1">
+<div class="fragment highlight-current-blue" data-fragment-index="1">
+<p>Not that I know of (and let’s assume that there isn’t one).</p>
+</div>
+</div>
+<ol start="2" type="1">
+<li>Does the URL change when we enter inputs or click somewhere?</li>
+</ol>
+<div class="fragment fade-in" data-fragment-index="2">
+<div class="fragment highlight-current-blue" data-fragment-index="2">
+<p>No.</p>
+</div>
+</div>
+<ol start="3" type="1">
+<li>Can we get the data through the “Network” tab?</li>
+</ol>
+<div class="fragment fade-in" data-fragment-index="3">
+<div class="fragment highlight-current-blue" data-fragment-index="3">
+<p>No.</p>
+</div>
+</div>
+</section>
+<section id="make-an-example" class="slide level2">
+<h2>Make an example</h2>
 </section></section>
+<section id="thanks" class="title-slide slide level1 center">
+<h1>Thanks!</h1>
+<p>Source code for slides and exercises:</p>
+<p><a href="https://github.com/etiennebacher/webscraping-teaching">https://github.com/etiennebacher/webscraping-teaching</a></p>
+</section>
+
 <section>
 <section id="appendix" class="title-slide slide level1 center">
 <h1>Appendix</h1>

@@ -34,7 +34,7 @@ Before scraping: is there an API?
 ::: increment
 -   if yes, is there a package?
 
-    -   if yes, use the package
+    -   if yes, use the package (e.g `guardian`, `WDI`)
 
     -   if no, build the API queries yourself with `{httr2}`
 
@@ -221,6 +221,9 @@ with Selenium:
 
 -   go to previous/next page
 
+<p style="margin-bottom: -1em"></p>
+<br>
+
 -   refresh the page
 
 -   get all the HTML that is currently displayed
@@ -294,7 +297,8 @@ How would you do it by hand?
 -   open the browser;
 -   go to <https://r-project.org>;
 -   in the left sidebar, click on the link "Contributors";
--   and voilà!
+
+and voilà!
 
 . . .
 
@@ -308,7 +312,8 @@ How can we do these steps programmatically?
 remote_driver$navigate("https://r-project.org")
 ```
 
-![](img/rproject.png)
+<img src="img/rproject.png" alt="drawing" style="width:75% !important; text-align: center !important"/>
+
 
 ------------
 
@@ -335,7 +340,7 @@ the page:
 
 . . .
 
-![](img/console.png)
+![](img/console.png){width="75%"}
 
 ------------
 
@@ -482,6 +487,8 @@ it's important to check all possibilities before using it.
 
 <br>
 
+. . .
+
 Use Selenium if:
 
 -   the HTML you want is not directly accessible, i.e needs some
@@ -528,9 +535,41 @@ Steps:
 ## Check that we need Selenium
 
 1. Is there an API?
-1. Does the URL change when we enter inputs or click somewhere?
-1. Can we get the data through the "Network" tab?
 
+::: {.fragment .fade-in fragment-index=1}
+::: {.fragment .highlight-current-blue fragment-index=1}
+Not that I know of (and let's assume that there isn't one).
+:::
+:::
+
+2. Does the URL change when we enter inputs or click somewhere?
+
+::: {.fragment .fade-in fragment-index=2}
+::: {.fragment .highlight-current-blue fragment-index=2}
+No.
+:::
+:::
+
+3. Can we get the data through the "Network" tab?
+
+::: {.fragment .fade-in fragment-index=3}
+::: {.fragment .highlight-current-blue fragment-index=3}
+No.
+:::
+:::
+
+
+------------
+
+## Make an example
+
+
+
+# Thanks!
+
+Source code for slides and exercises: 
+
+[https://github.com/etiennebacher/webscraping-teaching](https://github.com/etiennebacher/webscraping-teaching)
 
 
 
