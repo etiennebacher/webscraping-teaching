@@ -492,18 +492,47 @@ Use Selenium if:
 -   you can't access the data directly in the "network" tab of the
     console
 
-<br>
-
-. . .
-
-Interesting read: [the Ethical
-Scraper](https://towardsdatascience.com/ethics-in-web-scraping-b96b18136f01)
 
 ------------
 
 ## Example: Sao Paulo immigration museum
 
-ASK MARTIN FIRST
+<br>
+
+[Open website](http://www.inci.org.br/acervodigital/livros.php)
+
+<br>
+
+Steps:
+
+1. list all interactions we need to do
+1. check that we need Selenium 
+1. make an example
+1. generalize and polish the code
+
+
+------------
+
+## Steps
+
+<br>
+
+1. Open the website
+1. Enter "PORTUGUESA" in the input box
+1. Wait a bit for the page to load
+1. Open every modal "Ver Mais"
+
+
+------------
+
+## Check that we need Selenium
+
+1. Is there an API?
+1. Does the URL change when we enter inputs or click somewhere?
+1. Can we get the data through the "Network" tab?
+
+
+
 
 # Appendix
 
