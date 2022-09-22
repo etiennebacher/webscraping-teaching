@@ -492,12 +492,12 @@ it's important to check all possibilities before using it.
 Use Selenium if:
 
 -   the HTML you want is not directly accessible, i.e needs some
-    interactions (clicking on a button, connect to a website...)
+    interactions (clicking on a button, connect to a website...),
 
--   the URL doesn't change with the inputs
+-   the URL doesn't change with the inputs,
 
 -   you can't access the data directly in the "network" tab of the
-    console
+    console and you can't reproduce the `POST` request.
 
 
 ------------
@@ -554,15 +554,99 @@ No.
 
 ::: {.fragment .fade-in fragment-index=3}
 ::: {.fragment .highlight-current-blue fragment-index=3}
-No.
+Yes but we still need RSelenium to change pages (and this is just training
+anyway).
 :::
 :::
 
 
 ------------
 
-## Make an example
+## Make an example {auto-animate="true"}
 
+Initiate the remote driver and go to the website:
+
+```{r}
+library(rvest)
+library(xml2)
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+```
+
+
+## Make an example {auto-animate=true}
+
+Fill the field "NACIONALIDADE":
+
+```{r}
+library(rvest)
+library(xml2)
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+
+# Fill the nationality field and click on "Validate"
+remote_driver$
+  findElement(using = "id", value = "nacionalidade")$
+  sendKeysToElement(list("PORTUGUESA"))
+```
+
+## Make an example {auto-animate=true}
+
+Find the button "Pesquisar" and click it:
+
+```{r}
+library(rvest)
+library(xml2)
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+
+# Fill the nationality field and click on "Validate"
+remote_driver$
+  findElement(using = "id", value = "nacionalidade")$
+  sendKeysToElement(list("PORTUGUESA"))
+
+# Find the button "Pesquisar" and click it
+remote_driver$
+  findElement(using = 'name', value = "Reset2")$
+  clickElement()
+```
+
+
+
+
+
+------------
+
+## Loading times
+
+<br>
+
+After clicking on "Pesquisar", there's a small loading time so **we need to wait** 
+before running the rest of the script. 
+
+. . .
+
+<br>
+
+Our best friend in webscraping is `Sys.sleep()`.
 
 
 # Thanks!
@@ -621,3 +705,99 @@ all_contributors[1:136]
 ```
 
 [Back](#contributors-last-step)
+
+
+------------
+
+## Appendix
+
+<br>
+
+Bonus: get the data from each modal on the museum website by performing the `POST`
+request yourself.
+
+<br>
+
+Go to the tab "Network" in the developer console, and then click on one of the
+"Ver Mais" button to display the modal.
+
+------------
+
+## Appendix
+
+Clicking on this button triggers two `POST` requests: 
+
+* one for the individual information;
+* one for the "network" of the individual.
+
+![](img/console_network.png)
+
+------------
+
+## Appendix
+
+<br>
+
+Clicking on one of the `POST` requests displays important information: 
+
+* the **request**, what we send to the server;
+* the **response**, what the server sends back to us.
+
+. . .
+
+The request contains specific parameters needed to tell the server which data
+we need.
+
+------------
+
+## Appendix {auto-animate=true}
+
+Let's rebuild this `POST` request from R using the package `httr`.
+
+```{r}
+library(httr)
+
+x <- POST(
+  "http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe",
+  body = list(
+    id = "92276"
+  ),
+  encode = "multipart"
+)
+```
+
+------------
+
+## Appendix {auto-animate=true}
+
+Extract the data from the server response:
+
+```{r}
+library(httr)
+library(xml2)
+library(jsonlite)
+
+# make the POST request with the parameters needed
+x <- POST(
+  "http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe",
+  body = list(
+    id = "92276"
+  ),
+  encode = "multipart"
+)
+
+# convert output to a list
+out <- as_list(content(x))
+
+# convert output to a dataframe
+fromJSON(unlist(out))$dados
+```
+
+------------
+
+## Your turn
+
+<br>
+
+Do the same thing with the second `POST` request, which has 3 parameters 
+instead of one.
