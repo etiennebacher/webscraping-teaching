@@ -567,8 +567,6 @@ anyway).
 Initiate the remote driver and go to the website:
 
 ```{r}
-library(rvest)
-library(xml2)
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -585,8 +583,6 @@ remote_driver$navigate(link)
 Fill the field "NACIONALIDADE":
 
 ```{r}
-library(rvest)
-library(xml2)
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -607,8 +603,6 @@ remote_driver$
 Find the button "Pesquisar" and click it:
 
 ```{r}
-library(rvest)
-library(xml2)
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -630,7 +624,74 @@ remote_driver$
 ```
 
 
+## Make an example {auto-animate=true}
 
+Find the button "Ver Mais" and click it:
+
+```{r}
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+
+# Fill the nationality field and click on "Validate"
+remote_driver$
+  findElement(using = "id", value = "nacionalidade")$
+  sendKeysToElement(list("PORTUGUESA"))
+
+# Find the button "Pesquisar" and click it
+remote_driver$
+  findElement(using = 'name', value = "Reset2")$
+  clickElement()
+
+# Find the button "Ver Mais" and click it
+remote_driver$
+  findElement(using = 'id', value = "link_ver_detalhe")$
+  clickElement()
+```
+
+
+## Make an example {auto-animate=true}
+
+Get the HTML that is displayed:
+
+```{r}
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+
+# Fill the nationality field and click on "Validate"
+remote_driver$
+  findElement(using = "id", value = "nacionalidade")$
+  sendKeysToElement(list("PORTUGUESA"))
+
+# Find the button "Pesquisar" and click it
+remote_driver$
+  findElement(using = 'name', value = "Reset2")$
+  clickElement()
+
+# Find the button "Ver Mais" and click it
+remote_driver$
+  findElement(using = 'id', value = "link_ver_detalhe")$
+  clickElement()
+
+# Get the HTML that is displayed in the modal
+x <- remote_driver$getPageSource()
+```
+
+
+------------
+
+## Error handling
 
 
 ------------
