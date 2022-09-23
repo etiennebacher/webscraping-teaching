@@ -5,5 +5,24 @@ $body-color: #d6dbdb;
 $presentation-heading-letter-spacing: 0.1rem;
 $presentation-heading-font-weight: 400;
 
+$presentation-font-size-root: 30px;
+$code-block-font-size: 0.8em;
+
 /*-- scss:rules --*/
 
+.reveal .slides section .callout {
+	font-size: 0.9em;
+}
+
+.reveal .slides li {
+  margin-left: 1em;
+}
+
+.reveal .slides .subtitle {
+  color: $presentation-heading-color;
+  font-size: $presentation-h3-font-size;
+}
+
+.reveal p > a {
+  border-bottom: 1px dashed;
+}

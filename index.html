@@ -6,8 +6,10 @@
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.134">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
+<link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.2.150">
 
   <meta name="author" content="Etienne Bacher">
   <meta name="dcterms.date" content="2022-09-23">
@@ -403,10 +405,11 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">2022-09-23</p>
+  <p class="date">September 23, 2022</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
+<p><br></p>
 <div class="callout callout-important no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
@@ -420,7 +423,7 @@ Etienne Bacher
 <li><p>if yes, is there a package?</p>
 <ul>
 <li><p>if yes, use the package (e.g <code>guardian</code>, <code>WDI</code>)</p></li>
-<li><p>if no, build the API queries yourself with <code>{httr2}</code></p></li>
+<li><p>if no, build the API queries yourself with <code>httr</code></p></li>
 </ul></li>
 <li><p>if no, scrape (politely)</p></li>
 </ul>
@@ -443,8 +446,25 @@ Etienne Bacher
 </section>
 <section id="introduction-2" class="slide level2">
 <h2>Introduction</h2>
-<p><br> <br></p>
-<p>Here, we will focus on the first step: <strong>how to obtain the HTML code you need on dynamic pages?</strong></p>
+<p><br></p>
+<p>Why?</p>
+<p><br></p>
+<p>Webscraping takes time, and a lot of things can happen:</p>
+<ul>
+<li>your Internet connection goes down;</li>
+<li>the website goes down;</li>
+<li>any other random reason</li>
+</ul>
+<p><br></p>
+<p>If this happen and you didn’t save your progress, you lose everything.</p>
+<p>We don’t have plenty of time, but we have plenty of disk storage. Use it!</p>
+</section>
+<section id="introduction-3" class="slide level2">
+<h2>Introduction</h2>
+<p><br> <br> <br></p>
+<p>Here, we will focus mostly on <strong>how to obtain the HTML code you need on dynamic pages?</strong></p>
+<p><br></p>
+<p>(And a bit on how to clean this HTML)</p>
 </section>
 <section>
 <section id="static-and-dynamic-pages" class="title-slide slide level1 center">
@@ -453,7 +473,7 @@ Etienne Bacher
 </section>
 <section id="static-and-dynamic-pages-1" class="slide level2">
 <h2>Static and dynamic pages</h2>
-<p><br></p>
+<p><br><br></p>
 <p>The web works with 3 languages:</p>
 <div>
 <ul>
@@ -465,7 +485,7 @@ Etienne Bacher
 </section>
 <section id="static-and-dynamic-pages-2" class="slide level2">
 <h2>Static and dynamic pages</h2>
-<p><br></p>
+<p><br><br></p>
 <p>The web works with 3 languages:</p>
 <ul>
 <li><p>HTML: content and structure of the page</p></li>
@@ -475,12 +495,13 @@ Etienne Bacher
 </section>
 <section id="static-vs-dynamic" class="slide level2">
 <h2>Static vs dynamic</h2>
+<p><br></p>
 <p><strong>Static webpage</strong>:</p>
 <ul>
 <li>all the information is loaded with the page;</li>
 <li>changing a parameter modifies the URL</li>
 </ul>
-<p>Examples: Wikipedia, IMDB.</p>
+<p>Examples: <a href="https://en.wikipedia.org/wiki/Web_scraping">Wikipedia</a>, <a href="https://www.imdb.com/name/nm0001392/?ref_=nv_sr_srsg_0">IMDB</a>.</p>
 <p><br></p>
 <div class="fragment">
 <p><strong>Dynamic webpage</strong>: the website uses JavaScript to fetch data from their server and <em>dynamically</em> update the page.</p>
@@ -494,6 +515,7 @@ Etienne Bacher
 </section>
 <section class="slide level2">
 
+<p><br></p>
 <p>Webscraping a static website can be quite simple:</p>
 <ul>
 <li>you get a list of URLs;</li>
@@ -503,16 +525,18 @@ Etienne Bacher
 <p>and that’s it.</p>
 <p><br></p>
 <div class="fragment">
-<p>This is easy because you can differentiate two pages with different content just by looking at their URL.</p>
+<p>This is “easy” because you can differentiate two pages with different content just by looking at their URL.</p>
 </div>
 </section>
 <section class="slide level2">
 
-<p>Example:</p>
+<p>Example: elections results in Spain from the website of <a href="https://resultados.elpais.com/elecciones/2019/municipales/">El Pais</a></p>
+<p><img data-src="img/elpais1.png" style="width:60.0%"></p>
+<p><img data-src="img/elpais2.png" style="width:60.0%"></p>
 </section>
 <section class="slide level2">
 
-<p><br></p>
+<p><br> <br></p>
 <p>Of course, static webscraping can be challenging because we have to write good loops, good error handling, the HTML itself can be hard to clean, etc.</p>
 <div class="fragment">
 <p><br></p>
@@ -525,7 +549,7 @@ Etienne Bacher
 <p>So it seems that the only way to get the data is to go manually through all pages to get the HTML.</p>
 <p><br> <br></p>
 <div class="fragment">
-<p><em>350h and 3 RAs later…</em></p>
+<p><em>350h later…</em></p>
 </div>
 </section></section>
 <section>
@@ -557,6 +581,7 @@ Etienne Bacher
 </section>
 <section class="slide level2">
 
+<p><br></p>
 <p>Almost everything you can do “by hand” in a browser, you can reproduce with Selenium:</p>
 <div class="fragment">
 <div class="columns">
@@ -566,11 +591,6 @@ Etienne Bacher
 <li><p>click on something</p></li>
 <li><p>enter values</p></li>
 <li><p>go to previous/next page</p></li>
-</ul>
-<p style="margin-bottom: -1em">
-</p>
-<p><br></p>
-<ul>
 <li><p>refresh the page</p></li>
 <li><p>get all the HTML that is currently displayed</p></li>
 </ul>
@@ -596,6 +616,7 @@ Etienne Bacher
 </section>
 <section id="get-started-1" class="slide level2">
 <h2>Get started</h2>
+<p><br></p>
 <p>In the beginning there was <del>light</del> <code>rsDriver()</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># if not already installed</span></span>
@@ -606,13 +627,14 @@ Etienne Bacher
 <span id="cb3-6"><a href="#cb3-6"></a>remote_driver <span class="ot">&lt;-</span> driver[[<span class="st">"client"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
+<p><br></p>
 <p>This will print a bunch of messages and open a “marionette browser”.</p>
 <p><img data-src="img/marionette2.png"></p>
 </div>
 </section>
 <section id="get-started-2" class="slide level2">
 <h2>Get started</h2>
-<p>From now on, everything we do is calling <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
+<p>From now on, the main thing is to call <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
 <p><img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"></p>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Or whatever you called it in the previous step.</p></li></ol></aside></section></section>
 <section>
@@ -622,8 +644,10 @@ Etienne Bacher
 </section>
 <section id="exercise-1-1" class="slide level2">
 <h2>Exercise 1</h2>
+<p><br></p>
 <p><strong>Objective:</strong> get the list of core contributors to R located <a href="https://www.r-project.org/contributors.html">here</a>.</p>
 <div class="fragment">
+<p><br></p>
 <p>How would you do it by hand?</p>
 <ul>
 <li>open the browser;</li>
@@ -633,6 +657,7 @@ Etienne Bacher
 <p>and voilà!</p>
 </div>
 <div class="fragment">
+<p><br></p>
 <p>How can we do these steps programmatically?</p>
 </div>
 </section>
@@ -645,16 +670,21 @@ Etienne Bacher
 <img src="img/rproject.png" alt="drawing" style="width:75% !important; text-align: center !important" class="r-stretch"></section>
 <section id="click-on-contributors" class="slide level2">
 <h2>Click on “Contributors”</h2>
+<p><br></p>
 <p>This requires two things:</p>
 <ol type="1">
 <li>find the element</li>
 <li>click on it</li>
 </ol>
+<p><br></p>
 <p><strong>How to find an element?</strong></p>
 <ul>
 <li><p>Humans -&gt; eyes</p></li>
 <li><p>Computers -&gt; HTML/CSS</p></li>
 </ul>
+</section>
+<section class="slide level2">
+
 <p>To find the element, we need to open the console to see the structure of the page:</p>
 <ul>
 <li>right-click -&gt; “Inspect”</li>
@@ -671,10 +701,11 @@ Etienne Bacher
 <img data-src="img/console_2.png" class="r-stretch"></section>
 <section class="slide level2">
 
-<p>How can we find this with <code>RSelenium</code>?</p>
+<p>How can we find this link with <code>RSelenium</code>?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>?RSelenium<span class="sc">::</span>remoteDriver</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>?RSelenium<span class="sc">::</span><span class="fu">remoteDriver</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><br></p>
 <p>-&gt; <code>findElement</code></p>
 <div class="columns">
 <div class="column" style="width:45%;">
@@ -739,14 +770,14 @@ Etienne Bacher
 <img data-src="img/contributors.png" class="r-stretch"></section>
 <section class="slide level2">
 
-<p><br></p>
+<p><br><br></p>
 <p>Last step: obtain the HTML of the page.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div class="fragment">
-<p>To read it with <code>{rvest}</code>:</p>
+<p>To read it with the package <code>rvest</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>x <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
 <span id="cb8-2"><a href="#cb8-2"></a>rvest<span class="sc">::</span><span class="fu">read_html</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -755,8 +786,10 @@ Etienne Bacher
 </section>
 <section id="contributors-last-step" class="slide level2">
 <h2></h2>
+<p><br></p>
 <p>Do we read the HTML and extract the information in the same script?</p>
 <div class="fragment">
+<p><br></p>
 <p><strong>No!</strong></p>
 <p>Instead, we save the HTML in an external file, and we will be able to access it in another script (and offline) to manipulate it as we want.</p>
 <div class="cell">
@@ -775,6 +808,7 @@ Etienne Bacher
 </section>
 <section class="slide level2">
 
+<p><br></p>
 <p>The previous example was not a <em>dynamic</em> page: we could have used the link to the page and apply webscraping methods for static webpages.</p>
 <p><br></p>
 <div class="cell">
@@ -787,6 +821,7 @@ Etienne Bacher
 </section>
 <section id="before-using-rselenium" class="slide level2">
 <h2>Before using RSelenium</h2>
+<p><br></p>
 <p><em>Using RSelenium is slower than using “classic” scraping methods</em>, so it’s important to check all possibilities before using it.</p>
 <p><br></p>
 <div class="fragment">
@@ -811,9 +846,9 @@ Etienne Bacher
 <li>generalize and polish the code</li>
 </ol>
 </section>
-<section id="steps" class="slide level2">
-<h2>Steps</h2>
-<p><br></p>
+<section id="list-all-interactions" class="slide level2">
+<h2>List all interactions</h2>
+<p><br><br></p>
 <ol type="1">
 <li>Open the website</li>
 <li>Enter “PORTUGUESA” in the input box</li>
@@ -968,7 +1003,7 @@ Etienne Bacher
 </section>
 <section id="problem" class="slide level2">
 <h2>Problem</h2>
-<p><br></p>
+<p><br><br></p>
 <p>We got the content of the first modal, that’s great!</p>
 <p><br></p>
 <p>Now we just need to replicate this for the other modals of the page.</p>
@@ -991,6 +1026,7 @@ Etienne Bacher
 </section>
 <section id="solution" class="slide level2">
 <h2>Solution</h2>
+<p><br></p>
 <p>Use <code>findElements()</code> (and not <code>findElement()</code>).</p>
 <p><br></p>
 <p>This returns a list of elements, and we can then apply some function on each of them in a loop:</p>
@@ -1049,6 +1085,7 @@ Etienne Bacher
 <li>go to the next page</li>
 </ul>
 <div class="fragment">
+<p><br></p>
 <p>Next step: compile all of this and make nested loops!</p>
 </div>
 </section>
@@ -1060,120 +1097,115 @@ Etienne Bacher
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb20-1" class="hljs-ln-code"><a href="#cb20-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
 <span id="cb20-2" class="hljs-ln-code"><a href="#cb20-2"></a>  </span>
-<span id="cb20-3" class="hljs-ln-code"><a href="#cb20-3"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb20-4" class="hljs-ln-code"><a href="#cb20-4"></a>    <span class="co"># open modal</span></span>
-<span id="cb20-5" class="hljs-ln-code"><a href="#cb20-5"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb20-6" class="hljs-ln-code"><a href="#cb20-6"></a>    <span class="co"># leave modal</span></span>
-<span id="cb20-7" class="hljs-ln-code"><a href="#cb20-7"></a>  }</span>
-<span id="cb20-8" class="hljs-ln-code"><a href="#cb20-8"></a>  </span>
-<span id="cb20-9" class="hljs-ln-code"><a href="#cb20-9"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
-<span id="cb20-10" class="hljs-ln-code"><a href="#cb20-10"></a>  <span class="co"># if we're on the last page)</span></span>
-<span id="cb20-11" class="hljs-ln-code"><a href="#cb20-11"></a>  </span>
-<span id="cb20-12" class="hljs-ln-code"><a href="#cb20-12"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-3" class="hljs-ln-code"><a href="#cb20-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb20-4" class="hljs-ln-code"><a href="#cb20-4"></a>  </span>
+<span id="cb20-5" class="hljs-ln-code"><a href="#cb20-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb20-6" class="hljs-ln-code"><a href="#cb20-6"></a>    <span class="co"># open modal</span></span>
+<span id="cb20-7" class="hljs-ln-code"><a href="#cb20-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb20-8" class="hljs-ln-code"><a href="#cb20-8"></a>    <span class="co"># leave modal</span></span>
+<span id="cb20-9" class="hljs-ln-code"><a href="#cb20-9"></a>  }</span>
+<span id="cb20-10" class="hljs-ln-code"><a href="#cb20-10"></a>  </span>
+<span id="cb20-11" class="hljs-ln-code"><a href="#cb20-11"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
+<span id="cb20-12" class="hljs-ln-code"><a href="#cb20-12"></a>  <span class="co"># if we're on the last page)</span></span>
+<span id="cb20-13" class="hljs-ln-code"><a href="#cb20-13"></a>  </span>
+<span id="cb20-14" class="hljs-ln-code"><a href="#cb20-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="section-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
-<p>Make the “modal loop”:</p>
-<div class="sourceCode" id="cb21" data-code-line-numbers="3-18"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb21-1" class="hljs-ln-code"><a href="#cb21-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<p>Pseudo-code:</p>
+<div class="sourceCode" id="cb21" data-code-line-numbers="3-5"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb21-1" class="hljs-ln-code"><a href="#cb21-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
 <span id="cb21-2" class="hljs-ln-code"><a href="#cb21-2"></a>  </span>
-<span id="cb21-3" class="hljs-ln-code"><a href="#cb21-3"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb21-4" class="hljs-ln-code"><a href="#cb21-4"></a>    <span class="co"># open modal</span></span>
-<span id="cb21-5" class="hljs-ln-code"><a href="#cb21-5"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb21-6" class="hljs-ln-code"><a href="#cb21-6"></a></span>
-<span id="cb21-7" class="hljs-ln-code"><a href="#cb21-7"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb21-8" class="hljs-ln-code"><a href="#cb21-8"></a></span>
-<span id="cb21-9" class="hljs-ln-code"><a href="#cb21-9"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb21-10" class="hljs-ln-code"><a href="#cb21-10"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb21-11" class="hljs-ln-code"><a href="#cb21-11"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb21-12" class="hljs-ln-code"><a href="#cb21-12"></a></span>
-<span id="cb21-13" class="hljs-ln-code"><a href="#cb21-13"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb21-14" class="hljs-ln-code"><a href="#cb21-14"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb21-15" class="hljs-ln-code"><a href="#cb21-15"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb21-16" class="hljs-ln-code"><a href="#cb21-16"></a></span>
-<span id="cb21-17" class="hljs-ln-code"><a href="#cb21-17"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb21-18" class="hljs-ln-code"><a href="#cb21-18"></a>  }</span>
-<span id="cb21-19" class="hljs-ln-code"><a href="#cb21-19"></a>  </span>
-<span id="cb21-20" class="hljs-ln-code"><a href="#cb21-20"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
-<span id="cb21-21" class="hljs-ln-code"><a href="#cb21-21"></a>  <span class="co"># if we're on the last page)</span></span>
-<span id="cb21-22" class="hljs-ln-code"><a href="#cb21-22"></a>  </span>
-<span id="cb21-23" class="hljs-ln-code"><a href="#cb21-23"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-3" class="hljs-ln-code"><a href="#cb21-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb21-4" class="hljs-ln-code"><a href="#cb21-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb21-5" class="hljs-ln-code"><a href="#cb21-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb21-6" class="hljs-ln-code"><a href="#cb21-6"></a>  </span>
+<span id="cb21-7" class="hljs-ln-code"><a href="#cb21-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb21-8" class="hljs-ln-code"><a href="#cb21-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb21-9" class="hljs-ln-code"><a href="#cb21-9"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb21-10" class="hljs-ln-code"><a href="#cb21-10"></a>    <span class="co"># leave modal</span></span>
+<span id="cb21-11" class="hljs-ln-code"><a href="#cb21-11"></a>  }</span>
+<span id="cb21-12" class="hljs-ln-code"><a href="#cb21-12"></a>  </span>
+<span id="cb21-13" class="hljs-ln-code"><a href="#cb21-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
+<span id="cb21-14" class="hljs-ln-code"><a href="#cb21-14"></a>  <span class="co"># if we're on the last page)</span></span>
+<span id="cb21-15" class="hljs-ln-code"><a href="#cb21-15"></a>  </span>
+<span id="cb21-16" class="hljs-ln-code"><a href="#cb21-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="section-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
-<p>Make the “page loop”:</p>
-<div class="sourceCode" id="cb22" data-code-line-numbers="20-28"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb22-1" class="hljs-ln-code"><a href="#cb22-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb22-2" class="hljs-ln-code"><a href="#cb22-2"></a>  </span>
-<span id="cb22-3" class="hljs-ln-code"><a href="#cb22-3"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb22-4" class="hljs-ln-code"><a href="#cb22-4"></a>    <span class="co"># open modal</span></span>
-<span id="cb22-5" class="hljs-ln-code"><a href="#cb22-5"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb22-6" class="hljs-ln-code"><a href="#cb22-6"></a></span>
-<span id="cb22-7" class="hljs-ln-code"><a href="#cb22-7"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb22-8" class="hljs-ln-code"><a href="#cb22-8"></a></span>
-<span id="cb22-9" class="hljs-ln-code"><a href="#cb22-9"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb22-10" class="hljs-ln-code"><a href="#cb22-10"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb22-11" class="hljs-ln-code"><a href="#cb22-11"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
-<span id="cb22-12" class="hljs-ln-code"><a href="#cb22-12"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb22-13" class="hljs-ln-code"><a href="#cb22-13"></a></span>
-<span id="cb22-14" class="hljs-ln-code"><a href="#cb22-14"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb22-15" class="hljs-ln-code"><a href="#cb22-15"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb22-16" class="hljs-ln-code"><a href="#cb22-16"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb22-17" class="hljs-ln-code"><a href="#cb22-17"></a></span>
-<span id="cb22-18" class="hljs-ln-code"><a href="#cb22-18"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb22-19" class="hljs-ln-code"><a href="#cb22-19"></a>  }</span>
-<span id="cb22-20" class="hljs-ln-code"><a href="#cb22-20"></a>  </span>
-<span id="cb22-21" class="hljs-ln-code"><a href="#cb22-21"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb22-22" class="hljs-ln-code"><a href="#cb22-22"></a>  <span class="co"># the last one)</span></span>
-<span id="cb22-23" class="hljs-ln-code"><a href="#cb22-23"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb22-24" class="hljs-ln-code"><a href="#cb22-24"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb22-25" class="hljs-ln-code"><a href="#cb22-25"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb22-26" class="hljs-ln-code"><a href="#cb22-26"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb22-27" class="hljs-ln-code"><a href="#cb22-27"></a></span>
-<span id="cb22-28" class="hljs-ln-code"><a href="#cb22-28"></a>    <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
-<span id="cb22-29" class="hljs-ln-code"><a href="#cb22-29"></a>  }</span>
-<span id="cb22-30" class="hljs-ln-code"><a href="#cb22-30"></a>  </span>
-<span id="cb22-31" class="hljs-ln-code"><a href="#cb22-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Make the “modal loop”:</p>
+<div class="sourceCode" id="cb22" data-code-line-numbers="7-22"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb22-1" class="hljs-ln-code"><a href="#cb22-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb22-2" class="hljs-ln-code"><a href="#cb22-2"></a></span>
+<span id="cb22-3" class="hljs-ln-code"><a href="#cb22-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb22-4" class="hljs-ln-code"><a href="#cb22-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb22-5" class="hljs-ln-code"><a href="#cb22-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb22-6" class="hljs-ln-code"><a href="#cb22-6"></a>  </span>
+<span id="cb22-7" class="hljs-ln-code"><a href="#cb22-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb22-8" class="hljs-ln-code"><a href="#cb22-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb22-9" class="hljs-ln-code"><a href="#cb22-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb22-10" class="hljs-ln-code"><a href="#cb22-10"></a></span>
+<span id="cb22-11" class="hljs-ln-code"><a href="#cb22-11"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb22-12" class="hljs-ln-code"><a href="#cb22-12"></a></span>
+<span id="cb22-13" class="hljs-ln-code"><a href="#cb22-13"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb22-14" class="hljs-ln-code"><a href="#cb22-14"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb22-15" class="hljs-ln-code"><a href="#cb22-15"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb22-16" class="hljs-ln-code"><a href="#cb22-16"></a></span>
+<span id="cb22-17" class="hljs-ln-code"><a href="#cb22-17"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb22-18" class="hljs-ln-code"><a href="#cb22-18"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
+<span id="cb22-19" class="hljs-ln-code"><a href="#cb22-19"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb22-20" class="hljs-ln-code"><a href="#cb22-20"></a></span>
+<span id="cb22-21" class="hljs-ln-code"><a href="#cb22-21"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb22-22" class="hljs-ln-code"><a href="#cb22-22"></a>  }</span>
+<span id="cb22-23" class="hljs-ln-code"><a href="#cb22-23"></a>  </span>
+<span id="cb22-24" class="hljs-ln-code"><a href="#cb22-24"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
+<span id="cb22-25" class="hljs-ln-code"><a href="#cb22-25"></a>  <span class="co"># if we're on the last page)</span></span>
+<span id="cb22-26" class="hljs-ln-code"><a href="#cb22-26"></a>  </span>
+<span id="cb22-27" class="hljs-ln-code"><a href="#cb22-27"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="section-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
-<p>Add some messages:</p>
-<div class="sourceCode" id="cb23" data-code-line-numbers="20-28"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb23-1" class="hljs-ln-code"><a href="#cb23-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<p>Make the “page loop”:</p>
+<div class="sourceCode" id="cb23" data-code-line-numbers="25-33"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb23-1" class="hljs-ln-code"><a href="#cb23-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
 <span id="cb23-2" class="hljs-ln-code"><a href="#cb23-2"></a>  </span>
-<span id="cb23-3" class="hljs-ln-code"><a href="#cb23-3"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb23-4" class="hljs-ln-code"><a href="#cb23-4"></a>    <span class="co"># open modal</span></span>
-<span id="cb23-5" class="hljs-ln-code"><a href="#cb23-5"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb23-6" class="hljs-ln-code"><a href="#cb23-6"></a></span>
-<span id="cb23-7" class="hljs-ln-code"><a href="#cb23-7"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb23-8" class="hljs-ln-code"><a href="#cb23-8"></a></span>
-<span id="cb23-9" class="hljs-ln-code"><a href="#cb23-9"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb23-10" class="hljs-ln-code"><a href="#cb23-10"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb23-11" class="hljs-ln-code"><a href="#cb23-11"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
-<span id="cb23-12" class="hljs-ln-code"><a href="#cb23-12"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb23-13" class="hljs-ln-code"><a href="#cb23-13"></a></span>
-<span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb23-15" class="hljs-ln-code"><a href="#cb23-15"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb23-16" class="hljs-ln-code"><a href="#cb23-16"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb23-3" class="hljs-ln-code"><a href="#cb23-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb23-4" class="hljs-ln-code"><a href="#cb23-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb23-5" class="hljs-ln-code"><a href="#cb23-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb23-6" class="hljs-ln-code"><a href="#cb23-6"></a>    </span>
+<span id="cb23-7" class="hljs-ln-code"><a href="#cb23-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb23-8" class="hljs-ln-code"><a href="#cb23-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb23-9" class="hljs-ln-code"><a href="#cb23-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb23-10" class="hljs-ln-code"><a href="#cb23-10"></a></span>
+<span id="cb23-11" class="hljs-ln-code"><a href="#cb23-11"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb23-12" class="hljs-ln-code"><a href="#cb23-12"></a></span>
+<span id="cb23-13" class="hljs-ln-code"><a href="#cb23-13"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb23-15" class="hljs-ln-code"><a href="#cb23-15"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
+<span id="cb23-16" class="hljs-ln-code"><a href="#cb23-16"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
 <span id="cb23-17" class="hljs-ln-code"><a href="#cb23-17"></a></span>
-<span id="cb23-18" class="hljs-ln-code"><a href="#cb23-18"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb23-19" class="hljs-ln-code"><a href="#cb23-19"></a>  }</span>
-<span id="cb23-20" class="hljs-ln-code"><a href="#cb23-20"></a>  </span>
-<span id="cb23-21" class="hljs-ln-code"><a href="#cb23-21"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb23-22" class="hljs-ln-code"><a href="#cb23-22"></a>  <span class="co"># the last one)</span></span>
-<span id="cb23-23" class="hljs-ln-code"><a href="#cb23-23"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb23-24" class="hljs-ln-code"><a href="#cb23-24"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb23-25" class="hljs-ln-code"><a href="#cb23-25"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb23-26" class="hljs-ln-code"><a href="#cb23-26"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb23-27" class="hljs-ln-code"><a href="#cb23-27"></a></span>
-<span id="cb23-28" class="hljs-ln-code"><a href="#cb23-28"></a>    <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
-<span id="cb23-29" class="hljs-ln-code"><a href="#cb23-29"></a>  }</span>
-<span id="cb23-30" class="hljs-ln-code"><a href="#cb23-30"></a>  </span>
-<span id="cb23-31" class="hljs-ln-code"><a href="#cb23-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-18" class="hljs-ln-code"><a href="#cb23-18"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb23-19" class="hljs-ln-code"><a href="#cb23-19"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
+<span id="cb23-20" class="hljs-ln-code"><a href="#cb23-20"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb23-21" class="hljs-ln-code"><a href="#cb23-21"></a></span>
+<span id="cb23-22" class="hljs-ln-code"><a href="#cb23-22"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb23-23" class="hljs-ln-code"><a href="#cb23-23"></a>  }</span>
+<span id="cb23-24" class="hljs-ln-code"><a href="#cb23-24"></a>  </span>
+<span id="cb23-25" class="hljs-ln-code"><a href="#cb23-25"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
+<span id="cb23-26" class="hljs-ln-code"><a href="#cb23-26"></a>  <span class="co"># the last one)</span></span>
+<span id="cb23-27" class="hljs-ln-code"><a href="#cb23-27"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb23-28" class="hljs-ln-code"><a href="#cb23-28"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb23-29" class="hljs-ln-code"><a href="#cb23-29"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb23-30" class="hljs-ln-code"><a href="#cb23-30"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb23-31" class="hljs-ln-code"><a href="#cb23-31"></a></span>
+<span id="cb23-32" class="hljs-ln-code"><a href="#cb23-32"></a>    <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb23-33" class="hljs-ln-code"><a href="#cb23-33"></a>  }</span>
+<span id="cb23-34" class="hljs-ln-code"><a href="#cb23-34"></a>  </span>
+<span id="cb23-35" class="hljs-ln-code"><a href="#cb23-35"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section></section>
 <section>
 <section id="error-handling" class="title-slide slide level1 center">
@@ -1183,10 +1215,19 @@ Etienne Bacher
 <section id="loading-times" class="slide level2">
 <h2>Loading times</h2>
 <p><br></p>
-<p>After clicking on “Pesquisar”, there’s a small loading time so <strong>we need to wait</strong> before running the rest of the script.</p>
+<p>There are a few places where we need to wait a bit:</p>
+<ul>
+<li>after clicking on “Pesquisar”</li>
+<li>after clicking on “Ver Mais”</li>
+<li>when we go to the next page</li>
+</ul>
 <div class="fragment">
 <p><br></p>
-<p>Our best friend in webscraping is <code>Sys.sleep()</code>.</p>
+<p>We must put some pauses between <code>RSelenium</code> actions. Otherwise it will error, e.g if we try to click on a button that was loaded on the page yet.</p>
+</div>
+<div class="fragment">
+<p><br></p>
+<p><i class="fa-solid fa-thumbs-up" aria-hidden="true"></i> <code>Sys.sleep()</code></p>
 </div>
 </section>
 <section id="catching-errors" class="slide level2">
@@ -1194,7 +1235,9 @@ Etienne Bacher
 </section>
 <section id="display-and-save-information" class="slide level2">
 <h2>Display and save information</h2>
+<p><br></p>
 <p><strong>Webscraping takes time.</strong></p>
+<p><br></p>
 <p>It is important to show and save information on how the webscraping is going so that we know where it went wrong for debugging.</p>
 <p><br></p>
 <div class="fragment">
@@ -1211,36 +1254,36 @@ Etienne Bacher
 <p>Use <code>message()</code> at several places in the loop to display information:</p>
 <div class="sourceCode" id="cb24" data-code-line-numbers="3,10,16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
 <span id="cb24-2"><a href="#cb24-2"></a>  </span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
 <span id="cb24-4"><a href="#cb24-4"></a>   </span>
 <span id="cb24-5"><a href="#cb24-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
 <span id="cb24-6"><a href="#cb24-6"></a>    <span class="co"># open modal</span></span>
 <span id="cb24-7"><a href="#cb24-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
 <span id="cb24-8"><a href="#cb24-8"></a>    <span class="co"># leave modal</span></span>
 <span id="cb24-9"><a href="#cb24-9"></a>    </span>
-<span id="cb24-10"><a href="#cb24-10"></a>    <span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
+<span id="cb24-10"><a href="#cb24-10"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
 <span id="cb24-11"><a href="#cb24-11"></a>  }</span>
 <span id="cb24-12"><a href="#cb24-12"></a>  </span>
 <span id="cb24-13"><a href="#cb24-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
 <span id="cb24-14"><a href="#cb24-14"></a>  <span class="co"># if we're on the last page)</span></span>
 <span id="cb24-15"><a href="#cb24-15"></a>  </span>
-<span id="cb24-16"><a href="#cb24-16"></a>  <span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
+<span id="cb24-16"><a href="#cb24-16"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
 <span id="cb24-17"><a href="#cb24-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="save-information" class="slide level2">
 <h2>Save information</h2>
-<p><br></p>
+<p><br><br></p>
 <p>Problem: what if the R session crashes?</p>
 <p><br></p>
 <p>We lose all messages!</p>
 <p><br></p>
 <div class="fragment">
-<p>Solution: show these messages and save them in an external file at the same time.</p>
+<p>Solution: show these messages <strong>and</strong> save them in an external file at the same time.</p>
 </div>
 </section>
 <section id="save-information-1" class="slide level2">
 <h2>Save information</h2>
-<p>Example using the package <code>logger</code> (there is also <code>logging</code>, <code>futile.logger</code>, etc.):</p>
+<p>Example using the package <code>logger</code> (there are also <code>logging</code>, <code>futile.logger</code>, etc.):</p>
 <div class="sourceCode" id="cb25" data-code-line-numbers="1,2,3,7,14,20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># save calls to message() in an external file</span></span>
 <span id="cb25-2"><a href="#cb25-2"></a><span class="fu">log_appender</span>(<span class="fu">appender_file</span>(<span class="st">"data/modals/00_logfile"</span>))</span>
 <span id="cb25-3"><a href="#cb25-3"></a><span class="fu">log_messages</span>()</span>
@@ -1266,7 +1309,145 @@ Etienne Bacher
 <section id="save-information-2" class="slide level2">
 <h2>Save information</h2>
 <p>What does the output look like?</p>
-<p><img data-src="img/logfile_demo.png" width="500" height="500"></p>
+<p><img data-src="img/logfile_demo.png" width="600" height="600"></p>
+</section></section>
+<section>
+<section id="now-what" class="title-slide slide level1 center">
+<h1>Now what?</h1>
+
+</section>
+<section class="slide level2">
+
+<p><br> <br></p>
+<p>If everything went well, we now have a bunch of <code>.html</code> files in <code>data/modals</code>.</p>
+<p><br></p>
+<p>To clean them, we don’t need <code>RSelenium</code> or an internet connection. These are just text files, they are not “tied” to the website anymore.</p>
+<p><br></p>
+<p>It is also useful to keep them for reproducibility (same as when you keep the raw datasets in your project).</p>
+</section>
+<section class="slide level2">
+
+<p>Make a function to clean the HTML. It returns a list containing a dataframe with the personal info, and a dataframe with the “network” of the individual.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>extract_information <span class="ot">&lt;-</span> <span class="cf">function</span>(raw_html) {</span>
+<span id="cb26-2"><a href="#cb26-2"></a>  </span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="co"># Extract the table "Registros relacionados"</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>  </span>
+<span id="cb26-5"><a href="#cb26-5"></a>  content <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>    <span class="fu">html_nodes</span>(<span class="st">"#detalhe_conteudo"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="fu">html_table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a>    purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="dv">1</span>)</span>
+<span id="cb26-9"><a href="#cb26-9"></a>  </span>
+<span id="cb26-10"><a href="#cb26-10"></a>  relacionados <span class="ot">&lt;-</span> content[<span class="dv">16</span><span class="sc">:</span><span class="fu">nrow</span>(content),] <span class="sc">%&gt;%</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb26-12"><a href="#cb26-12"></a>      <span class="fu">across</span>(</span>
+<span id="cb26-13"><a href="#cb26-13"></a>        <span class="at">.cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb26-14"><a href="#cb26-14"></a>        <span class="at">.fns =</span> <span class="sc">~</span> {<span class="fu">ifelse</span>(.x <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, .x)}</span>
+<span id="cb26-15"><a href="#cb26-15"></a>      )</span>
+<span id="cb26-16"><a href="#cb26-16"></a>    )</span>
+<span id="cb26-17"><a href="#cb26-17"></a>  </span>
+<span id="cb26-18"><a href="#cb26-18"></a>  <span class="fu">colnames</span>(relacionados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Livro"</span>, <span class="st">"Pagina"</span>, <span class="st">"Familia"</span>, <span class="st">"Chegada"</span>,</span>
+<span id="cb26-19"><a href="#cb26-19"></a>                              <span class="st">"Sobrenome"</span>, <span class="st">"Nome"</span>, <span class="st">"Idade"</span>, <span class="st">"Sexo"</span>,</span>
+<span id="cb26-20"><a href="#cb26-20"></a>                              <span class="st">"Parentesco"</span>, <span class="st">"Nacionalidade"</span>,</span>
+<span id="cb26-21"><a href="#cb26-21"></a>                              <span class="st">"Vapor"</span>, <span class="st">"Est.Civil"</span>, <span class="st">"Religiao"</span>)</span>
+<span id="cb26-22"><a href="#cb26-22"></a>  </span>
+<span id="cb26-23"><a href="#cb26-23"></a>  </span>
+<span id="cb26-24"><a href="#cb26-24"></a>  <span class="co"># Extract text information from "registro de matricula" and create a</span></span>
+<span id="cb26-25"><a href="#cb26-25"></a>  <span class="co"># dataframe from it</span></span>
+<span id="cb26-26"><a href="#cb26-26"></a>  name_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb26-27"><a href="#cb26-27"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/strong'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-28"><a href="#cb26-28"></a>    <span class="fu">html_text2</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-29"><a href="#cb26-29"></a>    <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">""</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb26-30"><a href="#cb26-30"></a>    <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">t"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-31"><a href="#cb26-31"></a>    <span class="fu">unlist</span>()</span>
+<span id="cb26-32"><a href="#cb26-32"></a>  </span>
+<span id="cb26-33"><a href="#cb26-33"></a>  value_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb26-34"><a href="#cb26-34"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/div'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-35"><a href="#cb26-35"></a>    <span class="fu">html_text2</span>()</span>
+<span id="cb26-36"><a href="#cb26-36"></a>  </span>
+<span id="cb26-37"><a href="#cb26-37"></a>  registro <span class="ot">&lt;-</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb26-38"><a href="#cb26-38"></a>    <span class="fu">rbind</span>(value_items) <span class="sc">%&gt;%</span></span>
+<span id="cb26-39"><a href="#cb26-39"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb26-40"><a href="#cb26-40"></a>  </span>
+<span id="cb26-41"><a href="#cb26-41"></a>  <span class="fu">colnames</span>(registro) <span class="ot">&lt;-</span> name_items</span>
+<span id="cb26-42"><a href="#cb26-42"></a>  </span>
+<span id="cb26-43"><a href="#cb26-43"></a>  <span class="fu">return</span>(</span>
+<span id="cb26-44"><a href="#cb26-44"></a>    <span class="fu">list</span>(</span>
+<span id="cb26-45"><a href="#cb26-45"></a>      <span class="at">main =</span> registro,</span>
+<span id="cb26-46"><a href="#cb26-46"></a>      <span class="at">related =</span> relacionados</span>
+<span id="cb26-47"><a href="#cb26-47"></a>    )</span>
+<span id="cb26-48"><a href="#cb26-48"></a>  )</span>
+<span id="cb26-49"><a href="#cb26-49"></a>  </span>
+<span id="cb26-50"><a href="#cb26-50"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section class="slide level2">
+
+<p>Apply this function to all files:</p>
+<p><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Get all paths to the html files</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>list_html_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/modals"</span>, <span class="at">pattern =</span> <span class="st">"page"</span>,</span>
+<span id="cb27-3"><a href="#cb27-3"></a>                              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co"># Apply the previous function to each of those file</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>list_out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(list_html_files, <span class="cf">function</span>(x) {</span>
+<span id="cb27-7"><a href="#cb27-7"></a>  <span class="fu">read_html</span>(x) <span class="sc">|&gt;</span> </span>
+<span id="cb27-8"><a href="#cb27-8"></a>    <span class="fu">extract_information</span>() </span>
+<span id="cb27-9"><a href="#cb27-9"></a>})</span>
+<span id="cb27-10"><a href="#cb27-10"></a></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co"># Aggregate the results in two (single) datasets</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>main <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb27-13"><a href="#cb27-13"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb27-14"><a href="#cb27-14"></a></span>
+<span id="cb27-15"><a href="#cb27-15"></a>relations <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb27-16"><a href="#cb27-16"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section class="slide level2">
+
+<p><br></p>
+<ol type="1">
+<li><code>Selenium</code> in general is a very useful tool but should be used in last resort:</li>
+</ol>
+<ul>
+<li>APIs, packages</li>
+<li>static webscraping</li>
+<li>custom <code>POST</code> requests</li>
+</ul>
+<div class="fragment">
+<ol start="2" type="1">
+<li>In my (limited) experience:</li>
+</ol>
+<ul>
+<li>1/4 of the time is spent on making a small example work;</li>
+<li>1/4 of the time is spent on generalising this example (loops, etc.)</li>
+<li><strong>1/2</strong> of the time is spent on debugging.</li>
+</ul>
+<p><br></p>
+</div>
+<div class="fragment">
+<p><strong><em>Catching errors and recording the scraping process IS important.</em></strong></p>
+</div>
+</section>
+<section id="ethics" class="slide level2">
+<h2>Ethics</h2>
+<p><br></p>
+<p>Pay attention to a website’s Terms of Use/Service.</p>
+<p><br></p>
+<p>Some websites explicitely say that you are not allowed to programmatically access their resources.</p>
+</section>
+<section id="final-script" class="slide level2">
+<h2>Final script</h2>
+<p>Also available on <a href="">Github</a>:</p>
+<div class="cell">
+
+</div>
 </section></section>
 <section id="thanks" class="title-slide slide level1 center">
 <h1>Thanks!</h1>
@@ -1283,31 +1464,31 @@ Etienne Bacher
 <h2>Appendix</h2>
 <p>For reference, here’s the code to extract the list of contributors:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb26-2"><a href="#cb26-2"></a></span>
-<span id="cb26-3"><a href="#cb26-3"></a>html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"contributors.html"</span>) </span>
-<span id="cb26-4"><a href="#cb26-4"></a></span>
-<span id="cb26-5"><a href="#cb26-5"></a>bullet_points <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb26-6"><a href="#cb26-6"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12 &gt; ul &gt; li"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-7"><a href="#cb26-7"></a>  <span class="fu">html_text</span>()</span>
-<span id="cb26-8"><a href="#cb26-8"></a></span>
-<span id="cb26-9"><a href="#cb26-9"></a>blockquote <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb26-10"><a href="#cb26-10"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12.col-sm-7 &gt; blockquote"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-11"><a href="#cb26-11"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb26-12"><a href="#cb26-12"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
-<span id="cb26-13"><a href="#cb26-13"></a></span>
-<span id="cb26-14"><a href="#cb26-14"></a>blockquote <span class="ot">&lt;-</span> blockquote[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb26-15"><a href="#cb26-15"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
-<span id="cb26-16"><a href="#cb26-16"></a></span>
-<span id="cb26-17"><a href="#cb26-17"></a>others <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb26-18"><a href="#cb26-18"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">"/html/body/div/div[1]/div[2]/p[5]"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-19"><a href="#cb26-19"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb26-20"><a href="#cb26-20"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
-<span id="cb26-21"><a href="#cb26-21"></a></span>
-<span id="cb26-22"><a href="#cb26-22"></a>others <span class="ot">&lt;-</span> others[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb26-23"><a href="#cb26-23"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
-<span id="cb26-24"><a href="#cb26-24"></a></span>
-<span id="cb26-25"><a href="#cb26-25"></a>all_contributors <span class="ot">&lt;-</span> <span class="fu">c</span>(bullet_points, blockquote, others)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb28-2"><a href="#cb28-2"></a></span>
+<span id="cb28-3"><a href="#cb28-3"></a>html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"contributors.html"</span>) </span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a>bullet_points <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb28-6"><a href="#cb28-6"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12 &gt; ul &gt; li"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-7"><a href="#cb28-7"></a>  <span class="fu">html_text</span>()</span>
+<span id="cb28-8"><a href="#cb28-8"></a></span>
+<span id="cb28-9"><a href="#cb28-9"></a>blockquote <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb28-10"><a href="#cb28-10"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12.col-sm-7 &gt; blockquote"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-11"><a href="#cb28-11"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-12"><a href="#cb28-12"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
+<span id="cb28-13"><a href="#cb28-13"></a></span>
+<span id="cb28-14"><a href="#cb28-14"></a>blockquote <span class="ot">&lt;-</span> blockquote[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb28-15"><a href="#cb28-15"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
+<span id="cb28-16"><a href="#cb28-16"></a></span>
+<span id="cb28-17"><a href="#cb28-17"></a>others <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb28-18"><a href="#cb28-18"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">"/html/body/div/div[1]/div[2]/p[5]"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-19"><a href="#cb28-19"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-20"><a href="#cb28-20"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
+<span id="cb28-21"><a href="#cb28-21"></a></span>
+<span id="cb28-22"><a href="#cb28-22"></a>others <span class="ot">&lt;-</span> others[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb28-23"><a href="#cb28-23"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
+<span id="cb28-24"><a href="#cb28-24"></a></span>
+<span id="cb28-25"><a href="#cb28-25"></a>all_contributors <span class="ot">&lt;-</span> <span class="fu">c</span>(bullet_points, blockquote, others)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="appendix-1" class="slide level2">
@@ -1399,39 +1580,39 @@ Etienne Bacher
 <h2 data-id="quarto-animate-title">Appendix</h2>
 <p>Let’s rebuild this <code>POST</code> request from R using the package <code>httr</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb28-1" class="hljs-ln-code"><a href="#cb28-1"></a><span class="fu">library</span>(httr)</span>
-<span id="cb28-2" class="hljs-ln-code"><a href="#cb28-2"></a></span>
-<span id="cb28-3" class="hljs-ln-code"><a href="#cb28-3"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
-<span id="cb28-4" class="hljs-ln-code"><a href="#cb28-4"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
-<span id="cb28-5" class="hljs-ln-code"><a href="#cb28-5"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
-<span id="cb28-6" class="hljs-ln-code"><a href="#cb28-6"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
-<span id="cb28-7" class="hljs-ln-code"><a href="#cb28-7"></a>  ),</span>
-<span id="cb28-8" class="hljs-ln-code"><a href="#cb28-8"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
-<span id="cb28-9" class="hljs-ln-code"><a href="#cb28-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb30-1" class="hljs-ln-code"><a href="#cb30-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb30-2" class="hljs-ln-code"><a href="#cb30-2"></a></span>
+<span id="cb30-3" class="hljs-ln-code"><a href="#cb30-3"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
+<span id="cb30-4" class="hljs-ln-code"><a href="#cb30-4"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
+<span id="cb30-5" class="hljs-ln-code"><a href="#cb30-5"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
+<span id="cb30-6" class="hljs-ln-code"><a href="#cb30-6"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
+<span id="cb30-7" class="hljs-ln-code"><a href="#cb30-7"></a>  ),</span>
+<span id="cb30-8" class="hljs-ln-code"><a href="#cb30-8"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
+<span id="cb30-9" class="hljs-ln-code"><a href="#cb30-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="appendix-6" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Appendix</h2>
 <p>Extract the data from the server response:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb29-1" class="hljs-ln-code"><a href="#cb29-1"></a><span class="fu">library</span>(httr)</span>
-<span id="cb29-2" class="hljs-ln-code"><a href="#cb29-2"></a><span class="fu">library</span>(xml2)</span>
-<span id="cb29-3" class="hljs-ln-code"><a href="#cb29-3"></a><span class="fu">library</span>(jsonlite)</span>
-<span id="cb29-4" class="hljs-ln-code"><a href="#cb29-4"></a></span>
-<span id="cb29-5" class="hljs-ln-code"><a href="#cb29-5"></a><span class="co"># make the POST request with the parameters needed</span></span>
-<span id="cb29-6" class="hljs-ln-code"><a href="#cb29-6"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
-<span id="cb29-7" class="hljs-ln-code"><a href="#cb29-7"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
-<span id="cb29-8" class="hljs-ln-code"><a href="#cb29-8"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
-<span id="cb29-9" class="hljs-ln-code"><a href="#cb29-9"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
-<span id="cb29-10" class="hljs-ln-code"><a href="#cb29-10"></a>  ),</span>
-<span id="cb29-11" class="hljs-ln-code"><a href="#cb29-11"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
-<span id="cb29-12" class="hljs-ln-code"><a href="#cb29-12"></a>)</span>
-<span id="cb29-13" class="hljs-ln-code"><a href="#cb29-13"></a></span>
-<span id="cb29-14" class="hljs-ln-code"><a href="#cb29-14"></a><span class="co"># convert output to a list</span></span>
-<span id="cb29-15" class="hljs-ln-code"><a href="#cb29-15"></a>out <span class="ot">&lt;-</span> <span class="fu">as_list</span>(<span class="fu">content</span>(x))</span>
-<span id="cb29-16" class="hljs-ln-code"><a href="#cb29-16"></a></span>
-<span id="cb29-17" class="hljs-ln-code"><a href="#cb29-17"></a><span class="co"># convert output to a dataframe</span></span>
-<span id="cb29-18" class="hljs-ln-code"><a href="#cb29-18"></a><span class="fu">fromJSON</span>(<span class="fu">unlist</span>(out))<span class="sc">$</span>dados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb31-1" class="hljs-ln-code"><a href="#cb31-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb31-2" class="hljs-ln-code"><a href="#cb31-2"></a><span class="fu">library</span>(xml2)</span>
+<span id="cb31-3" class="hljs-ln-code"><a href="#cb31-3"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb31-4" class="hljs-ln-code"><a href="#cb31-4"></a></span>
+<span id="cb31-5" class="hljs-ln-code"><a href="#cb31-5"></a><span class="co"># make the POST request with the parameters needed</span></span>
+<span id="cb31-6" class="hljs-ln-code"><a href="#cb31-6"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
+<span id="cb31-7" class="hljs-ln-code"><a href="#cb31-7"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
+<span id="cb31-8" class="hljs-ln-code"><a href="#cb31-8"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
+<span id="cb31-9" class="hljs-ln-code"><a href="#cb31-9"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
+<span id="cb31-10" class="hljs-ln-code"><a href="#cb31-10"></a>  ),</span>
+<span id="cb31-11" class="hljs-ln-code"><a href="#cb31-11"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
+<span id="cb31-12" class="hljs-ln-code"><a href="#cb31-12"></a>)</span>
+<span id="cb31-13" class="hljs-ln-code"><a href="#cb31-13"></a></span>
+<span id="cb31-14" class="hljs-ln-code"><a href="#cb31-14"></a><span class="co"># convert output to a list</span></span>
+<span id="cb31-15" class="hljs-ln-code"><a href="#cb31-15"></a>out <span class="ot">&lt;-</span> <span class="fu">as_list</span>(<span class="fu">content</span>(x))</span>
+<span id="cb31-16" class="hljs-ln-code"><a href="#cb31-16"></a></span>
+<span id="cb31-17" class="hljs-ln-code"><a href="#cb31-17"></a><span class="co"># convert output to a dataframe</span></span>
+<span id="cb31-18" class="hljs-ln-code"><a href="#cb31-18"></a><span class="fu">fromJSON</span>(<span class="fu">unlist</span>(out))<span class="sc">$</span>dados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="your-turn" class="slide level2">
@@ -1734,7 +1915,24 @@ Etienne Bacher
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1772,24 +1970,42 @@ Etienne Bacher
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>
