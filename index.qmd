@@ -12,6 +12,7 @@ format:
    pdf-separate-fragments: true
    preview-links: true
    strip-comments: true
+   highlight-style: atom-one
    
 execute:
   eval: false
@@ -43,8 +44,6 @@ Before scraping: is there an API?
 
 <!-- https://talks.andrewheiss.com/2022-seacen/presentation/#/general-principles -->
 
-------------
-
 ## Introduction
 
 <br>
@@ -63,7 +62,6 @@ Scraping can be divided in two steps:
 These 2 steps don't necessarily require the same tools, and *shouldn't
 be made at the same time*.
 
-------------
 
 ## Introduction
 
@@ -72,9 +70,7 @@ be made at the same time*.
 Here, we will focus on the first step: **how to obtain the HTML code you
 need on dynamic pages?**
 
-# Static and dynamic pages {.center}
-
-------------
+# Static and dynamic pages 
 
 ## Static and dynamic pages
 
@@ -88,7 +84,6 @@ The web works with 3 languages:
 -   JavaScript: interactions with the page
 :::
 
-------------
 
 ## Static and dynamic pages
 
@@ -102,7 +97,6 @@ The web works with 3 languages:
 
 -   [**JavaScript**: interactions with the page]{style="color: beige;"}
 
-------------
 
 ## Static vs dynamic
 
@@ -173,8 +167,6 @@ all pages to get the HTML.
 *350h and 3 RAs later...*
 
 # (R)Selenium
-
-------------
 
 ## Idea
 
@@ -249,8 +241,6 @@ with Selenium:
 
 # Get started
 
-------------
-
 ## Get started
 
 In the beginning there was ~~light~~ `rsDriver()`:
@@ -270,7 +260,6 @@ This will print a bunch of messages and open a "marionette browser".
 
 ![](img/marionette2.png)
 
-------------
 
 ## Get started
 
@@ -283,7 +272,6 @@ From now on, everything we do is calling `<function>()` starting with
 
 # Exercise 1
 
-------------
 
 ## Exercise 1
 
@@ -304,7 +292,6 @@ and voilà!
 
 How can we do these steps programmatically?
 
-------------
 
 ## Open the browser and navigate
 
@@ -315,7 +302,6 @@ remote_driver$navigate("https://r-project.org")
 <img src="img/rproject.png" alt="drawing" style="width:75% !important; text-align: center !important"/>
 
 
-------------
 
 ## Click on "Contributors"
 
@@ -330,7 +316,6 @@ This requires two things:
 
 -   Computers -\> HTML/CSS
 
-------------
 
 To find the element, we need to open the console to see the structure of
 the page:
@@ -433,7 +418,6 @@ x <- remote_driver$getPageSource()[[1]]
 rvest::read_html(x)
 ```
 
-------------
 
 ##  {#contributors-last-step}
 
@@ -478,7 +462,6 @@ rvest::read_html("https://www.r-project.org/contributors.html")
 Let's now dive into a more complex example, where RSelenium is the only
 way to obtain the data.
 
-------------
 
 ## Before using RSelenium
 
@@ -500,8 +483,6 @@ Use Selenium if:
     console and you can't reproduce the `POST` request.
 
 
-------------
-
 ## Example: Sao Paulo immigration museum
 
 <br>
@@ -518,7 +499,6 @@ Steps:
 1. generalize and polish the code
 
 
-------------
 
 ## Steps
 
@@ -530,7 +510,6 @@ Steps:
 1. Open every modal "Ver Mais"
 
 
-------------
 
 ## Check that we need Selenium
 
@@ -560,7 +539,6 @@ anyway).
 :::
 
 
-------------
 
 ## Make an example {auto-animate="true"}
 
@@ -689,12 +667,264 @@ x <- remote_driver$getPageSource()
 ```
 
 
-------------
+## Problem
 
-## Error handling
+<br>
+
+We got the content of the first modal, that's great!
+
+<br>
+
+Now we just need to replicate this for the other modals of the page.
+
+<br>
+
+. . .
+
+**How can we distinguish one button "Ver Mais" from another?**
 
 
-------------
+## Problem
+
+<br>
+
+To find the button "Ver Mais", we used the following code:
+
+```{r}
+remote_driver$
+  findElement(using = 'id', value = "link_ver_detalhe")$
+  clickElement()
+```
+
+<br>
+
+But all buttons share the same `id`, so this code only selects the first button,
+not the others.
+
+
+## Solution
+
+Use `findElements()` (and not `findElement()`).
+
+<br>
+
+This returns a list of elements, and we can then apply some function on each of
+them in a loop:
+
+```{r}
+# Make the list of elements
+buttons <- remote_driver$
+  findElements(using = 'id', value = "link_ver_detalhe")
+
+# Highlight each button one by one
+for (i in seq_along(buttons)) {
+  buttons[[i]]$highlightElement()
+  Sys.sleep(1)
+}
+```
+
+
+## Loop through modals
+
+<br>
+
+Now that we have a way to open each modal, we can make a loop to get the HTML
+for each one:
+
+```{r}
+for (i in seq_along(buttons)) {
+  
+  # open the modal
+  buttons[[i]]$clickElement()
+  Sys.sleep(0.5)
+  
+  # get the HTML and save it
+  tmp <- remote_driver$getPageSource()[[1]]
+  write(tmp, file = paste0("data/modals/modal-", i, ".html"))
+  
+  # quit the modal (by pressing "Escape")
+  body$sendKeysToElement(list(key = "escape"))
+  
+}
+
+```
+
+## Generalize for each page
+
+<br>
+
+Find the button to go to the next page:
+
+<br>
+
+```{r}
+remote_driver$
+  findElement("css", "#paginacao > div.btn:nth-child(4)")$
+  highlightElement()
+```
+
+
+## Nested loops
+
+<br>
+
+We know how to:
+
+* open the website
+* search for the right inputs
+* open each modal and get its content
+* go to the next page
+
+. . .
+
+Next step: compile all of this and make nested loops!
+
+
+
+## {auto-animate=true}
+
+How many pages? **2348**
+
+<br>
+
+Pseudo-code:
+
+```{r}
+for (page_index in 1:2348) {
+  
+  for (modal_index in buttons) {
+    # open modal
+    # get HTML and save it in an external file
+    # leave modal
+  }
+  
+  # Once all modals of a page have been scraped, go to the next page (except
+  # if we're on the last page)
+  
+}
+```
+
+## {auto-animate=true}
+
+How many pages? **2348**
+
+<br>
+
+Make the "modal loop":
+
+```{.r code-line-numbers="3-18"}
+for (page_index in 1:2348) {
+  
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # Once all modals of a page have been scraped, go to the next page (except
+  # if we're on the last page)
+  
+}
+```
+
+
+## {auto-animate=true}
+
+How many pages? **2348**
+
+<br>
+
+Make the "page loop":
+
+```{.r code-line-numbers="20-28"}
+for (page_index in 1:2348) {
+  
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # When we got all modals of one page, go to the next page (except if we're on
+  # the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+
+    Sys.sleep(3)
+  }
+  
+}
+```
+
+## {auto-animate=true}
+
+How many pages? **2348**
+
+<br>
+
+Add some messages:
+
+```{.r code-line-numbers="20-28"}
+for (page_index in 1:2348) {
+  
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # When we got all modals of one page, go to the next page (except if we're on
+  # the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+
+    Sys.sleep(3)
+  }
+  
+}
+```
+
+
+# Error handling
 
 ## Loading times
 
@@ -710,6 +940,109 @@ before running the rest of the script.
 Our best friend in webscraping is `Sys.sleep()`.
 
 
+
+## Catching errors
+
+
+## Display and save information
+
+**Webscraping takes time.** 
+
+It is important to show and save information on how the webscraping is going so
+that we know where it went wrong for debugging.
+
+<br>
+
+. . .
+
+In our case:
+
+* show which page is being scraped;
+* show which modal of this page is being scraped;
+* show the status of this scraping (success/failure).
+
+
+## Display information
+
+Use `message()` at several places in the loop to display information:
+
+```{.r code-line-numbers="3,10,16"}
+for (page_index in 1:2348) {
+  
+  message(paste0("Start scraping of page", page_index))
+   
+  for (modal_index in buttons) {
+    # open modal
+    # get HTML and save it in an external file
+    # leave modal
+    
+    message(paste0("  Scraped modal", modal_index))
+  }
+  
+  # Once all modals of a page have been scraped, go to the next page (except
+  # if we're on the last page)
+  
+  message(paste0("Finished scraping of page", page_index))
+}
+```
+
+
+
+
+## Save information
+
+<br>
+
+Problem: what if the R session crashes?
+
+<br>
+
+We lose all messages!
+
+<br>
+
+. . .
+
+Solution: show these messages and save them in an external file at the same
+time.
+
+
+## Save information
+
+Example using the package `logger` (there is also `logging`, `futile.logger`,
+etc.):
+
+```{.r code-line-numbers="1,2,3,7,14,20"}
+# save calls to message() in an external file
+log_appender(appender_file("data/modals/00_logfile"))
+log_messages()
+
+for (page_index in 1:2348) {
+  
+  message(paste("Start scraping of page", page_index))
+   
+  for (modal_index in buttons) {
+    # open modal
+    # get HTML and save it in an external file
+    # leave modal
+    
+    message(paste("  Scraped modal", modal_index))
+  }
+  
+  # Once all modals of a page have been scraped, go to the next page (except
+  # if we're on the last page)
+  
+  message(paste("Finished scraping of page", page_index))
+}
+```
+
+## Save information
+
+What does the output look like?
+
+![](img/logfile_demo.png){width="500" height="500"}
+
+
 # Thanks!
 
 Source code for slides and exercises: 
@@ -719,8 +1052,6 @@ Source code for slides and exercises:
 
 
 # Appendix
-
-------------
 
 ## Appendix {#contributors-results}
 
@@ -754,7 +1085,6 @@ others <- others[[1]] %>%
 all_contributors <- c(bullet_points, blockquote, others)
 ```
 
-------------
 
 ## Appendix
 
@@ -768,7 +1098,6 @@ all_contributors[1:136]
 [Back](#contributors-last-step)
 
 
-------------
 
 ## Appendix
 
@@ -782,7 +1111,6 @@ request yourself.
 Go to the tab "Network" in the developer console, and then click on one of the
 "Ver Mais" button to display the modal.
 
-------------
 
 ## Appendix
 
@@ -793,7 +1121,6 @@ Clicking on this button triggers two `POST` requests:
 
 ![](img/console_network.png)
 
-------------
 
 ## Appendix
 
@@ -809,7 +1136,6 @@ Clicking on one of the `POST` requests displays important information:
 The request contains specific parameters needed to tell the server which data
 we need.
 
-------------
 
 ## Appendix {auto-animate=true}
 
@@ -827,7 +1153,6 @@ x <- POST(
 )
 ```
 
-------------
 
 ## Appendix {auto-animate=true}
 
@@ -854,7 +1179,6 @@ out <- as_list(content(x))
 fromJSON(unlist(out))$dados
 ```
 
-------------
 
 ## Your turn
 
