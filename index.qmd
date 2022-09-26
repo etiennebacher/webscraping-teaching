@@ -31,7 +31,7 @@ execute:
 <!-- TODO: -->
 <!-- - trycatch -->
 <!-- - parallel -->
-
+<!-- - politeness -->
 
 
 
@@ -99,7 +99,7 @@ Webscraping takes time, and a lot of things can happen:
 
 <br>
 
-If this happen and you didn't save your progress, you lose everything.
+If this happens and you didn't save your progress, you lose **everything**.
 
 We don't have plenty of time, but we have plenty of disk storage. Use it!
 
@@ -526,12 +526,13 @@ Do we read the HTML and extract the information in the same script?
 <br>
 
 
-**No!**
+**No!**^[Although, in this case, it would be ok to treat it directly in the same
+script.]
 
 Instead, we save the HTML in an external file, and we will be able to
 access it in another script (and offline) to manipulate it as we want.
 
-<!-- ^[Although, in this case, it wouldn't cost too much to treat it directly in the same script.] -->
+
 
 ```{r}
 write(x, file = "contributors.html")
@@ -910,8 +911,8 @@ for (page_index in 1:2348) {
     # leave modal
   }
   
-  # Once all modals of a page have been scraped, go to the next page (except
-  # if we're on the last page)
+  # Once all modals of a page have been scraped, go to the next page 
+  # (except if we're on the last page)
   
 }
 ```
@@ -938,8 +939,8 @@ for (page_index in 1:2348) {
     # leave modal
   }
   
-  # Once all modals of a page have been scraped, go to the next page (except
-  # if we're on the last page)
+  # Once all modals of a page have been scraped, go to the next page 
+  # (except if we're on the last page)
   
 }
 ```
@@ -964,8 +965,6 @@ for (page_index in 1:2348) {
     # open modal
     buttons[[modal_index]]$clickElement()
 
-    Sys.sleep(0.5)
-
     # Get the HTML and save it
     tmp <- remote_driver$getPageSource()[[1]]
     write(tmp, file = paste0("data/modals/modal-", modal_index, ".html"))
@@ -974,11 +973,10 @@ for (page_index in 1:2348) {
     body <- remote_driver$findElement(using = "xpath", value = "/html/body")
     body$sendKeysToElement(list(key = "escape"))
 
-    Sys.sleep(0.5)
   }
   
-  # Once all modals of a page have been scraped, go to the next page (except
-  # if we're on the last page)
+  # Once all modals of a page have been scraped, go to the next page 
+  # (except if we're on the last page)
   
 }
 ```
@@ -993,6 +991,351 @@ How many pages? **2348**
 Make the "page loop":
 
 ```{.r code-line-numbers="25-33"}
+for (page_index in 1:2348) {
+  
+  # Find all buttons "Ver Mais" on the page 
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+    
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+  }
+  
+  # When we got all modals of one page, go to the next page (except if 
+  # we're on the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+  }
+  
+}
+```
+
+
+---
+
+<br><br>
+<br><br>
+
+Great, let's run everything!
+
+<br>
+
+. . .
+
+{{< fa arrow-right >}} &nbsp; Not yet
+
+
+
+# Error handling
+
+# 1. Loading times
+
+## Loading times
+
+<br>
+
+There are a few places where we need to wait a bit:
+
+* after clicking on "Pesquisar" 
+* after clicking on "Ver Mais"
+* when we go to the next page
+
+. . .
+
+<br>
+
+
+We must put some pauses between `RSelenium` actions. Otherwise it will error,
+e.g if we try to click on a button that isn't loaded on the page yet.
+
+. . .
+
+<br>
+
+{{< fa arrow-right >}} &nbsp; `Sys.sleep()`
+
+
+
+## Loading times
+
+```{.r code-line-numbers="11,22,32"}
+for (page_index in 1:2348) {
+  
+  # Find all buttons "Ver Mais" on the page 
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+    
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # When we got all modals of one page, go to the next page (except if 
+  # we're on the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+
+    Sys.sleep(3)
+  }
+  
+}
+```
+
+# 2. Catching errors
+
+## Catching errors
+
+<br>
+
+The default behavior of errors is to stop the script, which leads to this kind
+of situation:
+
+
+* 7pm - "great, I can just run the code during the night and go home"
+
+* 7:02pm - *error in the code*
+
+* 8am - "Fu@?!"
+
+. . .
+
+<br>
+
+{{< fa arrow-right >}} &nbsp; need to handle errors with `tryCatch()`
+
+
+## Catching errors
+
+<br>
+
+Example: try to compute `log("a")`.
+
+```{r, eval=TRUE, error=TRUE}
+log("a")
+```
+
+<br>
+
+. . .
+
+What if I want to return `NA` instead of an error?
+
+
+## Catching errors
+
+```{.r}
+tryCatch(
+  # try to evaluate the expression
+  {
+    <EXPRESSION>,
+  },
+  
+  # what happens if there's a warning?
+  warning = function(w) {
+    <BEHAVIOR WHEN THERE IS A WARNING>
+  },
+  # what happens if there's an error?
+  error = function(e) {
+    <BEHAVIOR WHEN THERE IS AN ERROR>
+  }
+)
+```
+
+## Catching errors
+
+```{r}
+tryCatch(
+  # try to evaluate the expression
+  {
+    log("a")
+  },
+  
+  # what happens if there's a warning?
+  warning = function(w) {
+    print("There was a warning. Here's the message:")
+    print(w)
+  },
+  
+  # what happens if there's an error?
+  error = function(e) {
+    print("There was an error. Returning `NA`.")
+    return(NA)
+  }
+)
+```
+
+## Catching errors
+
+```{r, eval=TRUE, error=TRUE}
+tryCatch(
+  # try to evaluate the expression
+  {
+    log("a")
+  },
+  
+  # what happens if there's a warning?
+  warning = function(w) {
+    print("There was a warning. Here's the message:")
+    print(w)
+  },
+  
+  # what happens if there's an error?
+  error = function(e) {
+    print("There was an error. Returning `NA`.")
+    return(NA)
+  }
+)
+```
+
+
+## Example with a loop
+
+Create a fake loop that goes from `i = 1:10` and creates a list containing `i*2`. 
+Let's say that there's an error when `i = 3`:
+
+```{r, eval=FALSE, error=TRUE}
+x <- list()
+for (i in 1:10) {
+  
+  if (i == 3) {
+    stop("This is an error.")  # intentional error
+  } else {
+    x[[i]] <- 2*i
+  }
+  
+  print(paste0("i = ", i, ". So far so good."))
+}
+```
+
+## Example with a loop
+
+Create a fake loop that goes from `i = 1:10` and creates a list containing `i*2`. 
+Let's say that there's an error when `i = 3`:
+
+```{r, eval=TRUE, error=TRUE}
+x <- list()
+for (i in 1:10) {
+  
+  if (i == 3) {
+    stop("This is an error.")  # intentional error
+  } else {
+    x[[i]] <- 2*i
+  }
+  
+  print(paste0("i = ", i, ". So far so good."))
+}
+```
+
+
+
+## Example with a loop
+
+<br>
+
+```{r, eval=TRUE, error=TRUE}
+print(x)
+```
+
+<br>
+
+{{< fa arrow-right >}} &nbsp; We don't have values for `i >= 3` because there was
+an error that stopped the loop.
+
+
+## Catching the error
+
+<br>
+
+Now, let's catch the error to avoid breaking the loop:
+
+
+```{.r code-line-numbers="5-13"}
+x <- list()
+for (i in 1:10) {
+  
+  if (i == 3) {
+    tryCatch(
+      {
+        stop("This is an error.") # intentional error
+      },
+      error = function(e) {
+        print(paste0("Error for i = ", i, ". `x[[", i, "]]` will be NULL."))
+        x[[i]] <- NULL
+      }
+    )
+  } else {
+    x[[i]] <- 2*i
+  }
+  
+  print(paste0("i = ", i, ". So far so good."))
+  
+}
+```
+
+
+
+## Catching the error
+
+```{r, eval=TRUE, echo=FALSE, error=TRUE}
+x <- list()
+for (i in 1:10) {
+  
+  if (i == 3) {
+    tryCatch(
+      {
+        stop("This is an error.")
+      },
+      error = function(e) {
+        print(paste0("Error for i = ", i, ". `x[[", i, "]]` will be NULL."))
+        x[[i]] <- NULL
+      }
+    )
+  } else {
+    x[[i]] <- 2*i
+  }
+  
+  print(paste0("i = ", i, ". So far so good."))
+  
+}
+
+print(x)
+```
+
+
+
+## Back to our code
+
+What are potential points of failure?
+
+```{.r}
 for (page_index in 1:2348) {
   
   # Find all buttons "Ver Mais" on the page 
@@ -1031,36 +1374,60 @@ for (page_index in 1:2348) {
 ```
 
 
+## Back to our code
 
-# Error handling
+What are potential points of failure?
 
-## Loading times
+```{.r code-line-numbers="3-5, 7"}
+for (page_index in 1:2348) {
+  
+  # Find all buttons "Ver Mais" on the page 
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+    
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # When we got all modals of one page, go to the next page (except if we're on
+  # the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+
+    Sys.sleep(3)
+  }
+  
+}
+```
+
+
+## Back to our code
 
 <br>
 
-There are a few places where we need to wait a bit:
-
-* after clicking on "Pesquisar" 
-* after clicking on "Ver Mais"
-* when we go to the next page
-
-. . .
-
-<br>
-
-
-We must put some pauses between `RSelenium` actions. Otherwise it will error,
-e.g if we try to click on a button that was loaded on the page yet.
-
-. . .
-
-<br>
-
-{{< fa arrow-right >}} &nbsp; `Sys.sleep()`
+If for some reason, `buttons` cannot be found, then the loop fails.
 
 
 
-## Catching errors
+
+
+# 3. Display and save information
 
 
 ## Display and save information

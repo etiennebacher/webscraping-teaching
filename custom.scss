@@ -26,3 +26,15 @@ $code-block-font-size: 0.8em;
 .reveal p > a {
   border-bottom: 1px dashed;
 }
+
+.reveal .cell-output > pre {
+	background-color: #232525;
+	color: #a9b7c6;
+	border: 1px #d6dbdb solid;
+	border-radius: 0.25rem;
+	margin-top: 0.5rem;
+}
+
+.reveal div.sourceCode {
+	overflow: hidden !important;
+}
