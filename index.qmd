@@ -31,8 +31,6 @@ execute:
 <!-- TODO: -->
 <!-- - trycatch -->
 <!-- - parallel -->
-<!-- - code to close all Java instances -->
-
 
 
 
@@ -319,6 +317,30 @@ remote_driver <- driver[["client"]]
 This will print a bunch of messages and open a "marionette browser".
 
 ![](img/marionette2.png)
+
+## Closing Selenium
+
+<br>
+
+The clean way to close `Selenium` is to run `driver$server$stop()` (replace 
+`driver` by the name you gave at the previous step).
+
+<br>
+
+If you clean the browser by hand and try to re-run the script, you may have the
+following error:
+
+```{.r}
+"Error in wdman::selenium(port = port, verbose = verbose, version = version,  : 
+  Selenium server signals port = 4567 is already in use."
+```
+
+<br>
+
+To get rid of this error, you also need to run `driver$server$stop()`. 
+
+
+
 
 
 ## Get started
