@@ -25,6 +25,26 @@ execute:
 <!-- Use chrome and not firefox -->
 
 
+
+
+
+<!-- TODO: -->
+<!-- - trycatch -->
+<!-- - parallel -->
+<!-- - code to close all Java instances -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Introduction
 
 <br>
@@ -1259,7 +1279,6 @@ relations <- data.table::rbindlist(purrr::map(list_out, 2)) |>
 
 ## Ethics
 
-<br>
 
 Pay attention to a website's Terms of Use/Service.
 
@@ -1267,6 +1286,8 @@ Pay attention to a website's Terms of Use/Service.
 
 Some websites explicitely say that you are not allowed to programmatically access
 their resources.
+
+Example:
 
 ![](img/terms-of-use.png)
 
@@ -1283,9 +1304,17 @@ Also available on [Github]():
 
 # Thanks!
 
+<br>
+
 Source code for slides and exercises: 
 
 [https://github.com/etiennebacher/webscraping-teaching](https://github.com/etiennebacher/webscraping-teaching)
+
+<br>
+
+Comments, typos, etc.: 
+
+[https://github.com/etiennebacher/webscraping-teaching/issues](https://github.com/etiennebacher/webscraping-teaching/issues)
 
 
 

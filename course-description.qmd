@@ -60,4 +60,7 @@ Preferred but not required:
 
 Make sure that you installed the package `RSelenium` before the training. This 
 may require the installation of [Java](https://www.java.com/en/download/), which
-itself can require asking IT.
+itself can require asking IT. To check whether Java is installed on your computer,
+open the command prompt by typing "cmd" in Windows search bar, and enter 
+`java -version`. If this command returns an error, it means that Java is not
+installed.
