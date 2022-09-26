@@ -1014,7 +1014,7 @@ e.g if we try to click on a button that was loaded on the page yet.
 
 <br>
 
-{{< fa thumbs-up >}}  `Sys.sleep()`
+{{< fa arrow-right >}} &nbsp; `Sys.sleep()`
 
 
 
@@ -1267,6 +1267,9 @@ Pay attention to a website's Terms of Use/Service.
 
 Some websites explicitely say that you are not allowed to programmatically access
 their resources.
+
+![](img/terms-of-use.png)
+
 
 ## Final script
 
