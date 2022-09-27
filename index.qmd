@@ -31,7 +31,7 @@ execute:
 <!-- TODO: -->
 <!-- - trycatch -->
 <!-- - parallel -->
-<!-- - politeness -->
+<!-- - politeness -> possible ? -->
 
 
 
@@ -1041,75 +1041,7 @@ Great, let's run everything!
 
 # Error handling
 
-# 1. Loading times
-
-## Loading times
-
-<br>
-
-There are a few places where we need to wait a bit:
-
-* after clicking on "Pesquisar" 
-* after clicking on "Ver Mais"
-* when we go to the next page
-
-. . .
-
-<br>
-
-
-We must put some pauses between `RSelenium` actions. Otherwise it will error,
-e.g if we try to click on a button that isn't loaded on the page yet.
-
-. . .
-
-<br>
-
-{{< fa arrow-right >}} &nbsp; `Sys.sleep()`
-
-
-
-## Loading times
-
-```{.r code-line-numbers="11,22,32"}
-for (page_index in 1:2348) {
-  
-  # Find all buttons "Ver Mais" on the page 
-  buttons <- remote_driver$
-    findElements(using = 'id', value = "link_ver_detalhe")
-    
-  for (modal_index in buttons) {
-    # open modal
-    buttons[[modal_index]]$clickElement()
-
-    Sys.sleep(0.5)
-
-    # Get the HTML and save it
-    tmp <- remote_driver$getPageSource()[[1]]
-    write(tmp, file = paste0("data/modals/page-", page_index, 
-                             "-modal-", modal_index, ".html"))
-
-    # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
-
-    Sys.sleep(0.5)
-  }
-  
-  # When we got all modals of one page, go to the next page (except if 
-  # we're on the last one)
-  if (page_index != 2348) {
-    remote_driver$
-      findElement("css", "#paginacao > div.btn:nth-child(4)")$
-      clickElement()
-
-    Sys.sleep(3)
-  }
-  
-}
-```
-
-# 2. Catching errors
+# 1. Catching errors
 
 ## Catching errors
 
@@ -1331,97 +1263,307 @@ print(x)
 
 
 
-## Back to our code
+<!-- ## Back to our code -->
 
-What are potential points of failure?
+<!-- What are potential points of failure? -->
 
-```{.r}
-for (page_index in 1:2348) {
-  
-  # Find all buttons "Ver Mais" on the page 
-  buttons <- remote_driver$
-    findElements(using = 'id', value = "link_ver_detalhe")
-    
-  for (modal_index in buttons) {
-    # open modal
-    buttons[[modal_index]]$clickElement()
+<!-- ```{.r} -->
+<!-- for (page_index in 1:2348) { -->
 
-    Sys.sleep(0.5)
+<!--   # Find all buttons "Ver Mais" on the page  -->
+<!--   buttons <- remote_driver$ -->
+<!--     findElements(using = 'id', value = "link_ver_detalhe") -->
 
-    # Get the HTML and save it
-    tmp <- remote_driver$getPageSource()[[1]]
-    write(tmp, file = paste0("data/modals/page-", page_index, 
-                             "-modal-", modal_index, ".html"))
+<!--   for (modal_index in buttons) { -->
+<!--     # open modal -->
+<!--     buttons[[modal_index]]$clickElement() -->
 
-    # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+<!--     Sys.sleep(0.5) -->
 
-    Sys.sleep(0.5)
-  }
-  
-  # When we got all modals of one page, go to the next page (except if we're on
-  # the last one)
-  if (page_index != 2348) {
-    remote_driver$
-      findElement("css", "#paginacao > div.btn:nth-child(4)")$
-      clickElement()
+<!--     # Get the HTML and save it -->
+<!--     tmp <- remote_driver$getPageSource()[[1]] -->
+<!--     write(tmp, file = paste0("data/modals/page-", page_index,  -->
+<!--                              "-modal-", modal_index, ".html")) -->
 
-    Sys.sleep(3)
-  }
-  
-}
-```
+<!--     # Leave the modal -->
+<!--     body <- remote_driver$findElement(using = "xpath", value = "/html/body") -->
+<!--     body$sendKeysToElement(list(key = "escape")) -->
 
+<!--     Sys.sleep(0.5) -->
+<!--   } -->
 
-## Back to our code
+<!--   # When we got all modals of one page, go to the next page (except if we're on -->
+<!--   # the last one) -->
+<!--   if (page_index != 2348) { -->
+<!--     remote_driver$ -->
+<!--       findElement("css", "#paginacao > div.btn:nth-child(4)")$ -->
+<!--       clickElement() -->
 
-What are potential points of failure?
+<!--     Sys.sleep(3) -->
+<!--   } -->
 
-```{.r code-line-numbers="3-5, 7"}
-for (page_index in 1:2348) {
-  
-  # Find all buttons "Ver Mais" on the page 
-  buttons <- remote_driver$
-    findElements(using = 'id', value = "link_ver_detalhe")
-    
-  for (modal_index in buttons) {
-    # open modal
-    buttons[[modal_index]]$clickElement()
-
-    Sys.sleep(0.5)
-
-    # Get the HTML and save it
-    tmp <- remote_driver$getPageSource()[[1]]
-    write(tmp, file = paste0("data/modals/page-", page_index, 
-                             "-modal-", modal_index, ".html"))
-
-    # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
-
-    Sys.sleep(0.5)
-  }
-  
-  # When we got all modals of one page, go to the next page (except if we're on
-  # the last one)
-  if (page_index != 2348) {
-    remote_driver$
-      findElement("css", "#paginacao > div.btn:nth-child(4)")$
-      clickElement()
-
-    Sys.sleep(3)
-  }
-  
-}
-```
+<!-- } -->
+<!-- ``` -->
 
 
-## Back to our code
+<!-- ## Back to our code -->
+
+<!-- What are potential points of failure? -->
+
+<!-- ```{.r code-line-numbers="3-5, 7"} -->
+<!-- for (page_index in 1:2348) { -->
+
+<!--   # Find all buttons "Ver Mais" on the page  -->
+<!--   buttons <- remote_driver$ -->
+<!--     findElements(using = 'id', value = "link_ver_detalhe") -->
+
+<!--   for (modal_index in buttons) { -->
+<!--     # open modal -->
+<!--     buttons[[modal_index]]$clickElement() -->
+
+<!--     Sys.sleep(0.5) -->
+
+<!--     # Get the HTML and save it -->
+<!--     tmp <- remote_driver$getPageSource()[[1]] -->
+<!--     write(tmp, file = paste0("data/modals/page-", page_index,  -->
+<!--                              "-modal-", modal_index, ".html")) -->
+
+<!--     # Leave the modal -->
+<!--     body <- remote_driver$findElement(using = "xpath", value = "/html/body") -->
+<!--     body$sendKeysToElement(list(key = "escape")) -->
+
+<!--     Sys.sleep(0.5) -->
+<!--   } -->
+
+<!--   # When we got all modals of one page, go to the next page (except if we're on -->
+<!--   # the last one) -->
+<!--   if (page_index != 2348) { -->
+<!--     remote_driver$ -->
+<!--       findElement("css", "#paginacao > div.btn:nth-child(4)")$ -->
+<!--       clickElement() -->
+
+<!--     Sys.sleep(3) -->
+<!--   } -->
+
+<!-- } -->
+<!-- ``` -->
+
+
+# 2. Loading times
+
+## Loading times
 
 <br>
 
-If for some reason, `buttons` cannot be found, then the loop fails.
+There are a few places where we need to wait a bit:
+
+* after clicking on "Pesquisar" 
+* after clicking on "Ver Mais"
+* when we go to the next page
+
+. . .
+
+<br>
+
+
+We must put some pauses between `RSelenium` actions. Otherwise it will error,
+e.g if we try to click on a button that isn't loaded on the page yet.
+
+. . .
+
+<br>
+
+{{< fa arrow-right >}} &nbsp; one solution is to use `Sys.sleep()`
+
+
+
+## Loading times
+
+```{.r code-line-numbers="11,22,32"}
+for (page_index in 1:2348) {
+  
+  # Find all buttons "Ver Mais" on the page 
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+    
+  for (modal_index in buttons) {
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(0.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, 
+                             "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(0.5)
+  }
+  
+  # When we got all modals of one page, go to the next page (except if 
+  # we're on the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+
+    Sys.sleep(3)
+  }
+  
+}
+```
+
+
+## Loading times
+
+<br> 
+
+However, using `Sys.sleep()` is not perfect because we put arbitrary timing, e.g
+5 seconds.
+
+<br>
+
+Problem: what if the Internet connection is so bad that the loading takes 7 seconds?
+
+<br>
+
+{{< fa arrow-right >}} &nbsp; we need a more robust solution using `tryCatch()`
+
+
+
+## Loading times
+
+<br>
+
+What we want is to check whether the loading is over, i.e whether the buttons
+we want to click can be found on the page.
+
+
+<br>
+
+We can use a `while()` loop to check this.
+
+
+## Loading times
+
+Quick reminder:
+
+* `if` condition: perform the inside only **if** the condition is true
+
+```{.r}
+if (x > 2) {
+  # do something
+}
+```
+
+* `for` loop: perform the inside **for** all values
+
+```{.r}
+for (i in 1:10) {
+  # do something with `i`
+}
+```
+
+* `while` loop: perform the inside **while** the condition is true
+
+```{.r}
+while (x > 2) {
+  # do something 
+  # need to update `x` here otherwise infinite loop!
+}
+```
+
+
+## Loading times
+
+In our case, we want to check whether we can find the buttons "Ver Mais":
+
+```{.r code-line-numbers="1,2,3,17|5-12|13-16"}
+# Try to find the buttons "Ver Mais"
+all_buttons_loaded <- FALSE
+while(!all_buttons_loaded) {
+  tryCatch(
+    {
+      test <- remote_driver$
+        findElements(using = 'id', value = "link_ver_detalhe")
+        
+      if (inherits(test, "list") && length(test) > 0)  {
+        all_buttons_loaded <<- TRUE
+      }
+    },
+    error = function(e) {
+      all_buttons_loaded <<- FALSE
+      Sys.sleep(0.5)
+    }
+  )
+}
+```
+
+This loop will run until the buttons can be found.
+
+## Loading times
+
+```{r}
+for (page_index in 1:2348) {
+
+  # Try to find the buttons "Ver Mais"
+  all_buttons_loaded <- FALSE
+  while(!all_buttons_loaded) {
+    tryCatch(
+      {
+        test <- remote_driver$
+          findElements(using = 'id', value = "link_ver_detalhe")
+
+        if (inherits(test, "list") && length(test) > 0)  {
+          all_buttons_loaded <<- TRUE
+        }
+      },
+      error = function(e) {
+        all_buttons_loaded <<- FALSE
+        Sys.sleep(0.5)
+      }
+    )
+  }
+
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+
+  for (modal_index in seq_along(buttons)) {
+
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(1.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    Sys.sleep(1.5)
+
+  }
+
+  # When we got all modals of one page, go to the next page (except if we're on
+  # the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+  }
+
+}
+```
+
+
+
 
 
 
@@ -1531,6 +1673,73 @@ for (page_index in 1:2348) {
 What does the output look like?
 
 ![](img/logfile_demo.png){width="600" height="600"}
+
+
+## Final loop
+
+```{r}
+for (page_index in 1:2348) {
+
+  message(paste("Start scraping of page", page_index))
+
+  # Try to find the buttons "Ver Mais"
+  all_buttons_loaded <- FALSE
+  while(!all_buttons_loaded) {
+    tryCatch(
+      {
+        test <- remote_driver$
+          findElements(using = 'id', value = "link_ver_detalhe")
+
+        if (inherits(test, "list") && length(test) > 0)  {
+          all_buttons_loaded <<- TRUE
+        }
+      },
+      error = function(e) {
+        all_buttons_loaded <<- FALSE
+        Sys.sleep(0.5)
+      }
+    )
+  }
+
+  buttons <- remote_driver$
+    findElements(using = 'id', value = "link_ver_detalhe")
+
+  for (modal_index in seq_along(buttons)) {
+
+    # open modal
+    buttons[[modal_index]]$clickElement()
+
+    Sys.sleep(1.5)
+
+    # Get the HTML and save it
+    tmp <- remote_driver$getPageSource()[[1]]
+    write(tmp, file = paste0("data/modals/page-", page_index, "-modal-", modal_index, ".html"))
+
+    # Leave the modal
+    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
+    body$sendKeysToElement(list(key = "escape"))
+
+    message(paste("  Scraped modal", modal_index))
+
+    Sys.sleep(1.5)
+
+  }
+
+  # When we got all modals of one page, go to the next page (except if we're on
+  # the last one)
+  if (page_index != 2348) {
+    remote_driver$
+      findElement("css", "#paginacao > div.btn:nth-child(4)")$
+      clickElement()
+  }
+
+  message(paste("Finished scraping of page", page_index))
+
+}
+```
+
+
+
 
 
 # Now what?
@@ -1704,6 +1913,21 @@ Source code for slides and exercises:
 Comments, typos, etc.: 
 
 [https://github.com/etiennebacher/webscraping-teaching/issues](https://github.com/etiennebacher/webscraping-teaching/issues)
+
+
+# Good resources
+
+<br>
+
+Article from Appsilon: 
+
+[https://appsilon.com/webscraping-dynamic-websites-with-r/](https://appsilon.com/webscraping-dynamic-websites-with-r/)
+
+<br>
+
+Article from Ivan Millanes:
+
+[https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/)
 
 
 

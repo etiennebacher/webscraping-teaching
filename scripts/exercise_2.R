@@ -1,3 +1,4 @@
+library(dplyr)
 library(rvest)
 library(xml2)
 library(RSelenium)
@@ -26,7 +27,7 @@ button_element$clickElement()
 
 
 # Wait 5 sec for the page to load and then click on the button to open the modal
-Sys.sleep(5)
+# Sys.sleep(5)
 
 # find all modal buttons and highlight them one by one
 
@@ -37,6 +38,25 @@ log_messages()
 for (page_index in 1:2348) {
 
   message(paste("Start scraping of page", page_index))
+
+  # Try to find the buttons "Ver Mais"
+  all_buttons_loaded <- FALSE
+  while(!all_buttons_loaded) {
+    tryCatch(
+      {
+        test <- remote_driver$
+          findElements(using = 'id', value = "link_ver_detalhe")
+
+        if (inherits(test, "list") && length(test) > 0)  {
+          all_buttons_loaded <<- TRUE
+        }
+      },
+      error = function(e) {
+        all_buttons_loaded <<- FALSE
+        Sys.sleep(0.5)
+      }
+    )
+  }
 
   buttons <- remote_driver$
     findElements(using = 'id', value = "link_ver_detalhe")
@@ -56,9 +76,9 @@ for (page_index in 1:2348) {
     body <- remote_driver$findElement(using = "xpath", value = "/html/body")
     body$sendKeysToElement(list(key = "escape"))
 
-    Sys.sleep(1.5)
-
     message(paste("  Scraped modal", modal_index))
+
+    Sys.sleep(1.5)
 
   }
 
@@ -68,8 +88,6 @@ for (page_index in 1:2348) {
     remote_driver$
       findElement("css", "#paginacao > div.btn:nth-child(4)")$
       clickElement()
-
-    Sys.sleep(5)
   }
 
   message(paste("Finished scraping of page", page_index))
@@ -77,3 +95,70 @@ for (page_index in 1:2348) {
 }
 
 
+
+
+extract_information <- function(raw_html) {
+
+  # Extract the table "Registros relacionados"
+
+  content <- raw_html %>%
+    html_nodes("#detalhe_conteudo") %>%
+    html_table() %>%
+    purrr::pluck(1)
+
+  relacionados <- content[16:nrow(content),] %>%
+    mutate(
+      across(
+        .cols = everything(),
+        .fns = ~ {ifelse(.x == "", NA, .x)}
+      )
+    )
+
+  colnames(relacionados) <- c("Livro", "Pagina", "Familia", "Chegada",
+                              "Sobrenome", "Nome", "Idade", "Sexo",
+                              "Parentesco", "Nacionalidade",
+                              "Vapor", "Est.Civil", "Religiao")
+
+
+  # Extract text information from "registro de matricula" and create a
+  # dataframe from it
+  name_items <- raw_html %>%
+    html_elements(xpath = '//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/strong') %>%
+    html_text2() %>%
+    gsub("\\n", "", .) %>%
+    strsplit(split = "\\t") %>%
+    unlist()
+
+  value_items <- raw_html %>%
+    html_elements(xpath = '//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/div') %>%
+    html_text2()
+
+  registro <- data.frame() %>%
+    rbind(value_items) %>%
+    as_tibble()
+
+  colnames(registro) <- name_items
+
+  return(
+    list(
+      main = registro,
+      related = relacionados
+    )
+  )
+
+}
+
+
+list_html <- list.files("data/modals", pattern = "page", full.names = TRUE)
+
+
+list_out <- lapply(list_html, function(x) {
+  read_html(x) |>
+    extract_information()
+})
+
+main <- data.table::rbindlist(purrr::map(list_out, 1)) |>
+  as_tibble()
+
+relations <- data.table::rbindlist(purrr::map(list_out, 2)) |>
+  as_tibble()
