@@ -314,9 +314,53 @@ remote_driver <- driver[["client"]]
 
 <br> 
 
-This will print a bunch of messages and open a "marionette browser".
+If everything works fine, this will print a bunch of messages and open a "marionette browser".
 
 ![](img/marionette2.png)
+
+
+## Installation issues
+
+<br>
+
+1. Java not installed
+
+<br>
+
+If you have a message saying that "Java is not found" (or similar), you need to
+install Java:
+
+* Windows search bar -> "Software Center"
+* Install Java
+
+
+## Installation issues
+
+<br>
+
+2. Firefox not installed/found
+
+
+If you have a message saying "Could not open firefox browser", two possible explanations:
+
+* if Firefox is not installed, install it the same way as Java on the previous slide.
+
+* if Firefox is installed but not found, it probably means that it wasn't installed
+with admin rights, so you need to manually specify the location of the file:
+
+```{r}
+driver <- rsDriver(
+  browser = "firefox", 
+  extraCapabilities = list(
+    `moz:firefoxOptions` = list(
+      binary = "C:\\Users\\<USERNAME>\\AppData\\Local\\Mozilla Firefox\\firefox.exe"
+    )
+  )
+)
+```
+
+
+
 
 ## Closing Selenium
 
@@ -1496,7 +1540,6 @@ while(!all_buttons_loaded) {
       }
     },
     error = function(e) {
-      all_buttons_loaded <<- FALSE
       Sys.sleep(0.5)
     }
   )
@@ -1523,7 +1566,6 @@ for (page_index in 1:2348) {
         }
       },
       error = function(e) {
-        all_buttons_loaded <<- FALSE
         Sys.sleep(0.5)
       }
     )
