@@ -30,8 +30,7 @@ execute:
 
 <!-- TODO: -->
 <!-- - trycatch -->
-<!-- - parallel -->
-<!-- - politeness -> possible ? -->
+<!-- - politeness -> possible ? -> Let's say that NO -->
 
 
 
@@ -1915,7 +1914,29 @@ relations <- data.table::rbindlist(purrr::map(list_out, 2)) |>
 
 ***Catching errors and recording the scraping process IS important.***
 
----
+
+## Parallelization
+
+<br>
+
+Use parallelization to open several browsers at the same time and scrape the data
+faster.
+
+<br>
+
+{{< fa triangle-exclamation >}} &nbsp; I never tested this, and there could be some
+issues (browser crashes, etc.)
+
+
+<br>
+
+If you want to explore it:
+
+* [article by Appsilon](https://appsilon.com/webscraping-dynamic-websites-with-r/) (at the end)
+
+* [article by Ivan Millanes](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/#parallel-framework)
+
+
 
 ## Ethics
 
