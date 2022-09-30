@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.2.157">
 
   <meta name="author" content="Etienne Bacher">
-  <meta name="dcterms.date" content="2022-09-28">
+  <meta name="dcterms.date" content="2022-09-30">
   <title>Webscraping with RSelenium</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,7 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">September 28, 2022</p>
+  <p class="date">September 30, 2022</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
@@ -667,6 +667,11 @@ Etienne Bacher
 <span id="cb4-8"><a href="#cb4-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="get-started-2" class="slide level2">
+<h2>Get started</h2>
+<p>From now on, the main thing is to call <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
+<p><img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"></p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Or whatever you called it in the previous step.</p></li></ol></aside></section>
 <section id="closing-selenium" class="slide level2">
 <h2>Closing Selenium</h2>
 <p><br></p>
@@ -677,12 +682,7 @@ Etienne Bacher
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">  Selenium server signals port = 4567 is already in use."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
 <p>To get rid of this error, you also need to run <code>driver$server$stop()</code>.</p>
-</section>
-<section id="get-started-2" class="slide level2">
-<h2>Get started</h2>
-<p>From now on, the main thing is to call <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
-<p><img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"></p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Or whatever you called it in the previous step.</p></li></ol></aside></section></section>
+</section></section>
 <section>
 <section id="exercise-1" class="title-slide slide level1 center">
 <h1>Exercise 1</h1>
@@ -775,6 +775,13 @@ Etienne Bacher
 </section>
 <section class="slide level2">
 
+<div class="callout callout-tip no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Tip:</strong> You can check that you found the right element by highlighting it with <code>highlightElement()</code>.</p>
+</div>
+</div>
+</div>
 <p>All of these work:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>remote_driver<span class="sc">$</span></span>
@@ -792,21 +799,6 @@ Etienne Bacher
 <span id="cb8-13"><a href="#cb8-13"></a>remote_driver<span class="sc">$</span></span>
 <span id="cb8-14"><a href="#cb8-14"></a>  <span class="fu">findElement</span>(<span class="st">"css selector"</span>, <span class="st">"div.col-xs-6:nth-child(1) &gt; ul:nth-child(6) &gt; li:nth-child(3) &gt; a:nth-child(1)"</span>)<span class="sc">$</span></span>
 <span id="cb8-15"><a href="#cb8-15"></a>  <span class="fu">clickElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<div class="callout callout-tip callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Tip</strong></p>
-</div>
-<div class="callout-content">
-<p>You can check that you found the right element by highlighting it with <code>highlightElement()</code>.</p>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section class="slide level2">
@@ -1047,6 +1039,43 @@ Etienne Bacher
 <span id="cb17-26" class="hljs-ln-code"><a href="#cb17-26"></a>x <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="make-an-example-5" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">Make an example</h2>
+<p>Exit the modal by pressing “Escape”:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb18-1" class="hljs-ln-code"><a href="#cb18-1"></a><span class="fu">library</span>(RSelenium)</span>
+<span id="cb18-2" class="hljs-ln-code"><a href="#cb18-2"></a></span>
+<span id="cb18-3" class="hljs-ln-code"><a href="#cb18-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
+<span id="cb18-4" class="hljs-ln-code"><a href="#cb18-4"></a></span>
+<span id="cb18-5" class="hljs-ln-code"><a href="#cb18-5"></a><span class="co"># Automatically go the website</span></span>
+<span id="cb18-6" class="hljs-ln-code"><a href="#cb18-6"></a>driver <span class="ot">&lt;-</span> <span class="fu">rsDriver</span>(<span class="at">browser =</span> <span class="fu">c</span>(<span class="st">"firefox"</span>))</span>
+<span id="cb18-7" class="hljs-ln-code"><a href="#cb18-7"></a>remote_driver <span class="ot">&lt;-</span> driver[[<span class="st">"client"</span>]]</span>
+<span id="cb18-8" class="hljs-ln-code"><a href="#cb18-8"></a>remote_driver<span class="sc">$</span><span class="fu">navigate</span>(link)</span>
+<span id="cb18-9" class="hljs-ln-code"><a href="#cb18-9"></a></span>
+<span id="cb18-10" class="hljs-ln-code"><a href="#cb18-10"></a><span class="co"># Fill the nationality field and click on "Validate"</span></span>
+<span id="cb18-11" class="hljs-ln-code"><a href="#cb18-11"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb18-12" class="hljs-ln-code"><a href="#cb18-12"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"id"</span>, <span class="at">value =</span> <span class="st">"nacionalidade"</span>)<span class="sc">$</span></span>
+<span id="cb18-13" class="hljs-ln-code"><a href="#cb18-13"></a>  <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="st">"PORTUGUESA"</span>))</span>
+<span id="cb18-14" class="hljs-ln-code"><a href="#cb18-14"></a></span>
+<span id="cb18-15" class="hljs-ln-code"><a href="#cb18-15"></a><span class="co"># Find the button "Pesquisar" and click it</span></span>
+<span id="cb18-16" class="hljs-ln-code"><a href="#cb18-16"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb18-17" class="hljs-ln-code"><a href="#cb18-17"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'name'</span>, <span class="at">value =</span> <span class="st">"Reset2"</span>)<span class="sc">$</span></span>
+<span id="cb18-18" class="hljs-ln-code"><a href="#cb18-18"></a>  <span class="fu">clickElement</span>()</span>
+<span id="cb18-19" class="hljs-ln-code"><a href="#cb18-19"></a></span>
+<span id="cb18-20" class="hljs-ln-code"><a href="#cb18-20"></a><span class="co"># Find the button "Ver Mais" and click it</span></span>
+<span id="cb18-21" class="hljs-ln-code"><a href="#cb18-21"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb18-22" class="hljs-ln-code"><a href="#cb18-22"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)<span class="sc">$</span></span>
+<span id="cb18-23" class="hljs-ln-code"><a href="#cb18-23"></a>  <span class="fu">clickElement</span>()</span>
+<span id="cb18-24" class="hljs-ln-code"><a href="#cb18-24"></a></span>
+<span id="cb18-25" class="hljs-ln-code"><a href="#cb18-25"></a><span class="co"># Get the HTML that is displayed in the modal</span></span>
+<span id="cb18-26" class="hljs-ln-code"><a href="#cb18-26"></a>x <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()</span>
+<span id="cb18-27" class="hljs-ln-code"><a href="#cb18-27"></a></span>
+<span id="cb18-28" class="hljs-ln-code"><a href="#cb18-28"></a><span class="co"># Exit the modal by pressing "Escape"</span></span>
+<span id="cb18-29" class="hljs-ln-code"><a href="#cb18-29"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb18-30" class="hljs-ln-code"><a href="#cb18-30"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb18-31" class="hljs-ln-code"><a href="#cb18-31"></a>  <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="problem" class="slide level2">
 <h2>Problem</h2>
 <p><br><br></p>
@@ -1063,9 +1092,9 @@ Etienne Bacher
 <p><br></p>
 <p>To find the button “Ver Mais”, we used the following code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>remote_driver<span class="sc">$</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)<span class="sc">$</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">clickElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)<span class="sc">$</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">clickElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <p>But all buttons share the same <code>id</code>, so this code only selects the first button, not the others.</p>
@@ -1077,15 +1106,15 @@ Etienne Bacher
 <p><br></p>
 <p>This returns a list of elements, and we can then apply some function on each of them in a loop:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Make the list of elements</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb19-4"><a href="#cb19-4"></a></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co"># Highlight each button one by one</span></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
-<span id="cb19-7"><a href="#cb19-7"></a>  buttons[[i]]<span class="sc">$</span><span class="fu">highlightElement</span>()</span>
-<span id="cb19-8"><a href="#cb19-8"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">1</span>)</span>
-<span id="cb19-9"><a href="#cb19-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Make the list of elements</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="co"># Highlight each button one by one</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
+<span id="cb20-7"><a href="#cb20-7"></a>  buttons[[i]]<span class="sc">$</span><span class="fu">highlightElement</span>()</span>
+<span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">Sys.sleep</span>(<span class="dv">1</span>)</span>
+<span id="cb20-9"><a href="#cb20-9"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="loop-through-modals" class="slide level2">
@@ -1093,20 +1122,22 @@ Etienne Bacher
 <p><br></p>
 <p>Now that we have a way to open each modal, we can make a loop to get the HTML for each one:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
-<span id="cb20-2"><a href="#cb20-2"></a>  </span>
-<span id="cb20-3"><a href="#cb20-3"></a>  <span class="co"># open the modal</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>  buttons[[i]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb20-6"><a href="#cb20-6"></a>  </span>
-<span id="cb20-7"><a href="#cb20-7"></a>  <span class="co"># get the HTML and save it</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a>  tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb20-9"><a href="#cb20-9"></a>  <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, i, <span class="st">".html"</span>))</span>
-<span id="cb20-10"><a href="#cb20-10"></a>  </span>
-<span id="cb20-11"><a href="#cb20-11"></a>  <span class="co"># quit the modal (by pressing "Escape")</span></span>
-<span id="cb20-12"><a href="#cb20-12"></a>  body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb20-13"><a href="#cb20-13"></a>  </span>
-<span id="cb20-14"><a href="#cb20-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
+<span id="cb21-2"><a href="#cb21-2"></a>  </span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="co"># open the modal</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  buttons[[i]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb21-6"><a href="#cb21-6"></a>  </span>
+<span id="cb21-7"><a href="#cb21-7"></a>  <span class="co"># get the HTML and save it</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>  tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb21-9"><a href="#cb21-9"></a>  <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, i, <span class="st">".html"</span>))</span>
+<span id="cb21-10"><a href="#cb21-10"></a>  </span>
+<span id="cb21-11"><a href="#cb21-11"></a>  <span class="co"># quit the modal (by pressing "Escape")</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>  remote_driver<span class="sc">$</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a>    <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a>    <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb21-15"><a href="#cb21-15"></a>  </span>
+<span id="cb21-16"><a href="#cb21-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="generalize-for-each-page" class="slide level2">
@@ -1115,9 +1146,9 @@ Etienne Bacher
 <p>Find the button to go to the next page:</p>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>remote_driver<span class="sc">$</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">highlightElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>remote_driver<span class="sc">$</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">highlightElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="nested-loops" class="slide level2">
@@ -1141,109 +1172,111 @@ Etienne Bacher
 <p><br></p>
 <p>Pseudo-code:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb22-1" class="hljs-ln-code"><a href="#cb22-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb22-2" class="hljs-ln-code"><a href="#cb22-2"></a>  </span>
-<span id="cb22-3" class="hljs-ln-code"><a href="#cb22-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb22-4" class="hljs-ln-code"><a href="#cb22-4"></a>  </span>
-<span id="cb22-5" class="hljs-ln-code"><a href="#cb22-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb22-6" class="hljs-ln-code"><a href="#cb22-6"></a>    <span class="co"># open modal</span></span>
-<span id="cb22-7" class="hljs-ln-code"><a href="#cb22-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb22-8" class="hljs-ln-code"><a href="#cb22-8"></a>    <span class="co"># leave modal</span></span>
-<span id="cb22-9" class="hljs-ln-code"><a href="#cb22-9"></a>  }</span>
-<span id="cb22-10" class="hljs-ln-code"><a href="#cb22-10"></a>  </span>
-<span id="cb22-11" class="hljs-ln-code"><a href="#cb22-11"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
-<span id="cb22-12" class="hljs-ln-code"><a href="#cb22-12"></a>  <span class="co"># (except if we're on the last page)</span></span>
-<span id="cb22-13" class="hljs-ln-code"><a href="#cb22-13"></a>  </span>
-<span id="cb22-14" class="hljs-ln-code"><a href="#cb22-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb23-1" class="hljs-ln-code"><a href="#cb23-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb23-2" class="hljs-ln-code"><a href="#cb23-2"></a>  </span>
+<span id="cb23-3" class="hljs-ln-code"><a href="#cb23-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb23-4" class="hljs-ln-code"><a href="#cb23-4"></a>  </span>
+<span id="cb23-5" class="hljs-ln-code"><a href="#cb23-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb23-6" class="hljs-ln-code"><a href="#cb23-6"></a>    <span class="co"># open modal</span></span>
+<span id="cb23-7" class="hljs-ln-code"><a href="#cb23-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb23-8" class="hljs-ln-code"><a href="#cb23-8"></a>    <span class="co"># leave modal</span></span>
+<span id="cb23-9" class="hljs-ln-code"><a href="#cb23-9"></a>  }</span>
+<span id="cb23-10" class="hljs-ln-code"><a href="#cb23-10"></a>  </span>
+<span id="cb23-11" class="hljs-ln-code"><a href="#cb23-11"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
+<span id="cb23-12" class="hljs-ln-code"><a href="#cb23-12"></a>  <span class="co"># (except if we're on the last page)</span></span>
+<span id="cb23-13" class="hljs-ln-code"><a href="#cb23-13"></a>  </span>
+<span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-1" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
+<section id="section-1" class="slide level2">
+<h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
 <p>Pseudo-code:</p>
-<div class="sourceCode" id="cb23" data-code-line-numbers="3-5"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb23-1" class="hljs-ln-code"><a href="#cb23-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb23-2" class="hljs-ln-code"><a href="#cb23-2"></a>  </span>
-<span id="cb23-3" class="hljs-ln-code"><a href="#cb23-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb23-4" class="hljs-ln-code"><a href="#cb23-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb23-5" class="hljs-ln-code"><a href="#cb23-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb23-6" class="hljs-ln-code"><a href="#cb23-6"></a>  </span>
-<span id="cb23-7" class="hljs-ln-code"><a href="#cb23-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb23-8" class="hljs-ln-code"><a href="#cb23-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb23-9" class="hljs-ln-code"><a href="#cb23-9"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb23-10" class="hljs-ln-code"><a href="#cb23-10"></a>    <span class="co"># leave modal</span></span>
-<span id="cb23-11" class="hljs-ln-code"><a href="#cb23-11"></a>  }</span>
-<span id="cb23-12" class="hljs-ln-code"><a href="#cb23-12"></a>  </span>
-<span id="cb23-13" class="hljs-ln-code"><a href="#cb23-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
-<span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>  <span class="co"># (except if we're on the last page)</span></span>
-<span id="cb23-15" class="hljs-ln-code"><a href="#cb23-15"></a>  </span>
-<span id="cb23-16" class="hljs-ln-code"><a href="#cb23-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24" data-code-line-numbers="3-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb24-2"><a href="#cb24-2"></a>  </span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb24-6"><a href="#cb24-6"></a>  </span>
+<span id="cb24-7"><a href="#cb24-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb24-8"><a href="#cb24-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a>    <span class="co"># leave modal</span></span>
+<span id="cb24-11"><a href="#cb24-11"></a>  }</span>
+<span id="cb24-12"><a href="#cb24-12"></a>  </span>
+<span id="cb24-13"><a href="#cb24-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
+<span id="cb24-14"><a href="#cb24-14"></a>  <span class="co"># (except if we're on the last page)</span></span>
+<span id="cb24-15"><a href="#cb24-15"></a>  </span>
+<span id="cb24-16"><a href="#cb24-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
+<section id="section-2" class="slide level2">
+<h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
 <p>Make the “modal loop”:</p>
-<div class="sourceCode" id="cb24" data-code-line-numbers="7-22"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb24-1" class="hljs-ln-code"><a href="#cb24-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb24-2" class="hljs-ln-code"><a href="#cb24-2"></a></span>
-<span id="cb24-3" class="hljs-ln-code"><a href="#cb24-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb24-4" class="hljs-ln-code"><a href="#cb24-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb24-5" class="hljs-ln-code"><a href="#cb24-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb24-6" class="hljs-ln-code"><a href="#cb24-6"></a>  </span>
-<span id="cb24-7" class="hljs-ln-code"><a href="#cb24-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb24-8" class="hljs-ln-code"><a href="#cb24-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb24-9" class="hljs-ln-code"><a href="#cb24-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb24-10" class="hljs-ln-code"><a href="#cb24-10"></a></span>
-<span id="cb24-11" class="hljs-ln-code"><a href="#cb24-11"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb24-12" class="hljs-ln-code"><a href="#cb24-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb24-13" class="hljs-ln-code"><a href="#cb24-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb24-14" class="hljs-ln-code"><a href="#cb24-14"></a></span>
-<span id="cb24-15" class="hljs-ln-code"><a href="#cb24-15"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb24-16" class="hljs-ln-code"><a href="#cb24-16"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb24-17" class="hljs-ln-code"><a href="#cb24-17"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb24-18" class="hljs-ln-code"><a href="#cb24-18"></a></span>
-<span id="cb24-19" class="hljs-ln-code"><a href="#cb24-19"></a>  }</span>
-<span id="cb24-20" class="hljs-ln-code"><a href="#cb24-20"></a>  </span>
-<span id="cb24-21" class="hljs-ln-code"><a href="#cb24-21"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
-<span id="cb24-22" class="hljs-ln-code"><a href="#cb24-22"></a>  <span class="co"># (except if we're on the last page)</span></span>
-<span id="cb24-23" class="hljs-ln-code"><a href="#cb24-23"></a>  </span>
-<span id="cb24-24" class="hljs-ln-code"><a href="#cb24-24"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25" data-code-line-numbers="7-22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb25-2"><a href="#cb25-2"></a></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb25-6"><a href="#cb25-6"></a>  </span>
+<span id="cb25-7"><a href="#cb25-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb25-8"><a href="#cb25-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb25-10"><a href="#cb25-10"></a></span>
+<span id="cb25-11"><a href="#cb25-11"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb25-12"><a href="#cb25-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb25-13"><a href="#cb25-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb25-14"><a href="#cb25-14"></a></span>
+<span id="cb25-15"><a href="#cb25-15"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb25-17"><a href="#cb25-17"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb25-18"><a href="#cb25-18"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb25-19"><a href="#cb25-19"></a></span>
+<span id="cb25-20"><a href="#cb25-20"></a>  }</span>
+<span id="cb25-21"><a href="#cb25-21"></a>  </span>
+<span id="cb25-22"><a href="#cb25-22"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
+<span id="cb25-23"><a href="#cb25-23"></a>  <span class="co"># (except if we're on the last page)</span></span>
+<span id="cb25-24"><a href="#cb25-24"></a>  </span>
+<span id="cb25-25"><a href="#cb25-25"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-3" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title"></h2>
+<section id="section-3" class="slide level2">
+<h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
 <p>Make the “page loop”:</p>
-<div class="sourceCode" id="cb25" data-code-line-numbers="25-33"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb25-1" class="hljs-ln-code"><a href="#cb25-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb25-2" class="hljs-ln-code"><a href="#cb25-2"></a>  </span>
-<span id="cb25-3" class="hljs-ln-code"><a href="#cb25-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb25-4" class="hljs-ln-code"><a href="#cb25-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb25-5" class="hljs-ln-code"><a href="#cb25-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb25-6" class="hljs-ln-code"><a href="#cb25-6"></a>    </span>
-<span id="cb25-7" class="hljs-ln-code"><a href="#cb25-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb25-8" class="hljs-ln-code"><a href="#cb25-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb25-9" class="hljs-ln-code"><a href="#cb25-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb25-10" class="hljs-ln-code"><a href="#cb25-10"></a></span>
-<span id="cb25-11" class="hljs-ln-code"><a href="#cb25-11"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb25-12" class="hljs-ln-code"><a href="#cb25-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb25-13" class="hljs-ln-code"><a href="#cb25-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
-<span id="cb25-14" class="hljs-ln-code"><a href="#cb25-14"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb25-15" class="hljs-ln-code"><a href="#cb25-15"></a></span>
-<span id="cb25-16" class="hljs-ln-code"><a href="#cb25-16"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb25-17" class="hljs-ln-code"><a href="#cb25-17"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb25-18" class="hljs-ln-code"><a href="#cb25-18"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb25-19" class="hljs-ln-code"><a href="#cb25-19"></a></span>
-<span id="cb25-20" class="hljs-ln-code"><a href="#cb25-20"></a>  }</span>
-<span id="cb25-21" class="hljs-ln-code"><a href="#cb25-21"></a>  </span>
-<span id="cb25-22" class="hljs-ln-code"><a href="#cb25-22"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
-<span id="cb25-23" class="hljs-ln-code"><a href="#cb25-23"></a>  <span class="co"># we're on the last one)</span></span>
-<span id="cb25-24" class="hljs-ln-code"><a href="#cb25-24"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb25-25" class="hljs-ln-code"><a href="#cb25-25"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb25-26" class="hljs-ln-code"><a href="#cb25-26"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb25-27" class="hljs-ln-code"><a href="#cb25-27"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb25-28" class="hljs-ln-code"><a href="#cb25-28"></a>  }</span>
-<span id="cb25-29" class="hljs-ln-code"><a href="#cb25-29"></a>  </span>
-<span id="cb25-30" class="hljs-ln-code"><a href="#cb25-30"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26" data-code-line-numbers="25-33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb26-2"><a href="#cb26-2"></a>  </span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb26-6"><a href="#cb26-6"></a>    </span>
+<span id="cb26-7"><a href="#cb26-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb26-8"><a href="#cb26-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb26-10"><a href="#cb26-10"></a></span>
+<span id="cb26-11"><a href="#cb26-11"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb26-12"><a href="#cb26-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb26-13"><a href="#cb26-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
+<span id="cb26-14"><a href="#cb26-14"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb26-15"><a href="#cb26-15"></a></span>
+<span id="cb26-16"><a href="#cb26-16"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb26-17"><a href="#cb26-17"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb26-18"><a href="#cb26-18"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb26-19"><a href="#cb26-19"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb26-20"><a href="#cb26-20"></a></span>
+<span id="cb26-21"><a href="#cb26-21"></a>  }</span>
+<span id="cb26-22"><a href="#cb26-22"></a>  </span>
+<span id="cb26-23"><a href="#cb26-23"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb26-24"><a href="#cb26-24"></a>  <span class="co"># we're on the last one)</span></span>
+<span id="cb26-25"><a href="#cb26-25"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb26-26"><a href="#cb26-26"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb26-27"><a href="#cb26-27"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb26-28"><a href="#cb26-28"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb26-29"><a href="#cb26-29"></a>  }</span>
+<span id="cb26-30"><a href="#cb26-30"></a>  </span>
+<span id="cb26-31"><a href="#cb26-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 
@@ -1251,7 +1284,7 @@ Etienne Bacher
 <p>Great, let’s run everything!</p>
 <p><br></p>
 <div class="fragment">
-<p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; Not yet</p>
+<p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; Not so fast</p>
 </div>
 </section></section>
 <section id="error-handling" class="title-slide slide level1 center">
@@ -1268,11 +1301,21 @@ Etienne Bacher
 <h2>Catching errors</h2>
 <p><br></p>
 <p>The default behavior of errors is to stop the script, which leads to this kind of situation:</p>
+<div class="fragment">
 <ul>
-<li><p>7pm - “great, I can just run the code during the night and go home”</p></li>
-<li><p>7:02pm - <em>error in the code</em></p></li>
-<li><p>8am - “Fu@?!”</p></li>
+<li>7pm - “great, I can just run the code during the night and go home”</li>
 </ul>
+</div>
+<div class="fragment">
+<ul>
+<li>7:02pm - <em>error in the code</em></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>8am - “Fu@?!”</li>
+</ul>
+</div>
 <div class="fragment">
 <p><br></p>
 <p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; need to handle errors with <code>tryCatch()</code></p>
@@ -1283,7 +1326,7 @@ Etienne Bacher
 <p><br></p>
 <p>Example: try to compute <code>log("a")</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">log</span>(<span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">log</span>(<span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in log("a"): non-numeric argument to mathematical function</code></pre>
 </div>
@@ -1295,46 +1338,23 @@ Etienne Bacher
 </section>
 <section id="catching-errors-3" class="slide level2">
 <h2>Catching errors</h2>
-<div class="sourceCode" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">tryCatch</span>(</span>
-<span id="cb28-2"><a href="#cb28-2"></a>  <span class="co"># try to evaluate the expression</span></span>
-<span id="cb28-3"><a href="#cb28-3"></a>  {</span>
-<span id="cb28-4"><a href="#cb28-4"></a>    <span class="sc">&lt;</span>EXPRESSION<span class="sc">&gt;</span>,</span>
-<span id="cb28-5"><a href="#cb28-5"></a>  },</span>
-<span id="cb28-6"><a href="#cb28-6"></a>  </span>
-<span id="cb28-7"><a href="#cb28-7"></a>  <span class="co"># what happens if there's a warning?</span></span>
-<span id="cb28-8"><a href="#cb28-8"></a>  <span class="at">warning =</span> <span class="cf">function</span>(w) {</span>
-<span id="cb28-9"><a href="#cb28-9"></a>    <span class="sc">&lt;</span>BEHAVIOR WHEN THERE IS A WARNING<span class="sc">&gt;</span></span>
-<span id="cb28-10"><a href="#cb28-10"></a>  },</span>
-<span id="cb28-11"><a href="#cb28-11"></a>  <span class="co"># what happens if there's an error?</span></span>
-<span id="cb28-12"><a href="#cb28-12"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb28-13"><a href="#cb28-13"></a>    <span class="sc">&lt;</span>BEHAVIOR WHEN THERE IS AN ERROR<span class="sc">&gt;</span></span>
-<span id="cb28-14"><a href="#cb28-14"></a>  }</span>
-<span id="cb28-15"><a href="#cb28-15"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="catching-errors-4" class="slide level2">
-<h2>Catching errors</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">tryCatch</span>(</span>
+<div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">tryCatch</span>(</span>
 <span id="cb29-2"><a href="#cb29-2"></a>  <span class="co"># try to evaluate the expression</span></span>
 <span id="cb29-3"><a href="#cb29-3"></a>  {</span>
-<span id="cb29-4"><a href="#cb29-4"></a>    <span class="fu">log</span>(<span class="st">"a"</span>)</span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="sc">&lt;</span>EXPRESSION<span class="sc">&gt;</span>,</span>
 <span id="cb29-5"><a href="#cb29-5"></a>  },</span>
 <span id="cb29-6"><a href="#cb29-6"></a>  </span>
 <span id="cb29-7"><a href="#cb29-7"></a>  <span class="co"># what happens if there's a warning?</span></span>
 <span id="cb29-8"><a href="#cb29-8"></a>  <span class="at">warning =</span> <span class="cf">function</span>(w) {</span>
-<span id="cb29-9"><a href="#cb29-9"></a>    <span class="fu">print</span>(<span class="st">"There was a warning. Here's the message:"</span>)</span>
-<span id="cb29-10"><a href="#cb29-10"></a>    <span class="fu">print</span>(w)</span>
-<span id="cb29-11"><a href="#cb29-11"></a>  },</span>
-<span id="cb29-12"><a href="#cb29-12"></a>  </span>
-<span id="cb29-13"><a href="#cb29-13"></a>  <span class="co"># what happens if there's an error?</span></span>
-<span id="cb29-14"><a href="#cb29-14"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb29-15"><a href="#cb29-15"></a>    <span class="fu">print</span>(<span class="st">"There was an error. Returning `NA`."</span>)</span>
-<span id="cb29-16"><a href="#cb29-16"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
-<span id="cb29-17"><a href="#cb29-17"></a>  }</span>
-<span id="cb29-18"><a href="#cb29-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<span id="cb29-9"><a href="#cb29-9"></a>    <span class="sc">&lt;</span>BEHAVIOR WHEN THERE IS A WARNING<span class="sc">&gt;</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a>  },</span>
+<span id="cb29-11"><a href="#cb29-11"></a>  <span class="co"># what happens if there's an error?</span></span>
+<span id="cb29-12"><a href="#cb29-12"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb29-13"><a href="#cb29-13"></a>    <span class="sc">&lt;</span>BEHAVIOR WHEN THERE IS AN ERROR<span class="sc">&gt;</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a>  }</span>
+<span id="cb29-15"><a href="#cb29-15"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="catching-errors-5" class="slide level2">
+<section id="catching-errors-4" class="slide level2">
 <h2>Catching errors</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">tryCatch</span>(</span>
@@ -1355,6 +1375,29 @@ Etienne Bacher
 <span id="cb30-16"><a href="#cb30-16"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
 <span id="cb30-17"><a href="#cb30-17"></a>  }</span>
 <span id="cb30-18"><a href="#cb30-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="catching-errors-5" class="slide level2">
+<h2>Catching errors</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">tryCatch</span>(</span>
+<span id="cb31-2"><a href="#cb31-2"></a>  <span class="co"># try to evaluate the expression</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>  {</span>
+<span id="cb31-4"><a href="#cb31-4"></a>    <span class="fu">log</span>(<span class="st">"a"</span>)</span>
+<span id="cb31-5"><a href="#cb31-5"></a>  },</span>
+<span id="cb31-6"><a href="#cb31-6"></a>  </span>
+<span id="cb31-7"><a href="#cb31-7"></a>  <span class="co"># what happens if there's a warning?</span></span>
+<span id="cb31-8"><a href="#cb31-8"></a>  <span class="at">warning =</span> <span class="cf">function</span>(w) {</span>
+<span id="cb31-9"><a href="#cb31-9"></a>    <span class="fu">print</span>(<span class="st">"There was a warning. Here's the message:"</span>)</span>
+<span id="cb31-10"><a href="#cb31-10"></a>    <span class="fu">print</span>(w)</span>
+<span id="cb31-11"><a href="#cb31-11"></a>  },</span>
+<span id="cb31-12"><a href="#cb31-12"></a>  </span>
+<span id="cb31-13"><a href="#cb31-13"></a>  <span class="co"># what happens if there's an error?</span></span>
+<span id="cb31-14"><a href="#cb31-14"></a>  <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb31-15"><a href="#cb31-15"></a>    <span class="fu">print</span>(<span class="st">"There was an error. Returning `NA`."</span>)</span>
+<span id="cb31-16"><a href="#cb31-16"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb31-17"><a href="#cb31-17"></a>  }</span>
+<span id="cb31-18"><a href="#cb31-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "There was an error. Returning `NA`."</code></pre>
 </div>
@@ -1364,23 +1407,6 @@ Etienne Bacher
 </div>
 </section>
 <section id="example-with-a-loop" class="slide level2">
-<h2>Example with a loop</h2>
-<p>Create a fake loop that goes from <code>i = 1:10</code> and creates a list containing <code>i*2</code>. Let’s say that there’s an error when <code>i = 3</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>x <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
-<span id="cb33-3"><a href="#cb33-3"></a>  </span>
-<span id="cb33-4"><a href="#cb33-4"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) {</span>
-<span id="cb33-5"><a href="#cb33-5"></a>    <span class="fu">stop</span>(<span class="st">"This is an error."</span>)  <span class="co"># intentional error</span></span>
-<span id="cb33-6"><a href="#cb33-6"></a>  } <span class="cf">else</span> {</span>
-<span id="cb33-7"><a href="#cb33-7"></a>    x[[i]] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>i</span>
-<span id="cb33-8"><a href="#cb33-8"></a>  }</span>
-<span id="cb33-9"><a href="#cb33-9"></a>  </span>
-<span id="cb33-10"><a href="#cb33-10"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"i = "</span>, i, <span class="st">". So far so good."</span>))</span>
-<span id="cb33-11"><a href="#cb33-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="example-with-a-loop-1" class="slide level2">
 <h2>Example with a loop</h2>
 <p>Create a fake loop that goes from <code>i = 1:10</code> and creates a list containing <code>i*2</code>. Let’s say that there’s an error when <code>i = 3</code>:</p>
 <div class="cell">
@@ -1395,6 +1421,23 @@ Etienne Bacher
 <span id="cb34-9"><a href="#cb34-9"></a>  </span>
 <span id="cb34-10"><a href="#cb34-10"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"i = "</span>, i, <span class="st">". So far so good."</span>))</span>
 <span id="cb34-11"><a href="#cb34-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="example-with-a-loop-1" class="slide level2">
+<h2>Example with a loop</h2>
+<p>Create a fake loop that goes from <code>i = 1:10</code> and creates a list containing <code>i*2</code>. Let’s say that there’s an error when <code>i = 3</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>x <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb35-2"><a href="#cb35-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb35-3"><a href="#cb35-3"></a>  </span>
+<span id="cb35-4"><a href="#cb35-4"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) {</span>
+<span id="cb35-5"><a href="#cb35-5"></a>    <span class="fu">stop</span>(<span class="st">"This is an error."</span>)  <span class="co"># intentional error</span></span>
+<span id="cb35-6"><a href="#cb35-6"></a>  } <span class="cf">else</span> {</span>
+<span id="cb35-7"><a href="#cb35-7"></a>    x[[i]] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>i</span>
+<span id="cb35-8"><a href="#cb35-8"></a>  }</span>
+<span id="cb35-9"><a href="#cb35-9"></a>  </span>
+<span id="cb35-10"><a href="#cb35-10"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"i = "</span>, i, <span class="st">". So far so good."</span>))</span>
+<span id="cb35-11"><a href="#cb35-11"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "i = 1. So far so good."
 [1] "i = 2. So far so good."</code></pre>
@@ -1408,7 +1451,7 @@ Etienne Bacher
 <h2>Example with a loop</h2>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">print</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
 [1] 2
@@ -1424,26 +1467,26 @@ Etienne Bacher
 <h2>Catching the error</h2>
 <p><br></p>
 <p>Now, let’s catch the error to avoid breaking the loop:</p>
-<div class="sourceCode" id="cb39" data-code-line-numbers="5-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a>x <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb39-2"><a href="#cb39-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
-<span id="cb39-3"><a href="#cb39-3"></a>  </span>
-<span id="cb39-4"><a href="#cb39-4"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) {</span>
-<span id="cb39-5"><a href="#cb39-5"></a>    <span class="fu">tryCatch</span>(</span>
-<span id="cb39-6"><a href="#cb39-6"></a>      {</span>
-<span id="cb39-7"><a href="#cb39-7"></a>        <span class="fu">stop</span>(<span class="st">"This is an error."</span>) <span class="co"># intentional error</span></span>
-<span id="cb39-8"><a href="#cb39-8"></a>      },</span>
-<span id="cb39-9"><a href="#cb39-9"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb39-10"><a href="#cb39-10"></a>        <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"Error for i = "</span>, i, <span class="st">". `x[["</span>, i, <span class="st">"]]` will be NULL."</span>))</span>
-<span id="cb39-11"><a href="#cb39-11"></a>        x[[i]] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb39-12"><a href="#cb39-12"></a>      }</span>
-<span id="cb39-13"><a href="#cb39-13"></a>    )</span>
-<span id="cb39-14"><a href="#cb39-14"></a>  } <span class="cf">else</span> {</span>
-<span id="cb39-15"><a href="#cb39-15"></a>    x[[i]] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>i</span>
-<span id="cb39-16"><a href="#cb39-16"></a>  }</span>
-<span id="cb39-17"><a href="#cb39-17"></a>  </span>
-<span id="cb39-18"><a href="#cb39-18"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"i = "</span>, i, <span class="st">". So far so good."</span>))</span>
-<span id="cb39-19"><a href="#cb39-19"></a>  </span>
-<span id="cb39-20"><a href="#cb39-20"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb40" data-code-line-numbers="5-13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a>x <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb40-2"><a href="#cb40-2"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb40-3"><a href="#cb40-3"></a>  </span>
+<span id="cb40-4"><a href="#cb40-4"></a>  <span class="cf">if</span> (i <span class="sc">==</span> <span class="dv">3</span>) {</span>
+<span id="cb40-5"><a href="#cb40-5"></a>    <span class="fu">tryCatch</span>(</span>
+<span id="cb40-6"><a href="#cb40-6"></a>      {</span>
+<span id="cb40-7"><a href="#cb40-7"></a>        <span class="fu">stop</span>(<span class="st">"This is an error."</span>) <span class="co"># intentional error</span></span>
+<span id="cb40-8"><a href="#cb40-8"></a>      },</span>
+<span id="cb40-9"><a href="#cb40-9"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb40-10"><a href="#cb40-10"></a>        <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"Error for i = "</span>, i, <span class="st">". `x[["</span>, i, <span class="st">"]]` will be NULL."</span>))</span>
+<span id="cb40-11"><a href="#cb40-11"></a>        x[[i]] <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb40-12"><a href="#cb40-12"></a>      }</span>
+<span id="cb40-13"><a href="#cb40-13"></a>    )</span>
+<span id="cb40-14"><a href="#cb40-14"></a>  } <span class="cf">else</span> {</span>
+<span id="cb40-15"><a href="#cb40-15"></a>    x[[i]] <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>i</span>
+<span id="cb40-16"><a href="#cb40-16"></a>  }</span>
+<span id="cb40-17"><a href="#cb40-17"></a>  </span>
+<span id="cb40-18"><a href="#cb40-18"></a>  <span class="fu">print</span>(<span class="fu">paste0</span>(<span class="st">"i = "</span>, i, <span class="st">". So far so good."</span>))</span>
+<span id="cb40-19"><a href="#cb40-19"></a>  </span>
+<span id="cb40-20"><a href="#cb40-20"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="catching-the-error-1" class="slide level2">
 <h2>Catching the error</h2>
@@ -1519,41 +1562,42 @@ NULL
 </section>
 <section id="loading-times-2" class="slide level2">
 <h2>Loading times</h2>
-<div class="sourceCode" id="cb42" data-code-line-numbers="11,22,32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb42-2"><a href="#cb42-2"></a>  </span>
-<span id="cb42-3"><a href="#cb42-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb42-4"><a href="#cb42-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb42-5"><a href="#cb42-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb42-6"><a href="#cb42-6"></a>    </span>
-<span id="cb42-7"><a href="#cb42-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb42-8"><a href="#cb42-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb42-9"><a href="#cb42-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb42-10"><a href="#cb42-10"></a></span>
-<span id="cb42-11"><a href="#cb42-11"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb42-12"><a href="#cb42-12"></a></span>
-<span id="cb42-13"><a href="#cb42-13"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb42-14"><a href="#cb42-14"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb42-15"><a href="#cb42-15"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
-<span id="cb42-16"><a href="#cb42-16"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb42-17"><a href="#cb42-17"></a></span>
-<span id="cb42-18"><a href="#cb42-18"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb42-19"><a href="#cb42-19"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb42-20"><a href="#cb42-20"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb42-21"><a href="#cb42-21"></a></span>
-<span id="cb42-22"><a href="#cb42-22"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb42-23"><a href="#cb42-23"></a>  }</span>
-<span id="cb42-24"><a href="#cb42-24"></a>  </span>
-<span id="cb42-25"><a href="#cb42-25"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
-<span id="cb42-26"><a href="#cb42-26"></a>  <span class="co"># we're on the last one)</span></span>
-<span id="cb42-27"><a href="#cb42-27"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb42-28"><a href="#cb42-28"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb42-29"><a href="#cb42-29"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb42-30"><a href="#cb42-30"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb42-31"><a href="#cb42-31"></a></span>
-<span id="cb42-32"><a href="#cb42-32"></a>    <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
-<span id="cb42-33"><a href="#cb42-33"></a>  }</span>
-<span id="cb42-34"><a href="#cb42-34"></a>  </span>
-<span id="cb42-35"><a href="#cb42-35"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb43" data-code-line-numbers="11,22,32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb43-2"><a href="#cb43-2"></a>  </span>
+<span id="cb43-3"><a href="#cb43-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb43-4"><a href="#cb43-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb43-5"><a href="#cb43-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb43-6"><a href="#cb43-6"></a>    </span>
+<span id="cb43-7"><a href="#cb43-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb43-8"><a href="#cb43-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb43-9"><a href="#cb43-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb43-10"><a href="#cb43-10"></a></span>
+<span id="cb43-11"><a href="#cb43-11"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb43-12"><a href="#cb43-12"></a></span>
+<span id="cb43-13"><a href="#cb43-13"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb43-14"><a href="#cb43-14"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb43-15"><a href="#cb43-15"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
+<span id="cb43-16"><a href="#cb43-16"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb43-17"><a href="#cb43-17"></a></span>
+<span id="cb43-18"><a href="#cb43-18"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb43-19"><a href="#cb43-19"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb43-20"><a href="#cb43-20"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb43-21"><a href="#cb43-21"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb43-22"><a href="#cb43-22"></a></span>
+<span id="cb43-23"><a href="#cb43-23"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb43-24"><a href="#cb43-24"></a>  }</span>
+<span id="cb43-25"><a href="#cb43-25"></a>  </span>
+<span id="cb43-26"><a href="#cb43-26"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb43-27"><a href="#cb43-27"></a>  <span class="co"># we're on the last one)</span></span>
+<span id="cb43-28"><a href="#cb43-28"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb43-29"><a href="#cb43-29"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb43-30"><a href="#cb43-30"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb43-31"><a href="#cb43-31"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb43-32"><a href="#cb43-32"></a></span>
+<span id="cb43-33"><a href="#cb43-33"></a>    <span class="fu">Sys.sleep</span>(<span class="dv">3</span>)</span>
+<span id="cb43-34"><a href="#cb43-34"></a>  }</span>
+<span id="cb43-35"><a href="#cb43-35"></a>  </span>
+<span id="cb43-36"><a href="#cb43-36"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="loading-times-3" class="slide level2">
 <h2>Loading times</h2>
@@ -1577,99 +1621,100 @@ NULL
 <ul>
 <li><code>if</code> condition: perform the inside only <strong>if</strong> the condition is true</li>
 </ul>
-<div class="sourceCode" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="cf">if</span> (x <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
-<span id="cb43-2"><a href="#cb43-2"></a>  <span class="co"># do something</span></span>
-<span id="cb43-3"><a href="#cb43-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="cf">if</span> (x <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
+<span id="cb44-2"><a href="#cb44-2"></a>  <span class="co"># do something</span></span>
+<span id="cb44-3"><a href="#cb44-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>for</code> loop: perform the inside <strong>for</strong> all values</li>
 </ul>
-<div class="sourceCode" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
-<span id="cb44-2"><a href="#cb44-2"></a>  <span class="co"># do something with `i`</span></span>
-<span id="cb44-3"><a href="#cb44-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) {</span>
+<span id="cb45-2"><a href="#cb45-2"></a>  <span class="co"># do something with `i`</span></span>
+<span id="cb45-3"><a href="#cb45-3"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li><code>while</code> loop: perform the inside <strong>while</strong> the condition is true</li>
 </ul>
-<div class="sourceCode" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="cf">while</span> (x <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
-<span id="cb45-2"><a href="#cb45-2"></a>  <span class="co"># do something </span></span>
-<span id="cb45-3"><a href="#cb45-3"></a>  <span class="co"># need to update `x` here otherwise infinite loop!</span></span>
-<span id="cb45-4"><a href="#cb45-4"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="cf">while</span> (x <span class="sc">&gt;</span> <span class="dv">2</span>) {</span>
+<span id="cb46-2"><a href="#cb46-2"></a>  <span class="co"># do something </span></span>
+<span id="cb46-3"><a href="#cb46-3"></a>  <span class="co"># need to update `x` here otherwise infinite loop!</span></span>
+<span id="cb46-4"><a href="#cb46-4"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="loading-times-6" class="slide level2">
 <h2>Loading times</h2>
 <p>In our case, we want to check whether we can find the buttons “Ver Mais”:</p>
-<div class="sourceCode" id="cb46" data-code-line-numbers="1,2,3,17|5-12|13-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="co"># Try to find the buttons "Ver Mais"</span></span>
-<span id="cb46-2"><a href="#cb46-2"></a>all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb46-3"><a href="#cb46-3"></a><span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
-<span id="cb46-4"><a href="#cb46-4"></a>  <span class="fu">tryCatch</span>(</span>
-<span id="cb46-5"><a href="#cb46-5"></a>    {</span>
-<span id="cb46-6"><a href="#cb46-6"></a>      test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb46-7"><a href="#cb46-7"></a>        <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb46-8"><a href="#cb46-8"></a>        </span>
-<span id="cb46-9"><a href="#cb46-9"></a>      <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
-<span id="cb46-10"><a href="#cb46-10"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb46-11"><a href="#cb46-11"></a>      }</span>
-<span id="cb46-12"><a href="#cb46-12"></a>    },</span>
-<span id="cb46-13"><a href="#cb46-13"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb46-14"><a href="#cb46-14"></a>      <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb46-15"><a href="#cb46-15"></a>    }</span>
-<span id="cb46-16"><a href="#cb46-16"></a>  )</span>
-<span id="cb46-17"><a href="#cb46-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb47" data-code-line-numbers="1,2,3,17|5-12|13-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Try to find the buttons "Ver Mais"</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a>all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb47-3"><a href="#cb47-3"></a><span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
+<span id="cb47-4"><a href="#cb47-4"></a>  <span class="fu">tryCatch</span>(</span>
+<span id="cb47-5"><a href="#cb47-5"></a>    {</span>
+<span id="cb47-6"><a href="#cb47-6"></a>      test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb47-7"><a href="#cb47-7"></a>        <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb47-8"><a href="#cb47-8"></a>        </span>
+<span id="cb47-9"><a href="#cb47-9"></a>      <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
+<span id="cb47-10"><a href="#cb47-10"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb47-11"><a href="#cb47-11"></a>      }</span>
+<span id="cb47-12"><a href="#cb47-12"></a>    },</span>
+<span id="cb47-13"><a href="#cb47-13"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb47-14"><a href="#cb47-14"></a>      <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb47-15"><a href="#cb47-15"></a>    }</span>
+<span id="cb47-16"><a href="#cb47-16"></a>  )</span>
+<span id="cb47-17"><a href="#cb47-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This loop will run until the buttons can be found.</p>
 </section>
 <section id="loading-times-7" class="slide level2">
 <h2>Loading times</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb47-2"><a href="#cb47-2"></a></span>
-<span id="cb47-3"><a href="#cb47-3"></a>  <span class="co"># Try to find the buttons "Ver Mais"</span></span>
-<span id="cb47-4"><a href="#cb47-4"></a>  all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb47-5"><a href="#cb47-5"></a>  <span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
-<span id="cb47-6"><a href="#cb47-6"></a>    <span class="fu">tryCatch</span>(</span>
-<span id="cb47-7"><a href="#cb47-7"></a>      {</span>
-<span id="cb47-8"><a href="#cb47-8"></a>        test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb47-9"><a href="#cb47-9"></a>          <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb47-10"><a href="#cb47-10"></a></span>
-<span id="cb47-11"><a href="#cb47-11"></a>        <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
-<span id="cb47-12"><a href="#cb47-12"></a>          all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb47-13"><a href="#cb47-13"></a>        }</span>
-<span id="cb47-14"><a href="#cb47-14"></a>      },</span>
-<span id="cb47-15"><a href="#cb47-15"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb47-16"><a href="#cb47-16"></a>        <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb47-17"><a href="#cb47-17"></a>      }</span>
-<span id="cb47-18"><a href="#cb47-18"></a>    )</span>
-<span id="cb47-19"><a href="#cb47-19"></a>  }</span>
-<span id="cb47-20"><a href="#cb47-20"></a></span>
-<span id="cb47-21"><a href="#cb47-21"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb47-22"><a href="#cb47-22"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb47-23"><a href="#cb47-23"></a></span>
-<span id="cb47-24"><a href="#cb47-24"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
-<span id="cb47-25"><a href="#cb47-25"></a></span>
-<span id="cb47-26"><a href="#cb47-26"></a>    <span class="co"># open modal</span></span>
-<span id="cb47-27"><a href="#cb47-27"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb47-28"><a href="#cb47-28"></a></span>
-<span id="cb47-29"><a href="#cb47-29"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb47-30"><a href="#cb47-30"></a></span>
-<span id="cb47-31"><a href="#cb47-31"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb47-32"><a href="#cb47-32"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb47-33"><a href="#cb47-33"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb47-34"><a href="#cb47-34"></a></span>
-<span id="cb47-35"><a href="#cb47-35"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb47-36"><a href="#cb47-36"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb47-37"><a href="#cb47-37"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb47-38"><a href="#cb47-38"></a></span>
-<span id="cb47-39"><a href="#cb47-39"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb47-40"><a href="#cb47-40"></a></span>
-<span id="cb47-41"><a href="#cb47-41"></a>  }</span>
-<span id="cb47-42"><a href="#cb47-42"></a></span>
-<span id="cb47-43"><a href="#cb47-43"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb47-44"><a href="#cb47-44"></a>  <span class="co"># the last one)</span></span>
-<span id="cb47-45"><a href="#cb47-45"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb47-46"><a href="#cb47-46"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb47-47"><a href="#cb47-47"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb47-48"><a href="#cb47-48"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb47-49"><a href="#cb47-49"></a>  }</span>
-<span id="cb47-50"><a href="#cb47-50"></a></span>
-<span id="cb47-51"><a href="#cb47-51"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb48-2"><a href="#cb48-2"></a></span>
+<span id="cb48-3"><a href="#cb48-3"></a>  <span class="co"># Try to find the buttons "Ver Mais"</span></span>
+<span id="cb48-4"><a href="#cb48-4"></a>  all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb48-5"><a href="#cb48-5"></a>  <span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
+<span id="cb48-6"><a href="#cb48-6"></a>    <span class="fu">tryCatch</span>(</span>
+<span id="cb48-7"><a href="#cb48-7"></a>      {</span>
+<span id="cb48-8"><a href="#cb48-8"></a>        test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb48-9"><a href="#cb48-9"></a>          <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb48-10"><a href="#cb48-10"></a></span>
+<span id="cb48-11"><a href="#cb48-11"></a>        <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
+<span id="cb48-12"><a href="#cb48-12"></a>          all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb48-13"><a href="#cb48-13"></a>        }</span>
+<span id="cb48-14"><a href="#cb48-14"></a>      },</span>
+<span id="cb48-15"><a href="#cb48-15"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb48-16"><a href="#cb48-16"></a>        <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb48-17"><a href="#cb48-17"></a>      }</span>
+<span id="cb48-18"><a href="#cb48-18"></a>    )</span>
+<span id="cb48-19"><a href="#cb48-19"></a>  }</span>
+<span id="cb48-20"><a href="#cb48-20"></a></span>
+<span id="cb48-21"><a href="#cb48-21"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb48-22"><a href="#cb48-22"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb48-23"><a href="#cb48-23"></a></span>
+<span id="cb48-24"><a href="#cb48-24"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
+<span id="cb48-25"><a href="#cb48-25"></a></span>
+<span id="cb48-26"><a href="#cb48-26"></a>    <span class="co"># open modal</span></span>
+<span id="cb48-27"><a href="#cb48-27"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb48-28"><a href="#cb48-28"></a></span>
+<span id="cb48-29"><a href="#cb48-29"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb48-30"><a href="#cb48-30"></a></span>
+<span id="cb48-31"><a href="#cb48-31"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb48-32"><a href="#cb48-32"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb48-33"><a href="#cb48-33"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb48-34"><a href="#cb48-34"></a></span>
+<span id="cb48-35"><a href="#cb48-35"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb48-36"><a href="#cb48-36"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb48-37"><a href="#cb48-37"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb48-38"><a href="#cb48-38"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb48-39"><a href="#cb48-39"></a></span>
+<span id="cb48-40"><a href="#cb48-40"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb48-41"><a href="#cb48-41"></a></span>
+<span id="cb48-42"><a href="#cb48-42"></a>  }</span>
+<span id="cb48-43"><a href="#cb48-43"></a></span>
+<span id="cb48-44"><a href="#cb48-44"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
+<span id="cb48-45"><a href="#cb48-45"></a>  <span class="co"># the last one)</span></span>
+<span id="cb48-46"><a href="#cb48-46"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb48-47"><a href="#cb48-47"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb48-48"><a href="#cb48-48"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb48-49"><a href="#cb48-49"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb48-50"><a href="#cb48-50"></a>  }</span>
+<span id="cb48-51"><a href="#cb48-51"></a></span>
+<span id="cb48-52"><a href="#cb48-52"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -1696,23 +1741,23 @@ NULL
 <section id="display-information" class="slide level2">
 <h2>Display information</h2>
 <p>Use <code>message()</code> at several places in the loop to display information:</p>
-<div class="sourceCode" id="cb48" data-code-line-numbers="3,10,16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb48-2"><a href="#cb48-2"></a>  </span>
-<span id="cb48-3"><a href="#cb48-3"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
-<span id="cb48-4"><a href="#cb48-4"></a>   </span>
-<span id="cb48-5"><a href="#cb48-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb48-6"><a href="#cb48-6"></a>    <span class="co"># open modal</span></span>
-<span id="cb48-7"><a href="#cb48-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb48-8"><a href="#cb48-8"></a>    <span class="co"># leave modal</span></span>
-<span id="cb48-9"><a href="#cb48-9"></a>    </span>
-<span id="cb48-10"><a href="#cb48-10"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
-<span id="cb48-11"><a href="#cb48-11"></a>  }</span>
-<span id="cb48-12"><a href="#cb48-12"></a>  </span>
-<span id="cb48-13"><a href="#cb48-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
-<span id="cb48-14"><a href="#cb48-14"></a>  <span class="co"># if we're on the last page)</span></span>
-<span id="cb48-15"><a href="#cb48-15"></a>  </span>
-<span id="cb48-16"><a href="#cb48-16"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
-<span id="cb48-17"><a href="#cb48-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb49" data-code-line-numbers="3,10,16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb49-2"><a href="#cb49-2"></a>  </span>
+<span id="cb49-3"><a href="#cb49-3"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
+<span id="cb49-4"><a href="#cb49-4"></a>   </span>
+<span id="cb49-5"><a href="#cb49-5"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb49-6"><a href="#cb49-6"></a>    <span class="co"># open modal</span></span>
+<span id="cb49-7"><a href="#cb49-7"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb49-8"><a href="#cb49-8"></a>    <span class="co"># leave modal</span></span>
+<span id="cb49-9"><a href="#cb49-9"></a>    </span>
+<span id="cb49-10"><a href="#cb49-10"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
+<span id="cb49-11"><a href="#cb49-11"></a>  }</span>
+<span id="cb49-12"><a href="#cb49-12"></a>  </span>
+<span id="cb49-13"><a href="#cb49-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
+<span id="cb49-14"><a href="#cb49-14"></a>  <span class="co"># if we're on the last page)</span></span>
+<span id="cb49-15"><a href="#cb49-15"></a>  </span>
+<span id="cb49-16"><a href="#cb49-16"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
+<span id="cb49-17"><a href="#cb49-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="save-information" class="slide level2">
 <h2>Save information</h2>
@@ -1728,27 +1773,27 @@ NULL
 <section id="save-information-1" class="slide level2">
 <h2>Save information</h2>
 <p>Example using the package <code>logger</code> (there are also <code>logging</code>, <code>futile.logger</code>, etc.):</p>
-<div class="sourceCode" id="cb49" data-code-line-numbers="1,2,3,7,14,20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1"></a><span class="co"># save calls to message() in an external file</span></span>
-<span id="cb49-2"><a href="#cb49-2"></a><span class="fu">log_appender</span>(<span class="fu">appender_file</span>(<span class="st">"data/modals/00_logfile"</span>))</span>
-<span id="cb49-3"><a href="#cb49-3"></a><span class="fu">log_messages</span>()</span>
-<span id="cb49-4"><a href="#cb49-4"></a></span>
-<span id="cb49-5"><a href="#cb49-5"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb49-6"><a href="#cb49-6"></a>  </span>
-<span id="cb49-7"><a href="#cb49-7"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
-<span id="cb49-8"><a href="#cb49-8"></a>   </span>
-<span id="cb49-9"><a href="#cb49-9"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb49-10"><a href="#cb49-10"></a>    <span class="co"># open modal</span></span>
-<span id="cb49-11"><a href="#cb49-11"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb49-12"><a href="#cb49-12"></a>    <span class="co"># leave modal</span></span>
-<span id="cb49-13"><a href="#cb49-13"></a>    </span>
-<span id="cb49-14"><a href="#cb49-14"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
-<span id="cb49-15"><a href="#cb49-15"></a>  }</span>
-<span id="cb49-16"><a href="#cb49-16"></a>  </span>
-<span id="cb49-17"><a href="#cb49-17"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
-<span id="cb49-18"><a href="#cb49-18"></a>  <span class="co"># if we're on the last page)</span></span>
-<span id="cb49-19"><a href="#cb49-19"></a>  </span>
-<span id="cb49-20"><a href="#cb49-20"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
-<span id="cb49-21"><a href="#cb49-21"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb50" data-code-line-numbers="1,2,3,7,14,20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="co"># save calls to message() in an external file</span></span>
+<span id="cb50-2"><a href="#cb50-2"></a><span class="fu">log_appender</span>(<span class="fu">appender_file</span>(<span class="st">"data/modals/00_logfile"</span>))</span>
+<span id="cb50-3"><a href="#cb50-3"></a><span class="fu">log_messages</span>()</span>
+<span id="cb50-4"><a href="#cb50-4"></a></span>
+<span id="cb50-5"><a href="#cb50-5"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb50-6"><a href="#cb50-6"></a>  </span>
+<span id="cb50-7"><a href="#cb50-7"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
+<span id="cb50-8"><a href="#cb50-8"></a>   </span>
+<span id="cb50-9"><a href="#cb50-9"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb50-10"><a href="#cb50-10"></a>    <span class="co"># open modal</span></span>
+<span id="cb50-11"><a href="#cb50-11"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb50-12"><a href="#cb50-12"></a>    <span class="co"># leave modal</span></span>
+<span id="cb50-13"><a href="#cb50-13"></a>    </span>
+<span id="cb50-14"><a href="#cb50-14"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
+<span id="cb50-15"><a href="#cb50-15"></a>  }</span>
+<span id="cb50-16"><a href="#cb50-16"></a>  </span>
+<span id="cb50-17"><a href="#cb50-17"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page (except</span></span>
+<span id="cb50-18"><a href="#cb50-18"></a>  <span class="co"># if we're on the last page)</span></span>
+<span id="cb50-19"><a href="#cb50-19"></a>  </span>
+<span id="cb50-20"><a href="#cb50-20"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
+<span id="cb50-21"><a href="#cb50-21"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="save-information-2" class="slide level2">
 <h2>Save information</h2>
@@ -1758,64 +1803,64 @@ NULL
 <section id="final-loop" class="slide level2">
 <h2>Final loop</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb50-2"><a href="#cb50-2"></a></span>
-<span id="cb50-3"><a href="#cb50-3"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
-<span id="cb50-4"><a href="#cb50-4"></a></span>
-<span id="cb50-5"><a href="#cb50-5"></a>  <span class="co"># Try to find the buttons "Ver Mais"</span></span>
-<span id="cb50-6"><a href="#cb50-6"></a>  all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb50-7"><a href="#cb50-7"></a>  <span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
-<span id="cb50-8"><a href="#cb50-8"></a>    <span class="fu">tryCatch</span>(</span>
-<span id="cb50-9"><a href="#cb50-9"></a>      {</span>
-<span id="cb50-10"><a href="#cb50-10"></a>        test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb50-11"><a href="#cb50-11"></a>          <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb50-12"><a href="#cb50-12"></a></span>
-<span id="cb50-13"><a href="#cb50-13"></a>        <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
-<span id="cb50-14"><a href="#cb50-14"></a>          all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb50-15"><a href="#cb50-15"></a>        }</span>
-<span id="cb50-16"><a href="#cb50-16"></a>      },</span>
-<span id="cb50-17"><a href="#cb50-17"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb50-18"><a href="#cb50-18"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">FALSE</span></span>
-<span id="cb50-19"><a href="#cb50-19"></a>        <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb50-20"><a href="#cb50-20"></a>      }</span>
-<span id="cb50-21"><a href="#cb50-21"></a>    )</span>
-<span id="cb50-22"><a href="#cb50-22"></a>  }</span>
-<span id="cb50-23"><a href="#cb50-23"></a></span>
-<span id="cb50-24"><a href="#cb50-24"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb50-25"><a href="#cb50-25"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb50-26"><a href="#cb50-26"></a></span>
-<span id="cb50-27"><a href="#cb50-27"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
-<span id="cb50-28"><a href="#cb50-28"></a></span>
-<span id="cb50-29"><a href="#cb50-29"></a>    <span class="co"># open modal</span></span>
-<span id="cb50-30"><a href="#cb50-30"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb50-31"><a href="#cb50-31"></a></span>
-<span id="cb50-32"><a href="#cb50-32"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb50-33"><a href="#cb50-33"></a></span>
-<span id="cb50-34"><a href="#cb50-34"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb50-35"><a href="#cb50-35"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb50-36"><a href="#cb50-36"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb50-37"><a href="#cb50-37"></a></span>
-<span id="cb50-38"><a href="#cb50-38"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb50-39"><a href="#cb50-39"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb50-40"><a href="#cb50-40"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb50-41"><a href="#cb50-41"></a></span>
-<span id="cb50-42"><a href="#cb50-42"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
-<span id="cb50-43"><a href="#cb50-43"></a></span>
-<span id="cb50-44"><a href="#cb50-44"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb50-45"><a href="#cb50-45"></a></span>
-<span id="cb50-46"><a href="#cb50-46"></a>  }</span>
-<span id="cb50-47"><a href="#cb50-47"></a></span>
-<span id="cb50-48"><a href="#cb50-48"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb50-49"><a href="#cb50-49"></a>  <span class="co"># the last one)</span></span>
-<span id="cb50-50"><a href="#cb50-50"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb50-51"><a href="#cb50-51"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb50-52"><a href="#cb50-52"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb50-53"><a href="#cb50-53"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb50-54"><a href="#cb50-54"></a>  }</span>
-<span id="cb50-55"><a href="#cb50-55"></a></span>
-<span id="cb50-56"><a href="#cb50-56"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
-<span id="cb50-57"><a href="#cb50-57"></a></span>
-<span id="cb50-58"><a href="#cb50-58"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb51-2"><a href="#cb51-2"></a></span>
+<span id="cb51-3"><a href="#cb51-3"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Start scraping of page"</span>, page_index))</span>
+<span id="cb51-4"><a href="#cb51-4"></a></span>
+<span id="cb51-5"><a href="#cb51-5"></a>  <span class="co"># Try to find the buttons "Ver Mais"</span></span>
+<span id="cb51-6"><a href="#cb51-6"></a>  all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb51-7"><a href="#cb51-7"></a>  <span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
+<span id="cb51-8"><a href="#cb51-8"></a>    <span class="fu">tryCatch</span>(</span>
+<span id="cb51-9"><a href="#cb51-9"></a>      {</span>
+<span id="cb51-10"><a href="#cb51-10"></a>        test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb51-11"><a href="#cb51-11"></a>          <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb51-12"><a href="#cb51-12"></a></span>
+<span id="cb51-13"><a href="#cb51-13"></a>        <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
+<span id="cb51-14"><a href="#cb51-14"></a>          all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb51-15"><a href="#cb51-15"></a>        }</span>
+<span id="cb51-16"><a href="#cb51-16"></a>      },</span>
+<span id="cb51-17"><a href="#cb51-17"></a>      <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb51-18"><a href="#cb51-18"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">FALSE</span></span>
+<span id="cb51-19"><a href="#cb51-19"></a>        <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb51-20"><a href="#cb51-20"></a>      }</span>
+<span id="cb51-21"><a href="#cb51-21"></a>    )</span>
+<span id="cb51-22"><a href="#cb51-22"></a>  }</span>
+<span id="cb51-23"><a href="#cb51-23"></a></span>
+<span id="cb51-24"><a href="#cb51-24"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb51-25"><a href="#cb51-25"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb51-26"><a href="#cb51-26"></a></span>
+<span id="cb51-27"><a href="#cb51-27"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
+<span id="cb51-28"><a href="#cb51-28"></a></span>
+<span id="cb51-29"><a href="#cb51-29"></a>    <span class="co"># open modal</span></span>
+<span id="cb51-30"><a href="#cb51-30"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb51-31"><a href="#cb51-31"></a></span>
+<span id="cb51-32"><a href="#cb51-32"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb51-33"><a href="#cb51-33"></a></span>
+<span id="cb51-34"><a href="#cb51-34"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb51-35"><a href="#cb51-35"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb51-36"><a href="#cb51-36"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb51-37"><a href="#cb51-37"></a></span>
+<span id="cb51-38"><a href="#cb51-38"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb51-39"><a href="#cb51-39"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
+<span id="cb51-40"><a href="#cb51-40"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb51-41"><a href="#cb51-41"></a></span>
+<span id="cb51-42"><a href="#cb51-42"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
+<span id="cb51-43"><a href="#cb51-43"></a></span>
+<span id="cb51-44"><a href="#cb51-44"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb51-45"><a href="#cb51-45"></a></span>
+<span id="cb51-46"><a href="#cb51-46"></a>  }</span>
+<span id="cb51-47"><a href="#cb51-47"></a></span>
+<span id="cb51-48"><a href="#cb51-48"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
+<span id="cb51-49"><a href="#cb51-49"></a>  <span class="co"># the last one)</span></span>
+<span id="cb51-50"><a href="#cb51-50"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb51-51"><a href="#cb51-51"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb51-52"><a href="#cb51-52"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb51-53"><a href="#cb51-53"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb51-54"><a href="#cb51-54"></a>  }</span>
+<span id="cb51-55"><a href="#cb51-55"></a></span>
+<span id="cb51-56"><a href="#cb51-56"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
+<span id="cb51-57"><a href="#cb51-57"></a></span>
+<span id="cb51-58"><a href="#cb51-58"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -1836,56 +1881,56 @@ NULL
 
 <p>Make a function to clean the HTML. It returns a list containing a dataframe with the personal info, and a dataframe with the “network” of the individual.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1"></a>extract_information <span class="ot">&lt;-</span> <span class="cf">function</span>(raw_html) {</span>
-<span id="cb51-2"><a href="#cb51-2"></a>  </span>
-<span id="cb51-3"><a href="#cb51-3"></a>  <span class="co"># Extract the table "Registros relacionados"</span></span>
-<span id="cb51-4"><a href="#cb51-4"></a>  </span>
-<span id="cb51-5"><a href="#cb51-5"></a>  content <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
-<span id="cb51-6"><a href="#cb51-6"></a>    <span class="fu">html_nodes</span>(<span class="st">"#detalhe_conteudo"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb51-7"><a href="#cb51-7"></a>    <span class="fu">html_table</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb51-8"><a href="#cb51-8"></a>    purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="dv">1</span>)</span>
-<span id="cb51-9"><a href="#cb51-9"></a>  </span>
-<span id="cb51-10"><a href="#cb51-10"></a>  relacionados <span class="ot">&lt;-</span> content[<span class="dv">16</span><span class="sc">:</span><span class="fu">nrow</span>(content),] <span class="sc">%&gt;%</span></span>
-<span id="cb51-11"><a href="#cb51-11"></a>    <span class="fu">mutate</span>(</span>
-<span id="cb51-12"><a href="#cb51-12"></a>      <span class="fu">across</span>(</span>
-<span id="cb51-13"><a href="#cb51-13"></a>        <span class="at">.cols =</span> <span class="fu">everything</span>(),</span>
-<span id="cb51-14"><a href="#cb51-14"></a>        <span class="at">.fns =</span> <span class="sc">~</span> {<span class="fu">ifelse</span>(.x <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, .x)}</span>
-<span id="cb51-15"><a href="#cb51-15"></a>      )</span>
-<span id="cb51-16"><a href="#cb51-16"></a>    )</span>
-<span id="cb51-17"><a href="#cb51-17"></a>  </span>
-<span id="cb51-18"><a href="#cb51-18"></a>  <span class="fu">colnames</span>(relacionados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Livro"</span>, <span class="st">"Pagina"</span>, <span class="st">"Familia"</span>, <span class="st">"Chegada"</span>,</span>
-<span id="cb51-19"><a href="#cb51-19"></a>                              <span class="st">"Sobrenome"</span>, <span class="st">"Nome"</span>, <span class="st">"Idade"</span>, <span class="st">"Sexo"</span>,</span>
-<span id="cb51-20"><a href="#cb51-20"></a>                              <span class="st">"Parentesco"</span>, <span class="st">"Nacionalidade"</span>,</span>
-<span id="cb51-21"><a href="#cb51-21"></a>                              <span class="st">"Vapor"</span>, <span class="st">"Est.Civil"</span>, <span class="st">"Religiao"</span>)</span>
-<span id="cb51-22"><a href="#cb51-22"></a>  </span>
-<span id="cb51-23"><a href="#cb51-23"></a>  </span>
-<span id="cb51-24"><a href="#cb51-24"></a>  <span class="co"># Extract text information from "registro de matricula" and create a</span></span>
-<span id="cb51-25"><a href="#cb51-25"></a>  <span class="co"># dataframe from it</span></span>
-<span id="cb51-26"><a href="#cb51-26"></a>  name_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
-<span id="cb51-27"><a href="#cb51-27"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/strong'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb51-28"><a href="#cb51-28"></a>    <span class="fu">html_text2</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb51-29"><a href="#cb51-29"></a>    <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">""</span>, .) <span class="sc">%&gt;%</span></span>
-<span id="cb51-30"><a href="#cb51-30"></a>    <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">t"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb51-31"><a href="#cb51-31"></a>    <span class="fu">unlist</span>()</span>
-<span id="cb51-32"><a href="#cb51-32"></a>  </span>
-<span id="cb51-33"><a href="#cb51-33"></a>  value_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
-<span id="cb51-34"><a href="#cb51-34"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/div'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb51-35"><a href="#cb51-35"></a>    <span class="fu">html_text2</span>()</span>
-<span id="cb51-36"><a href="#cb51-36"></a>  </span>
-<span id="cb51-37"><a href="#cb51-37"></a>  registro <span class="ot">&lt;-</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb51-38"><a href="#cb51-38"></a>    <span class="fu">rbind</span>(value_items) <span class="sc">%&gt;%</span></span>
-<span id="cb51-39"><a href="#cb51-39"></a>    <span class="fu">as_tibble</span>()</span>
-<span id="cb51-40"><a href="#cb51-40"></a>  </span>
-<span id="cb51-41"><a href="#cb51-41"></a>  <span class="fu">colnames</span>(registro) <span class="ot">&lt;-</span> name_items</span>
-<span id="cb51-42"><a href="#cb51-42"></a>  </span>
-<span id="cb51-43"><a href="#cb51-43"></a>  <span class="fu">return</span>(</span>
-<span id="cb51-44"><a href="#cb51-44"></a>    <span class="fu">list</span>(</span>
-<span id="cb51-45"><a href="#cb51-45"></a>      <span class="at">main =</span> registro,</span>
-<span id="cb51-46"><a href="#cb51-46"></a>      <span class="at">related =</span> relacionados</span>
-<span id="cb51-47"><a href="#cb51-47"></a>    )</span>
-<span id="cb51-48"><a href="#cb51-48"></a>  )</span>
-<span id="cb51-49"><a href="#cb51-49"></a>  </span>
-<span id="cb51-50"><a href="#cb51-50"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a>extract_information <span class="ot">&lt;-</span> <span class="cf">function</span>(raw_html) {</span>
+<span id="cb52-2"><a href="#cb52-2"></a>  </span>
+<span id="cb52-3"><a href="#cb52-3"></a>  <span class="co"># Extract the table "Registros relacionados"</span></span>
+<span id="cb52-4"><a href="#cb52-4"></a>  </span>
+<span id="cb52-5"><a href="#cb52-5"></a>  content <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb52-6"><a href="#cb52-6"></a>    <span class="fu">html_nodes</span>(<span class="st">"#detalhe_conteudo"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-7"><a href="#cb52-7"></a>    <span class="fu">html_table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb52-8"><a href="#cb52-8"></a>    purrr<span class="sc">::</span><span class="fu">pluck</span>(<span class="dv">1</span>)</span>
+<span id="cb52-9"><a href="#cb52-9"></a>  </span>
+<span id="cb52-10"><a href="#cb52-10"></a>  relacionados <span class="ot">&lt;-</span> content[<span class="dv">16</span><span class="sc">:</span><span class="fu">nrow</span>(content),] <span class="sc">%&gt;%</span></span>
+<span id="cb52-11"><a href="#cb52-11"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb52-12"><a href="#cb52-12"></a>      <span class="fu">across</span>(</span>
+<span id="cb52-13"><a href="#cb52-13"></a>        <span class="at">.cols =</span> <span class="fu">everything</span>(),</span>
+<span id="cb52-14"><a href="#cb52-14"></a>        <span class="at">.fns =</span> <span class="sc">~</span> {<span class="fu">ifelse</span>(.x <span class="sc">==</span> <span class="st">""</span>, <span class="cn">NA</span>, .x)}</span>
+<span id="cb52-15"><a href="#cb52-15"></a>      )</span>
+<span id="cb52-16"><a href="#cb52-16"></a>    )</span>
+<span id="cb52-17"><a href="#cb52-17"></a>  </span>
+<span id="cb52-18"><a href="#cb52-18"></a>  <span class="fu">colnames</span>(relacionados) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Livro"</span>, <span class="st">"Pagina"</span>, <span class="st">"Familia"</span>, <span class="st">"Chegada"</span>,</span>
+<span id="cb52-19"><a href="#cb52-19"></a>                              <span class="st">"Sobrenome"</span>, <span class="st">"Nome"</span>, <span class="st">"Idade"</span>, <span class="st">"Sexo"</span>,</span>
+<span id="cb52-20"><a href="#cb52-20"></a>                              <span class="st">"Parentesco"</span>, <span class="st">"Nacionalidade"</span>,</span>
+<span id="cb52-21"><a href="#cb52-21"></a>                              <span class="st">"Vapor"</span>, <span class="st">"Est.Civil"</span>, <span class="st">"Religiao"</span>)</span>
+<span id="cb52-22"><a href="#cb52-22"></a>  </span>
+<span id="cb52-23"><a href="#cb52-23"></a>  </span>
+<span id="cb52-24"><a href="#cb52-24"></a>  <span class="co"># Extract text information from "registro de matricula" and create a</span></span>
+<span id="cb52-25"><a href="#cb52-25"></a>  <span class="co"># dataframe from it</span></span>
+<span id="cb52-26"><a href="#cb52-26"></a>  name_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb52-27"><a href="#cb52-27"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/strong'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-28"><a href="#cb52-28"></a>    <span class="fu">html_text2</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb52-29"><a href="#cb52-29"></a>    <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">n"</span>, <span class="st">""</span>, .) <span class="sc">%&gt;%</span></span>
+<span id="cb52-30"><a href="#cb52-30"></a>    <span class="fu">strsplit</span>(<span class="at">split =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">t"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-31"><a href="#cb52-31"></a>    <span class="fu">unlist</span>()</span>
+<span id="cb52-32"><a href="#cb52-32"></a>  </span>
+<span id="cb52-33"><a href="#cb52-33"></a>  value_items <span class="ot">&lt;-</span> raw_html <span class="sc">%&gt;%</span></span>
+<span id="cb52-34"><a href="#cb52-34"></a>    <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="detalhe_conteudo"]/table[1]/tbody/tr/td/div'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb52-35"><a href="#cb52-35"></a>    <span class="fu">html_text2</span>()</span>
+<span id="cb52-36"><a href="#cb52-36"></a>  </span>
+<span id="cb52-37"><a href="#cb52-37"></a>  registro <span class="ot">&lt;-</span> <span class="fu">data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb52-38"><a href="#cb52-38"></a>    <span class="fu">rbind</span>(value_items) <span class="sc">%&gt;%</span></span>
+<span id="cb52-39"><a href="#cb52-39"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb52-40"><a href="#cb52-40"></a>  </span>
+<span id="cb52-41"><a href="#cb52-41"></a>  <span class="fu">colnames</span>(registro) <span class="ot">&lt;-</span> name_items</span>
+<span id="cb52-42"><a href="#cb52-42"></a>  </span>
+<span id="cb52-43"><a href="#cb52-43"></a>  <span class="fu">return</span>(</span>
+<span id="cb52-44"><a href="#cb52-44"></a>    <span class="fu">list</span>(</span>
+<span id="cb52-45"><a href="#cb52-45"></a>      <span class="at">main =</span> registro,</span>
+<span id="cb52-46"><a href="#cb52-46"></a>      <span class="at">related =</span> relacionados</span>
+<span id="cb52-47"><a href="#cb52-47"></a>    )</span>
+<span id="cb52-48"><a href="#cb52-48"></a>  )</span>
+<span id="cb52-49"><a href="#cb52-49"></a>  </span>
+<span id="cb52-50"><a href="#cb52-50"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section class="slide level2">
@@ -1893,22 +1938,22 @@ NULL
 <p>Apply this function to all files:</p>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1"></a><span class="co"># Get all paths to the html files</span></span>
-<span id="cb52-2"><a href="#cb52-2"></a>list_html_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/modals"</span>, <span class="at">pattern =</span> <span class="st">"page"</span>,</span>
-<span id="cb52-3"><a href="#cb52-3"></a>                              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb52-4"><a href="#cb52-4"></a></span>
-<span id="cb52-5"><a href="#cb52-5"></a><span class="co"># Apply the previous function to each of those file</span></span>
-<span id="cb52-6"><a href="#cb52-6"></a>list_out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(list_html_files, <span class="cf">function</span>(x) {</span>
-<span id="cb52-7"><a href="#cb52-7"></a>  <span class="fu">read_html</span>(x) <span class="sc">|&gt;</span> </span>
-<span id="cb52-8"><a href="#cb52-8"></a>    <span class="fu">extract_information</span>() </span>
-<span id="cb52-9"><a href="#cb52-9"></a>})</span>
-<span id="cb52-10"><a href="#cb52-10"></a></span>
-<span id="cb52-11"><a href="#cb52-11"></a><span class="co"># Aggregate the results in two (single) datasets</span></span>
-<span id="cb52-12"><a href="#cb52-12"></a>main <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb52-13"><a href="#cb52-13"></a>  <span class="fu">as_tibble</span>()</span>
-<span id="cb52-14"><a href="#cb52-14"></a></span>
-<span id="cb52-15"><a href="#cb52-15"></a>relations <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb52-16"><a href="#cb52-16"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="co"># Get all paths to the html files</span></span>
+<span id="cb53-2"><a href="#cb53-2"></a>list_html_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/modals"</span>, <span class="at">pattern =</span> <span class="st">"page"</span>,</span>
+<span id="cb53-3"><a href="#cb53-3"></a>                              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb53-4"><a href="#cb53-4"></a></span>
+<span id="cb53-5"><a href="#cb53-5"></a><span class="co"># Apply the previous function to each of those file</span></span>
+<span id="cb53-6"><a href="#cb53-6"></a>list_out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(list_html_files, <span class="cf">function</span>(x) {</span>
+<span id="cb53-7"><a href="#cb53-7"></a>  <span class="fu">read_html</span>(x) <span class="sc">|&gt;</span> </span>
+<span id="cb53-8"><a href="#cb53-8"></a>    <span class="fu">extract_information</span>() </span>
+<span id="cb53-9"><a href="#cb53-9"></a>})</span>
+<span id="cb53-10"><a href="#cb53-10"></a></span>
+<span id="cb53-11"><a href="#cb53-11"></a><span class="co"># Aggregate the results in two (single) datasets</span></span>
+<span id="cb53-12"><a href="#cb53-12"></a>main <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb53-13"><a href="#cb53-13"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb53-14"><a href="#cb53-14"></a></span>
+<span id="cb53-15"><a href="#cb53-15"></a>relations <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb53-16"><a href="#cb53-16"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
@@ -1999,31 +2044,31 @@ NULL
 <h2>Appendix</h2>
 <p>For reference, here’s the code to extract the list of contributors:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1"></a><span class="fu">library</span>(rvest)</span>
-<span id="cb53-2"><a href="#cb53-2"></a></span>
-<span id="cb53-3"><a href="#cb53-3"></a>html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"contributors.html"</span>) </span>
-<span id="cb53-4"><a href="#cb53-4"></a></span>
-<span id="cb53-5"><a href="#cb53-5"></a>bullet_points <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb53-6"><a href="#cb53-6"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12 &gt; ul &gt; li"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb53-7"><a href="#cb53-7"></a>  <span class="fu">html_text</span>()</span>
-<span id="cb53-8"><a href="#cb53-8"></a></span>
-<span id="cb53-9"><a href="#cb53-9"></a>blockquote <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb53-10"><a href="#cb53-10"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12.col-sm-7 &gt; blockquote"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb53-11"><a href="#cb53-11"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb53-12"><a href="#cb53-12"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
-<span id="cb53-13"><a href="#cb53-13"></a></span>
-<span id="cb53-14"><a href="#cb53-14"></a>blockquote <span class="ot">&lt;-</span> blockquote[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb53-15"><a href="#cb53-15"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
-<span id="cb53-16"><a href="#cb53-16"></a></span>
-<span id="cb53-17"><a href="#cb53-17"></a>others <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
-<span id="cb53-18"><a href="#cb53-18"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">"/html/body/div/div[1]/div[2]/p[5]"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb53-19"><a href="#cb53-19"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb53-20"><a href="#cb53-20"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
-<span id="cb53-21"><a href="#cb53-21"></a></span>
-<span id="cb53-22"><a href="#cb53-22"></a>others <span class="ot">&lt;-</span> others[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
-<span id="cb53-23"><a href="#cb53-23"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
-<span id="cb53-24"><a href="#cb53-24"></a></span>
-<span id="cb53-25"><a href="#cb53-25"></a>all_contributors <span class="ot">&lt;-</span> <span class="fu">c</span>(bullet_points, blockquote, others)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb54-2"><a href="#cb54-2"></a></span>
+<span id="cb54-3"><a href="#cb54-3"></a>html <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">"contributors.html"</span>) </span>
+<span id="cb54-4"><a href="#cb54-4"></a></span>
+<span id="cb54-5"><a href="#cb54-5"></a>bullet_points <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb54-6"><a href="#cb54-6"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12 &gt; ul &gt; li"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-7"><a href="#cb54-7"></a>  <span class="fu">html_text</span>()</span>
+<span id="cb54-8"><a href="#cb54-8"></a></span>
+<span id="cb54-9"><a href="#cb54-9"></a>blockquote <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb54-10"><a href="#cb54-10"></a>  <span class="fu">html_elements</span>(<span class="at">css =</span> <span class="st">"div.col-xs-12.col-sm-7 &gt; blockquote"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-11"><a href="#cb54-11"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb54-12"><a href="#cb54-12"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
+<span id="cb54-13"><a href="#cb54-13"></a></span>
+<span id="cb54-14"><a href="#cb54-14"></a>blockquote <span class="ot">&lt;-</span> blockquote[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb54-15"><a href="#cb54-15"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
+<span id="cb54-16"><a href="#cb54-16"></a></span>
+<span id="cb54-17"><a href="#cb54-17"></a>others <span class="ot">&lt;-</span> html <span class="sc">%&gt;%</span> </span>
+<span id="cb54-18"><a href="#cb54-18"></a>  <span class="fu">html_elements</span>(<span class="at">xpath =</span> <span class="st">"/html/body/div/div[1]/div[2]/p[5]"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb54-19"><a href="#cb54-19"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb54-20"><a href="#cb54-20"></a>  <span class="fu">strsplit</span>(., <span class="at">split =</span> <span class="st">", "</span>)</span>
+<span id="cb54-21"><a href="#cb54-21"></a></span>
+<span id="cb54-22"><a href="#cb54-22"></a>others <span class="ot">&lt;-</span> others[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> </span>
+<span id="cb54-23"><a href="#cb54-23"></a>  <span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">r|</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">.|and"</span>, <span class="st">""</span>, .)</span>
+<span id="cb54-24"><a href="#cb54-24"></a></span>
+<span id="cb54-25"><a href="#cb54-25"></a>all_contributors <span class="ot">&lt;-</span> <span class="fu">c</span>(bullet_points, blockquote, others)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="appendix-1" class="slide level2">
@@ -2115,39 +2160,39 @@ NULL
 <h2 data-id="quarto-animate-title">Appendix</h2>
 <p>Let’s rebuild this <code>POST</code> request from R using the package <code>httr</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb55-1" class="hljs-ln-code"><a href="#cb55-1"></a><span class="fu">library</span>(httr)</span>
-<span id="cb55-2" class="hljs-ln-code"><a href="#cb55-2"></a></span>
-<span id="cb55-3" class="hljs-ln-code"><a href="#cb55-3"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
-<span id="cb55-4" class="hljs-ln-code"><a href="#cb55-4"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
-<span id="cb55-5" class="hljs-ln-code"><a href="#cb55-5"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
-<span id="cb55-6" class="hljs-ln-code"><a href="#cb55-6"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
-<span id="cb55-7" class="hljs-ln-code"><a href="#cb55-7"></a>  ),</span>
-<span id="cb55-8" class="hljs-ln-code"><a href="#cb55-8"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
-<span id="cb55-9" class="hljs-ln-code"><a href="#cb55-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb56-1" class="hljs-ln-code"><a href="#cb56-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb56-2" class="hljs-ln-code"><a href="#cb56-2"></a></span>
+<span id="cb56-3" class="hljs-ln-code"><a href="#cb56-3"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
+<span id="cb56-4" class="hljs-ln-code"><a href="#cb56-4"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
+<span id="cb56-5" class="hljs-ln-code"><a href="#cb56-5"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
+<span id="cb56-6" class="hljs-ln-code"><a href="#cb56-6"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
+<span id="cb56-7" class="hljs-ln-code"><a href="#cb56-7"></a>  ),</span>
+<span id="cb56-8" class="hljs-ln-code"><a href="#cb56-8"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
+<span id="cb56-9" class="hljs-ln-code"><a href="#cb56-9"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="appendix-6" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Appendix</h2>
 <p>Extract the data from the server response:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb56-1" class="hljs-ln-code"><a href="#cb56-1"></a><span class="fu">library</span>(httr)</span>
-<span id="cb56-2" class="hljs-ln-code"><a href="#cb56-2"></a><span class="fu">library</span>(xml2)</span>
-<span id="cb56-3" class="hljs-ln-code"><a href="#cb56-3"></a><span class="fu">library</span>(jsonlite)</span>
-<span id="cb56-4" class="hljs-ln-code"><a href="#cb56-4"></a></span>
-<span id="cb56-5" class="hljs-ln-code"><a href="#cb56-5"></a><span class="co"># make the POST request with the parameters needed</span></span>
-<span id="cb56-6" class="hljs-ln-code"><a href="#cb56-6"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
-<span id="cb56-7" class="hljs-ln-code"><a href="#cb56-7"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
-<span id="cb56-8" class="hljs-ln-code"><a href="#cb56-8"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
-<span id="cb56-9" class="hljs-ln-code"><a href="#cb56-9"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
-<span id="cb56-10" class="hljs-ln-code"><a href="#cb56-10"></a>  ),</span>
-<span id="cb56-11" class="hljs-ln-code"><a href="#cb56-11"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
-<span id="cb56-12" class="hljs-ln-code"><a href="#cb56-12"></a>)</span>
-<span id="cb56-13" class="hljs-ln-code"><a href="#cb56-13"></a></span>
-<span id="cb56-14" class="hljs-ln-code"><a href="#cb56-14"></a><span class="co"># convert output to a list</span></span>
-<span id="cb56-15" class="hljs-ln-code"><a href="#cb56-15"></a>out <span class="ot">&lt;-</span> <span class="fu">as_list</span>(<span class="fu">content</span>(x))</span>
-<span id="cb56-16" class="hljs-ln-code"><a href="#cb56-16"></a></span>
-<span id="cb56-17" class="hljs-ln-code"><a href="#cb56-17"></a><span class="co"># convert output to a dataframe</span></span>
-<span id="cb56-18" class="hljs-ln-code"><a href="#cb56-18"></a><span class="fu">fromJSON</span>(<span class="fu">unlist</span>(out))<span class="sc">$</span>dados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb57-1" class="hljs-ln-code"><a href="#cb57-1"></a><span class="fu">library</span>(httr)</span>
+<span id="cb57-2" class="hljs-ln-code"><a href="#cb57-2"></a><span class="fu">library</span>(xml2)</span>
+<span id="cb57-3" class="hljs-ln-code"><a href="#cb57-3"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb57-4" class="hljs-ln-code"><a href="#cb57-4"></a></span>
+<span id="cb57-5" class="hljs-ln-code"><a href="#cb57-5"></a><span class="co"># make the POST request with the parameters needed</span></span>
+<span id="cb57-6" class="hljs-ln-code"><a href="#cb57-6"></a>x <span class="ot">&lt;-</span> <span class="fu">POST</span>(</span>
+<span id="cb57-7" class="hljs-ln-code"><a href="#cb57-7"></a>  <span class="st">"http://www.arquivoestado.sp.gov.br/site/acervo/memoria_do_imigrante/getHospedariaDetalhe"</span>,</span>
+<span id="cb57-8" class="hljs-ln-code"><a href="#cb57-8"></a>  <span class="at">body =</span> <span class="fu">list</span>(</span>
+<span id="cb57-9" class="hljs-ln-code"><a href="#cb57-9"></a>    <span class="at">id =</span> <span class="st">"92276"</span></span>
+<span id="cb57-10" class="hljs-ln-code"><a href="#cb57-10"></a>  ),</span>
+<span id="cb57-11" class="hljs-ln-code"><a href="#cb57-11"></a>  <span class="at">encode =</span> <span class="st">"multipart"</span></span>
+<span id="cb57-12" class="hljs-ln-code"><a href="#cb57-12"></a>)</span>
+<span id="cb57-13" class="hljs-ln-code"><a href="#cb57-13"></a></span>
+<span id="cb57-14" class="hljs-ln-code"><a href="#cb57-14"></a><span class="co"># convert output to a list</span></span>
+<span id="cb57-15" class="hljs-ln-code"><a href="#cb57-15"></a>out <span class="ot">&lt;-</span> <span class="fu">as_list</span>(<span class="fu">content</span>(x))</span>
+<span id="cb57-16" class="hljs-ln-code"><a href="#cb57-16"></a></span>
+<span id="cb57-17" class="hljs-ln-code"><a href="#cb57-17"></a><span class="co"># convert output to a dataframe</span></span>
+<span id="cb57-18" class="hljs-ln-code"><a href="#cb57-18"></a><span class="fu">fromJSON</span>(<span class="fu">unlist</span>(out))<span class="sc">$</span>dados</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="your-turn" class="slide level2">
@@ -2188,7 +2233,7 @@ NULL
 'smaller': false,
 'pdfSeparateFragments': true,
 'autoAnimateEasing': "ease",
-'autoAnimateDuration': 1,
+'autoAnimateDuration': 0.8,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,

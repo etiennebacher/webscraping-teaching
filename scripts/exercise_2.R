@@ -73,8 +73,9 @@ for (page_index in 1:2348) {
     write(tmp, file = paste0("data/modals/page-", page_index, "-modal-", modal_index, ".html"))
 
     # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+    remote_driver$
+      findElement(using = "xpath", value = "/html/body")$
+      sendKeysToElement(list(key = "escape"))
 
     message(paste("  Scraped modal", modal_index))
 

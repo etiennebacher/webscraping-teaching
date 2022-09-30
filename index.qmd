@@ -14,6 +14,8 @@ format:
    preview-links: true
    strip-comments: true
    highlight-style: atom-one
+   auto-animate-duration: 0.8
+   code-copy: true
    
 execute:
   eval: false
@@ -361,6 +363,18 @@ driver <- rsDriver(
 
 
 
+## Get started
+
+From now on, the main thing is to call `<function>()` starting with
+`remote_driver$`[^1].
+
+[^1]: Or whatever you called it in the previous step.
+
+<img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"/>
+
+
+
+
 ## Closing Selenium
 
 <br>
@@ -386,14 +400,6 @@ To get rid of this error, you also need to run `driver$server$stop()`.
 
 
 
-## Get started
-
-From now on, the main thing is to call `<function>()` starting with
-`remote_driver$`[^1].
-
-[^1]: Or whatever you called it in the previous step.
-
-<img src="img/rsdriver_funcs.png" alt="drawing" style="width:75%; text-align: center"/>
 
 # Exercise 1
 
@@ -503,6 +509,12 @@ How can we find this link with `RSelenium`?
 
 ------------
 
+::: {.callout-tip icon="false" appearance="simple"}
+**Tip:** You can check that you found the right element by highlighting it with
+`highlightElement()`.
+:::
+
+
 All of these work:
 
 ```{r}
@@ -523,12 +535,6 @@ remote_driver$
   clickElement()
 ```
 
-. . .
-
-::: callout-tip
-You can check that you found the right element by highlighting it with
-`highlightElement()`.
-:::
 
 ------------
 
@@ -690,7 +696,7 @@ anyway).
 
 
 
-## Make an example {auto-animate="true"}
+## Make an example {auto-animate=true}
 
 Initiate the remote driver and go to the website:
 
@@ -817,6 +823,45 @@ x <- remote_driver$getPageSource()
 ```
 
 
+## Make an example {auto-animate=true}
+
+Exit the modal by pressing "Escape":
+
+```{r}
+library(RSelenium)
+
+link <- "http://www.inci.org.br/acervodigital/livros.php"
+
+# Automatically go the website
+driver <- rsDriver(browser = c("firefox"))
+remote_driver <- driver[["client"]]
+remote_driver$navigate(link)
+
+# Fill the nationality field and click on "Validate"
+remote_driver$
+  findElement(using = "id", value = "nacionalidade")$
+  sendKeysToElement(list("PORTUGUESA"))
+
+# Find the button "Pesquisar" and click it
+remote_driver$
+  findElement(using = 'name', value = "Reset2")$
+  clickElement()
+
+# Find the button "Ver Mais" and click it
+remote_driver$
+  findElement(using = 'id', value = "link_ver_detalhe")$
+  clickElement()
+
+# Get the HTML that is displayed in the modal
+x <- remote_driver$getPageSource()
+
+# Exit the modal by pressing "Escape"
+remote_driver$
+  findElement(using = "xpath", value = "/html/body")$
+  sendKeysToElement(list(key = "escape"))
+```
+
+
 ## Problem
 
 <br><br>
@@ -895,7 +940,9 @@ for (i in seq_along(buttons)) {
   write(tmp, file = paste0("data/modals/modal-", i, ".html"))
   
   # quit the modal (by pressing "Escape")
-  body$sendKeysToElement(list(key = "escape"))
+  remote_driver$
+    findElement(using = "xpath", value = "/html/body")$
+    sendKeysToElement(list(key = "escape"))
   
 }
 
@@ -961,7 +1008,7 @@ for (page_index in 1:2348) {
 ```
 
 
-## {auto-animate=true}
+## 
 
 How many pages? **2348**
 
@@ -989,7 +1036,7 @@ for (page_index in 1:2348) {
 ```
 
 
-## {auto-animate=true}
+## 
 
 How many pages? **2348**
 
@@ -1013,8 +1060,9 @@ for (page_index in 1:2348) {
     write(tmp, file = paste0("data/modals/modal-", modal_index, ".html"))
 
     # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+    remote_driver$
+      findElement(using = "xpath", value = "/html/body")$
+      sendKeysToElement(list(key = "escape"))
 
   }
   
@@ -1025,7 +1073,7 @@ for (page_index in 1:2348) {
 ```
 
 
-## {auto-animate=true}
+## 
 
 How many pages? **2348**
 
@@ -1050,8 +1098,9 @@ for (page_index in 1:2348) {
                              "-modal-", modal_index, ".html"))
 
     # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+    remote_driver$
+      findElement(using = "xpath", value = "/html/body")$
+      sendKeysToElement(list(key = "escape"))
 
   }
   
@@ -1078,7 +1127,7 @@ Great, let's run everything!
 
 . . .
 
-{{< fa arrow-right >}} &nbsp; Not yet
+{{< fa arrow-right >}} &nbsp; Not so fast
 
 
 
@@ -1093,10 +1142,15 @@ Great, let's run everything!
 The default behavior of errors is to stop the script, which leads to this kind
 of situation:
 
+. . .
 
 * 7pm - "great, I can just run the code during the night and go home"
 
+. . .
+
 * 7:02pm - *error in the code*
+
+. . .
 
 * 8am - "Fu@?!"
 
@@ -1441,8 +1495,9 @@ for (page_index in 1:2348) {
                              "-modal-", modal_index, ".html"))
 
     # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+    remote_driver$
+      findElement(using = "xpath", value = "/html/body")$
+      sendKeysToElement(list(key = "escape"))
 
     Sys.sleep(0.5)
   }
@@ -1521,9 +1576,11 @@ while (x > 2) {
 ```
 
 
+
 ## Loading times
 
 In our case, we want to check whether we can find the buttons "Ver Mais":
+
 
 ```{.r code-line-numbers="1,2,3,17|5-12|13-16"}
 # Try to find the buttons "Ver Mais"
@@ -1585,8 +1642,9 @@ for (page_index in 1:2348) {
     write(tmp, file = paste0("data/modals/page-", page_index, "-modal-", modal_index, ".html"))
 
     # Leave the modal
-    body <- remote_driver$findElement(using = "xpath", value = "/html/body")
-    body$sendKeysToElement(list(key = "escape"))
+    remote_driver$
+      findElement(using = "xpath", value = "/html/body")$
+      sendKeysToElement(list(key = "escape"))
 
     Sys.sleep(1.5)
 
