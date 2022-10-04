@@ -196,7 +196,7 @@ Example: elections results in Spain from the website of [El Pais](https://result
 
 ------------
 
-<br> <br> 
+<br> <br> <br> <br> 
 
 Of course, static webscraping can be challenging because we have to write good 
 loops, good error handling, the HTML itself can be hard to clean, etc.
@@ -206,11 +206,19 @@ loops, good error handling, the HTML itself can be hard to clean, etc.
 <br> 
 
 But in dynamic pages, there's no obvious way to see that the inputs are
-different (see [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist){.external target="_blank"}).
+different. 
 
 ------------
 
-<br> <br>
+Example: [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist){.external target="_blank"}
+
+![](img/premier-league-1.png){width="60%"}
+
+![](img/premier-league-2.png){width="60%"}
+
+------------
+
+<br> <br> <br> <br> 
 
 So it seems that the only way to get the data is to go manually through
 all pages to get the HTML.
