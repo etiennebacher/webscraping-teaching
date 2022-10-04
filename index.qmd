@@ -11,7 +11,6 @@ format:
    incremental: false  
    theme: [moon, custom.scss]
    pdf-separate-fragments: true
-   preview-links: true
    strip-comments: true
    highlight-style: atom-one
    auto-animate-duration: 0.8
@@ -155,7 +154,7 @@ The web works with 3 languages:
 -   all the information is loaded with the page;
 -   changing a parameter modifies the URL
 
-Examples: [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping), [IMDB](https://www.imdb.com/name/nm0001392/?ref_=nv_sr_srsg_0).
+Examples: [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping){.external target="_blank"}, [IMDB](https://www.imdb.com/name/nm0001392/?ref_=nv_sr_srsg_0){.external target="_blank"}.
 
 <br>
 
@@ -164,7 +163,7 @@ Examples: [Wikipedia](https://en.wikipedia.org/wiki/Web_scraping), [IMDB](https:
 **Dynamic webpage**: the website uses JavaScript to fetch data from
 their server and *dynamically* update the page.
 
-Example: [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist).
+Example: [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist){.external target="_blank"}.
 
 # Why is it harder to do webscraping with dynamic pages?
 
@@ -189,7 +188,7 @@ content just by looking at their URL.
 
 ------------
 
-Example: elections results in Spain from the website of [El Pais](https://resultados.elpais.com/elecciones/2019/municipales/)
+Example: elections results in Spain from the website of [El Pais](https://resultados.elpais.com/elecciones/2019/municipales/){.external target="_blank"}
 
 ![](img/elpais1.png){width="60%"}
 
@@ -207,7 +206,7 @@ loops, good error handling, the HTML itself can be hard to clean, etc.
 <br> 
 
 But in dynamic pages, there's no obvious way to see that the inputs are
-different (see [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist)).
+different (see [Premier League stats](https://www.premierleague.com/stats/top/players/goal_assist){.external target="_blank"}).
 
 ------------
 
@@ -409,7 +408,7 @@ To get rid of this error, you also need to run `driver$server$stop()`.
 <br> 
 
 **Objective:** get the list of core contributors to R located
-[here](https://www.r-project.org/contributors.html).
+[here](https://www.r-project.org/contributors.html){.external target="_blank"}.
 
 . . .
 
@@ -643,7 +642,7 @@ Use Selenium if:
 
 <br>
 
-[Open website](http://www.inci.org.br/acervodigital/livros.php)
+[Open website](http://www.inci.org.br/acervodigital/livros.php){.external target="_blank"}
 
 <br>
 
@@ -1990,9 +1989,9 @@ issues (browser crashes, etc.)
 
 If you want to explore it:
 
-* [article by Appsilon](https://appsilon.com/webscraping-dynamic-websites-with-r/) (at the end)
+* [article by Appsilon](https://appsilon.com/webscraping-dynamic-websites-with-r/){.external target="_blank"} (at the end)
 
-* [article by Ivan Millanes](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/#parallel-framework)
+* [article by Ivan Millanes](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/#parallel-framework){.external target="_blank"}
 
 
 
@@ -2013,7 +2012,7 @@ Example:
 
 ## Final script
 
-Also available on [Github]():
+Also available on [Github](){.external target="_blank"}:
 
 ```{r}
 
@@ -2027,13 +2026,13 @@ Also available on [Github]():
 
 Source code for slides and exercises: 
 
-[https://github.com/etiennebacher/webscraping-teaching](https://github.com/etiennebacher/webscraping-teaching)
+[https://github.com/etiennebacher/webscraping-teaching](https://github.com/etiennebacher/webscraping-teaching){.external target="_blank"}
 
 <br>
 
 Comments, typos, etc.: 
 
-[https://github.com/etiennebacher/webscraping-teaching/issues](https://github.com/etiennebacher/webscraping-teaching/issues)
+[https://github.com/etiennebacher/webscraping-teaching/issues](https://github.com/etiennebacher/webscraping-teaching/issues){.external target="_blank"}
 
 
 # Good resources
@@ -2042,13 +2041,13 @@ Comments, typos, etc.:
 
 Article from Appsilon: 
 
-[https://appsilon.com/webscraping-dynamic-websites-with-r/](https://appsilon.com/webscraping-dynamic-websites-with-r/)
+[https://appsilon.com/webscraping-dynamic-websites-with-r/](https://appsilon.com/webscraping-dynamic-websites-with-r/){.external target="_blank"}
 
 <br>
 
 Article from Ivan Millanes:
 
-[https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/)
+[https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/](https://ivanmillanes.netlify.app/post/2020-06-30-webscraping-with-rselenium-and-rvest/){.external target="_blank"}
 
 
 
