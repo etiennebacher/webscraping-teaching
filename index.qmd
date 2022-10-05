@@ -218,16 +218,19 @@ Example: [Premier League stats](https://www.premierleague.com/stats/top/players/
 
 ------------
 
-<br> <br> <br> <br> 
+<br> <br> 
 
 So it seems that the only way to get the data is to go manually through
 all pages to get the HTML.
 
-<br> <br>
+<br> 
 
 . . .
 
-*350h later...*
+<div style="text-align: center">
+<img src="img/one-eternity-later.jpg" style="width: 70%">
+</div>
+
 
 # (R)Selenium
 
@@ -2066,13 +2069,21 @@ Example:
 ![](img/terms-of-use.png)
 
 
-## Final script
+## Ethics
 
-Also available on [Github](){.external target="_blank"}:
+<br> <br>
 
-```{r}
+**Be respectful**: make the scraping slow enough not to overload the server.
 
-```
+<br>
+
+Not every website is owned by a big company that can handle thousands of requests.
+
+<br>
+
+::: {.callout-tip}
+For static webscraping, check out the package [`polite`](https://dmi3kno.github.io/polite/){.external target="_blank"}.
+:::
 
 
 
