@@ -183,8 +183,8 @@ and that's it.
 
 . . .
 
-This is "easy" because you can differentiate two pages with different
-content just by looking at their URL.
+This is "easy" because you can identify two pages with different content just by
+looking at their URL.
 
 ------------
 
@@ -570,6 +570,12 @@ x <- remote_driver$getPageSource()[[1]]
 rvest::read_html(x)
 ```
 
+## 
+
+<br>
+
+Do we read the HTML and extract the information in the same script?
+
 
 ##  {#contributors-last-step}
 
@@ -577,13 +583,10 @@ rvest::read_html(x)
 
 Do we read the HTML and extract the information in the same script?
 
-. . .
-
 <br>
 
 
-**No!**^[Although, in this case, it would be ok to treat it directly in the same
-script.]
+**No!**
 
 Instead, we save the HTML in an external file, and we will be able to
 access it in another script (and offline) to manipulate it as we want.
@@ -599,6 +602,11 @@ rvest::read_html("contributors.html")
 <br>
 
 Click [here](#contributors-results) to see the results.
+
+:::aside
+Although, in this case, it would be ok to treat it directly in the same
+script.
+:::
 
 # Exercise 2: a harder & real-life example
 
@@ -675,6 +683,8 @@ Steps:
 
 
 ## Check that we need Selenium
+
+<br>
 
 1. Is there an API?
 
@@ -1166,6 +1176,44 @@ of situation:
 <br>
 
 {{< fa arrow-right >}} &nbsp; need to handle errors with `tryCatch()`
+
+
+
+## Catching errors
+
+<br> <br> <br> <br>
+
+:::{style="text-align: center; font-size: 2.3rem"}
+<p> <span style="color: #ffaa00">try</span><span style="color: #d24dff">Catch</span> </p>
+:::
+
+<i id="myicon1" class="fas fa-turn-down" aria-hidden="true"></i>
+
+<i id="myicon2" class="fas fa-turn-down fa-flip-horizontal" aria-hidden="true"></i>
+
+
+:::: {.columns}
+
+::: {.column width="20%"}
+:::
+
+::: {.column width="28%"}
+<p style="text-align: center"><span style="color: #ffaa00">try</span> to run an expression </p>
+:::
+
+::: {.column width="4%"}
+:::
+
+::: {.column width="34%"}
+<p style="text-align: center"> <span style="color: #d24dff">catch</span> the potential warnings/errors </p>
+:::
+
+::: {.column width="20%"}
+:::
+
+::::
+
+
 
 
 ## Catching errors

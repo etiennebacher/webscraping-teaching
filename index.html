@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.2.171">
 
   <meta name="author" content="Etienne Bacher">
-  <meta name="dcterms.date" content="2022-10-04">
+  <meta name="dcterms.date" content="2022-10-05">
   <title>Webscraping with RSelenium</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,7 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">October 4, 2022</p>
+  <p class="date">October 5, 2022</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
@@ -525,7 +525,7 @@ Etienne Bacher
 <p>and that’s it.</p>
 <p><br></p>
 <div class="fragment">
-<p>This is “easy” because you can differentiate two pages with different content just by looking at their URL.</p>
+<p>This is “easy” because you can identify two pages with different content just by looking at their URL.</p>
 </div>
 </section>
 <section class="slide level2">
@@ -828,13 +828,17 @@ Etienne Bacher
 </div>
 </div>
 </section>
+<section id="section" class="slide level2">
+<h2></h2>
+<p><br></p>
+<p>Do we read the HTML and extract the information in the same script?</p>
+</section>
 <section id="contributors-last-step" class="slide level2">
 <h2></h2>
 <p><br></p>
 <p>Do we read the HTML and extract the information in the same script?</p>
-<div class="fragment">
 <p><br></p>
-<p><strong>No!</strong><sup>1</sup></p>
+<p><strong>No!</strong></p>
 <p>Instead, we save the HTML in an external file, and we will be able to access it in another script (and offline) to manipulate it as we want.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">write</span>(x, <span class="at">file =</span> <span class="st">"contributors.html"</span>)</span>
@@ -843,8 +847,10 @@ Etienne Bacher
 </div>
 <p><br></p>
 <p>Click <a href="#/contributors-results">here</a> to see the results.</p>
-</div>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>Although, in this case, it would be ok to treat it directly in the same script.</p></li></ol></aside></section></section>
+
+<aside><div>
+<p>Although, in this case, it would be ok to treat it directly in the same script.</p>
+</div></aside></section></section>
 <section>
 <section id="exercise-2-a-harder-real-life-example" class="title-slide slide level1 center">
 <h1>Exercise 2: a harder &amp; real-life example</h1>
@@ -902,6 +908,7 @@ Etienne Bacher
 </section>
 <section id="check-that-we-need-selenium" class="slide level2">
 <h2>Check that we need Selenium</h2>
+<p><br></p>
 <ol type="1">
 <li>Is there an API?</li>
 </ol>
@@ -1172,7 +1179,7 @@ Etienne Bacher
 <p>Next step: compile all of this and make nested loops!</p>
 </div>
 </section>
-<section id="section" class="slide level2" data-auto-animate="true">
+<section id="section-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
@@ -1194,7 +1201,7 @@ Etienne Bacher
 <span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-1" class="slide level2">
+<section id="section-2" class="slide level2">
 <h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
@@ -1216,7 +1223,7 @@ Etienne Bacher
 <span id="cb24-15"><a href="#cb24-15"></a>  </span>
 <span id="cb24-16"><a href="#cb24-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-2" class="slide level2">
+<section id="section-3" class="slide level2">
 <h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
@@ -1247,7 +1254,7 @@ Etienne Bacher
 <span id="cb25-24"><a href="#cb25-24"></a>  </span>
 <span id="cb25-25"><a href="#cb25-25"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-3" class="slide level2">
+<section id="section-4" class="slide level2">
 <h2></h2>
 <p>How many pages? <strong>2348</strong></p>
 <p><br></p>
@@ -1329,6 +1336,34 @@ Etienne Bacher
 </section>
 <section id="catching-errors-2" class="slide level2">
 <h2>Catching errors</h2>
+<p><br> <br> <br> <br></p>
+<div style="text-align: center; font-size: 2.3rem">
+<p>
+<span style="color: #ffaa00">try</span><span style="color: #d24dff">Catch</span>
+</p>
+</div>
+<p><i id="myicon1" class="fas fa-turn-down" aria-hidden="true"></i></p>
+<p><i id="myicon2" class="fas fa-turn-down fa-flip-horizontal" aria-hidden="true"></i></p>
+<div class="columns">
+<div class="column" style="width:20%;">
+
+</div><div class="column" style="width:28%;">
+<p style="text-align: center">
+<span style="color: #ffaa00">try</span> to run an expression
+</p>
+</div><div class="column" style="width:4%;">
+
+</div><div class="column" style="width:34%;">
+<p style="text-align: center">
+<span style="color: #d24dff">catch</span> the potential warnings/errors
+</p>
+</div><div class="column" style="width:20%;">
+
+</div>
+</div>
+</section>
+<section id="catching-errors-3" class="slide level2">
+<h2>Catching errors</h2>
 <p><br></p>
 <p>Example: try to compute <code>log("a")</code>.</p>
 <div class="cell">
@@ -1342,7 +1377,7 @@ Etienne Bacher
 <p>What if I want to return <code>NA</code> instead of an error?</p>
 </div>
 </section>
-<section id="catching-errors-3" class="slide level2">
+<section id="catching-errors-4" class="slide level2">
 <h2>Catching errors</h2>
 <div class="sourceCode" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">tryCatch</span>(</span>
 <span id="cb29-2"><a href="#cb29-2"></a>  <span class="co"># try to evaluate the expression</span></span>
@@ -1360,7 +1395,7 @@ Etienne Bacher
 <span id="cb29-14"><a href="#cb29-14"></a>  }</span>
 <span id="cb29-15"><a href="#cb29-15"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="catching-errors-4" class="slide level2">
+<section id="catching-errors-5" class="slide level2">
 <h2>Catching errors</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">tryCatch</span>(</span>
@@ -1383,7 +1418,7 @@ Etienne Bacher
 <span id="cb30-18"><a href="#cb30-18"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="catching-errors-5" class="slide level2">
+<section id="catching-errors-6" class="slide level2">
 <h2>Catching errors</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="fu">tryCatch</span>(</span>
