@@ -310,7 +310,7 @@ with Selenium:
 
 <br> 
 
-In the beginning there was ~~light~~ `rsDriver()`:
+In the beginning was ~~the Word~~ `rsDriver()`:
 
 ```{r}
 # if not already installed
