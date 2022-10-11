@@ -607,8 +607,8 @@ rvest::read_html("contributors.html")
 Click [here](#contributors-results) to see the results.
 
 :::aside
-Although, in this case, it would be ok to treat it directly in the same
-script.
+Although, in this case, it would be ok to treat it directly in the same script
+because it's a single page.
 :::
 
 # Exercise 2: a harder & real-life example
@@ -1583,7 +1583,7 @@ However, using `Sys.sleep()` is not perfect because we put arbitrary timing, e.g
 
 <br>
 
-Problem: what if the Internet connection is so bad that the loading takes 7 seconds?
+Problem: what if the Internet connection is so bad that the loading takes 10 seconds?
 
 <br>
 
@@ -1637,10 +1637,21 @@ while (x > 2) {
 
 ## Loading times
 
-In our case, we want to check whether we can find the buttons "Ver Mais":
+<br> <br>
+
+In our case, we want to check whether we can find the buttons "Ver Mais".
+
+<br>
+
+Are the buttons loaded?
+
+* if no, wait 0.5 seconds (or whatever duration you want), and try again;
+* if yes, go to the next step
 
 
-```{.r code-line-numbers="1,2,3,17|5-12|13-16"}
+## Loading times
+
+```{.r code-line-numbers="1,2,3,18|5-13|14-16"}
 # Try to find the buttons "Ver Mais"
 all_buttons_loaded <- FALSE
 while(!all_buttons_loaded) {
@@ -1648,7 +1659,8 @@ while(!all_buttons_loaded) {
     {
       test <- remote_driver$
         findElements(using = 'id', value = "link_ver_detalhe")
-        
+      
+      # If the buttons are found, update our condition to quit the loop
       if (inherits(test, "list") && length(test) > 0)  {
         all_buttons_loaded <<- TRUE
       }
@@ -1708,8 +1720,8 @@ for (page_index in 1:2348) {
 
   }
 
-  # When we got all modals of one page, go to the next page (except if we're on
-  # the last one)
+  # When we got all modals of one page, go to the next page (except if 
+  # we're on the last one)
   if (page_index != 2348) {
     remote_driver$
       findElement("css", "#paginacao > div.btn:nth-child(4)")$
@@ -1882,8 +1894,8 @@ for (page_index in 1:2348) {
 
   }
 
-  # When we got all modals of one page, go to the next page (except if we're on
-  # the last one)
+  # When we got all modals of one page, go to the next page (except if 
+  # we're on the last one)
   if (page_index != 2348) {
     remote_driver$
       findElement("css", "#paginacao > div.btn:nth-child(4)")$

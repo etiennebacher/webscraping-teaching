@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.2.171">
 
   <meta name="author" content="Etienne Bacher">
-  <meta name="dcterms.date" content="2022-10-06">
+  <meta name="dcterms.date" content="2022-10-11">
   <title>Webscraping with RSelenium</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,7 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">October 6, 2022</p>
+  <p class="date">October 11, 2022</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
@@ -851,7 +851,7 @@ Etienne Bacher
 <p>Click <a href="#/contributors-results">here</a> to see the results.</p>
 
 <aside><div>
-<p>Although, in this case, it would be ok to treat it directly in the same script.</p>
+<p>Although, in this case, it would be ok to treat it directly in the same script because it’s a single page.</p>
 </div></aside></section></section>
 <section>
 <section id="exercise-2-a-harder-real-life-example" class="title-slide slide level1 center">
@@ -1647,7 +1647,7 @@ NULL
 <p><br></p>
 <p>However, using <code>Sys.sleep()</code> is not perfect because we put arbitrary timing, e.g 5 seconds.</p>
 <p><br></p>
-<p>Problem: what if the Internet connection is so bad that the loading takes 7 seconds?</p>
+<p>Problem: what if the Internet connection is so bad that the loading takes 10 seconds?</p>
 <p><br></p>
 <p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; we need a more robust solution using <code>tryCatch()</code></p>
 </section>
@@ -1683,27 +1683,38 @@ NULL
 </section>
 <section id="loading-times-6" class="slide level2">
 <h2>Loading times</h2>
-<p>In our case, we want to check whether we can find the buttons “Ver Mais”:</p>
-<div class="sourceCode" id="cb47" data-code-line-numbers="1,2,3,17|5-12|13-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Try to find the buttons "Ver Mais"</span></span>
+<p><br> <br></p>
+<p>In our case, we want to check whether we can find the buttons “Ver Mais”.</p>
+<p><br></p>
+<p>Are the buttons loaded?</p>
+<ul>
+<li>if no, wait 0.5 seconds (or whatever duration you want), and try again;</li>
+<li>if yes, go to the next step</li>
+</ul>
+</section>
+<section id="loading-times-7" class="slide level2">
+<h2>Loading times</h2>
+<div class="sourceCode" id="cb47" data-code-line-numbers="1,2,3,18|5-13|14-16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a><span class="co"># Try to find the buttons "Ver Mais"</span></span>
 <span id="cb47-2"><a href="#cb47-2"></a>all_buttons_loaded <span class="ot">&lt;-</span> <span class="cn">FALSE</span></span>
 <span id="cb47-3"><a href="#cb47-3"></a><span class="cf">while</span>(<span class="sc">!</span>all_buttons_loaded) {</span>
 <span id="cb47-4"><a href="#cb47-4"></a>  <span class="fu">tryCatch</span>(</span>
 <span id="cb47-5"><a href="#cb47-5"></a>    {</span>
 <span id="cb47-6"><a href="#cb47-6"></a>      test <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
 <span id="cb47-7"><a href="#cb47-7"></a>        <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb47-8"><a href="#cb47-8"></a>        </span>
-<span id="cb47-9"><a href="#cb47-9"></a>      <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
-<span id="cb47-10"><a href="#cb47-10"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
-<span id="cb47-11"><a href="#cb47-11"></a>      }</span>
-<span id="cb47-12"><a href="#cb47-12"></a>    },</span>
-<span id="cb47-13"><a href="#cb47-13"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb47-14"><a href="#cb47-14"></a>      <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
-<span id="cb47-15"><a href="#cb47-15"></a>    }</span>
-<span id="cb47-16"><a href="#cb47-16"></a>  )</span>
-<span id="cb47-17"><a href="#cb47-17"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb47-8"><a href="#cb47-8"></a>      </span>
+<span id="cb47-9"><a href="#cb47-9"></a>      <span class="co"># If the buttons are found, update our condition to quit the loop</span></span>
+<span id="cb47-10"><a href="#cb47-10"></a>      <span class="cf">if</span> (<span class="fu">inherits</span>(test, <span class="st">"list"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(test) <span class="sc">&gt;</span> <span class="dv">0</span>)  {</span>
+<span id="cb47-11"><a href="#cb47-11"></a>        all_buttons_loaded <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb47-12"><a href="#cb47-12"></a>      }</span>
+<span id="cb47-13"><a href="#cb47-13"></a>    },</span>
+<span id="cb47-14"><a href="#cb47-14"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb47-15"><a href="#cb47-15"></a>      <span class="fu">Sys.sleep</span>(<span class="fl">0.5</span>)</span>
+<span id="cb47-16"><a href="#cb47-16"></a>    }</span>
+<span id="cb47-17"><a href="#cb47-17"></a>  )</span>
+<span id="cb47-18"><a href="#cb47-18"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>This loop will run until the buttons can be found.</p>
 </section>
-<section id="loading-times-7" class="slide level2">
+<section id="loading-times-8" class="slide level2">
 <h2>Loading times</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
@@ -1749,8 +1760,8 @@ NULL
 <span id="cb48-41"><a href="#cb48-41"></a></span>
 <span id="cb48-42"><a href="#cb48-42"></a>  }</span>
 <span id="cb48-43"><a href="#cb48-43"></a></span>
-<span id="cb48-44"><a href="#cb48-44"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb48-45"><a href="#cb48-45"></a>  <span class="co"># the last one)</span></span>
+<span id="cb48-44"><a href="#cb48-44"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb48-45"><a href="#cb48-45"></a>  <span class="co"># we're on the last one)</span></span>
 <span id="cb48-46"><a href="#cb48-46"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
 <span id="cb48-47"><a href="#cb48-47"></a>    remote_driver<span class="sc">$</span></span>
 <span id="cb48-48"><a href="#cb48-48"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
@@ -1893,8 +1904,8 @@ NULL
 <span id="cb51-45"><a href="#cb51-45"></a></span>
 <span id="cb51-46"><a href="#cb51-46"></a>  }</span>
 <span id="cb51-47"><a href="#cb51-47"></a></span>
-<span id="cb51-48"><a href="#cb51-48"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if we're on</span></span>
-<span id="cb51-49"><a href="#cb51-49"></a>  <span class="co"># the last one)</span></span>
+<span id="cb51-48"><a href="#cb51-48"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb51-49"><a href="#cb51-49"></a>  <span class="co"># we're on the last one)</span></span>
 <span id="cb51-50"><a href="#cb51-50"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
 <span id="cb51-51"><a href="#cb51-51"></a>    remote_driver<span class="sc">$</span></span>
 <span id="cb51-52"><a href="#cb51-52"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
