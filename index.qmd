@@ -56,7 +56,7 @@ Before scraping: is there an API?
 ::: increment
 -   if yes, is there a package?
 
-    -   if yes, use the package (e.g `guardian`, `WDI`)
+    -   if yes, use the package (e.g. `guardian`, `WDI`)
 
     -   if no, build the API queries yourself with `httr`
 
@@ -81,7 +81,7 @@ Scraping can be divided in two steps:
 <br>
 
 These 2 steps don't necessarily require the same tools, and *shouldn't
-be made at the same time*.
+be carried out at the same time*.
 
 ## Introduction
 
@@ -1522,7 +1522,7 @@ There are a few places where we need to wait a bit:
 
 
 We must put some pauses between `RSelenium` actions. Otherwise it will error,
-e.g if we try to click on a button that isn't loaded on the page yet.
+e.g. if we try to click on a button that isn't loaded on the page yet.
 
 . . .
 
@@ -1578,7 +1578,7 @@ for (page_index in 1:2348) {
 
 <br> 
 
-However, using `Sys.sleep()` is not perfect because we put arbitrary timing, e.g
+However, using `Sys.sleep()` is not perfect because we put arbitrary timing, e.g.
 5 seconds.
 
 <br>
@@ -2022,7 +2022,7 @@ relations <- data.table::rbindlist(purrr::map(list_out, 2)) |>
 
 <br>
 
-1. `Selenium` in general is a very useful tool but should be used in last resort:
+1. `Selenium` in general is a very useful tool but should be used as a last resort:
 
   * APIs, packages
   * static webscraping
