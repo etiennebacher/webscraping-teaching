@@ -1,6 +1,7 @@
 /*-- scss:defaults --*/
 
 $body-color: #d6dbdb;
+$link-color: #e69900;
 
 $presentation-heading-letter-spacing: 0.1rem;
 $presentation-heading-font-weight: 400;
@@ -25,6 +26,10 @@ $code-block-font-size: 0.8em;
 
 .reveal p > a {
   border-bottom: 1px dashed;
+}
+
+.reveal a > code  {
+  color: $link-color;
 }
 
 .reveal .cell-output > pre {

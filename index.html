@@ -422,8 +422,8 @@ Etienne Bacher
 <ul>
 <li><p>if yes, is there a package?</p>
 <ul>
-<li><p>if yes, use the package (e.g.&nbsp;<code>guardian</code>, <code>WDI</code>)</p></li>
-<li><p>if no, build the API queries yourself with <code>httr</code></p></li>
+<li><p>if yes, use the package (e.g.&nbsp;<a href="https://guardian.news-r.org/"><code>guardian</code></a>, <a href="https://vincentarelbundock.github.io/WDI/"><code>WDI</code></a>)</p></li>
+<li><p>if no, build the API queries yourself with <a href="https://httr.r-lib.org/"><code>httr</code></a></p></li>
 </ul></li>
 <li><p>if no, scrape (politely)</p></li>
 </ul>
@@ -592,29 +592,44 @@ Etienne Bacher
 <p><br></p>
 <p>Almost everything you can do “by hand” in a browser, you can reproduce with Selenium:</p>
 <div class="fragment">
-<div class="columns">
-<div class="column" style="width:45%;">
-<ul>
-<li><p>open a browser</p></li>
-<li><p>click on something</p></li>
-<li><p>enter values</p></li>
-<li><p>go to previous/next page</p></li>
-<li><p>refresh the page</p></li>
-<li><p>get all the HTML that is currently displayed</p></li>
-</ul>
-</div><div class="column" style="width:10%;">
-
-</div><div class="column" style="width:45%;">
-<ul>
-<li><p><code>open()</code> / <code>navigate()</code></p></li>
-<li><p><code>clickElement()</code></p></li>
-<li><p><code>sendKeysToElement()</code></p></li>
-<li><p><code>goBack()</code> / <code>goForward()</code></p></li>
-<li><p><code>refresh()</code></p></li>
-<li><p><code>getPageSource()</code></p></li>
-</ul>
-</div>
-</div>
+<table>
+<colgroup>
+<col style="width: 62%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Action</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Open a browser</td>
+<td><code>open()</code> / <code>navigate()</code></td>
+</tr>
+<tr class="even">
+<td>Click on something</td>
+<td><code>clickElement()</code></td>
+</tr>
+<tr class="odd">
+<td>Enter values</td>
+<td><code>sendKeysToElement()</code></td>
+</tr>
+<tr class="even">
+<td>Go to previous/next page</td>
+<td><code>goBack()</code> / <code>goForward()</code></td>
+</tr>
+<tr class="odd">
+<td>Refresh the page</td>
+<td><code>refresh()</code></td>
+</tr>
+<tr class="even">
+<td>Get all the HTML that is currently <br> displayed</td>
+<td><code>getPageSource()</code></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section></section>
 <section>

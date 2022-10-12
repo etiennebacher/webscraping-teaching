@@ -26,23 +26,6 @@ execute:
 <!-- Use chrome and not firefox -->
 
 
-
-
-
-<!-- TODO: -->
-<!-- - trycatch -->
-<!-- - politeness -> possible ? -> Let's say that NO -->
-
-
-
-
-
-
-
-
-
-
-
 ## Introduction
 
 <br>
@@ -56,9 +39,9 @@ Before scraping: is there an API?
 ::: increment
 -   if yes, is there a package?
 
-    -   if yes, use the package (e.g. `guardian`, `WDI`)
+    -   if yes, use the package (e.g. [`guardian`](https://guardian.news-r.org/), [`WDI`](https://vincentarelbundock.github.io/WDI/))
 
-    -   if no, build the API queries yourself with `httr`
+    -   if no, build the API queries yourself with [`httr`](https://httr.r-lib.org/)
 
 -   if no, scrape (politely)
 :::
@@ -271,38 +254,16 @@ with Selenium:
 
 . . .
 
-::: columns
-::: {.column width="45%"}
--   open a browser
+| Action                                       | Code                       |
+|----------------------------------------------|----------------------------|
+| Open a browser                                    | `open()` / `navigate()`    |
+| Click on something                                | `clickElement()`           |
+| Enter values                                      | `sendKeysToElement()`      |
+| Go to previous/next page                          | `goBack()` / `goForward()` |
+| Refresh the page                                  | `refresh()`                |
+| Get all the HTML that is currently <br> displayed | `getPageSource()`          |
 
--   click on something
 
--   enter values
-
--   go to previous/next page
-
--   refresh the page
-
--   get all the HTML that is currently displayed
-:::
-
-::: {.column width="10%"}
-:::
-
-::: {.column width="45%"}
--   `open()` / `navigate()`
-
--   `clickElement()`
-
--   `sendKeysToElement()`
-
--   `goBack()` / `goForward()`
-
--   `refresh()`
-
--   `getPageSource()`
-:::
-:::
 
 # Get started
 
