@@ -389,7 +389,7 @@ To get rid of this error, you also need to run `driver$server$stop()`.
 How would you do it by hand?
 
 -   open the browser;
--   go to <https://r-project.org>;
+-   go to [https://r-project.org](https://r-project.org);
 -   in the left sidebar, click on the link "Contributors";
 
 and voilà!
@@ -442,11 +442,17 @@ the page:
 
 ------------
 
+<br>
+
 Then, hover the element we're interested in: the link "Contributors".
+
+<br>
 
 ![](img/console_2.png)
 
 ------------
+
+<br><br>
 
 How can we find this link with `RSelenium`?
 
@@ -576,7 +582,7 @@ because it's a single page.
 
 ------------
 
-<br>
+<br><br>
 
 
 The previous example was not a *dynamic* page: we could have used the
@@ -600,7 +606,7 @@ way to obtain the data.
 
 <br>
 
-*Using RSelenium is slower than using "classic" scraping methods*, so
+Using Selenium is **slower** than using "classic" scraping methods, so
 it's important to check all possibilities before using it.
 
 <br>
@@ -1577,6 +1583,8 @@ if (x > 2) {
 }
 ```
 
+. . .
+
 * `for` loop: perform the inside **for** all values
 
 ```{.r}
@@ -1584,6 +1592,8 @@ for (i in 1:10) {
   # do something with `i`
 }
 ```
+
+. . .
 
 * `while` loop: perform the inside **while** the condition is true
 
@@ -1609,13 +1619,18 @@ Are the buttons loaded?
 * if no, wait 0.5 seconds (or whatever duration you want), and try again;
 * if yes, go to the next step
 
+<br>
+
+{{< fa arrow-right >}} &nbsp; Do this 20 times max
+
 
 ## Loading times
 
-```{.r code-line-numbers="1,2,3,18|5-13|14-16"}
+```{.r code-line-numbers="1,2,3,4,20|6-14|15-18"}
 # Try to find the buttons "Ver Mais"
 all_buttons_loaded <- FALSE
-while(!all_buttons_loaded) {
+iterations <- 0
+while(!all_buttons_loaded & iterations < 20) {
   tryCatch(
     {
       test <- remote_driver$
@@ -1627,13 +1642,14 @@ while(!all_buttons_loaded) {
       }
     },
     error = function(e) {
+      iterations <<- iterations + 1 
       Sys.sleep(0.5)
     }
   )
 }
 ```
 
-This loop will run until the buttons can be found.
+This loop will run until the buttons can be found or until we reach 20 iterations.
 
 ## Loading times
 
@@ -1642,7 +1658,8 @@ for (page_index in 1:2348) {
 
   # Try to find the buttons "Ver Mais"
   all_buttons_loaded <- FALSE
-  while(!all_buttons_loaded) {
+  iterations <- 0
+  while(!all_buttons_loaded & iterations < 20) {
     tryCatch(
       {
         test <- remote_driver$
@@ -1653,9 +1670,14 @@ for (page_index in 1:2348) {
         }
       },
       error = function(e) {
+        iterations <<- iterations + 1 
         Sys.sleep(0.5)
       }
     )
+  }
+  
+  if (!all_buttons_loaded & iterations == 20) {
+    next
   }
 
   buttons <- remote_driver$
@@ -1829,6 +1851,11 @@ for (page_index in 1:2348) {
         Sys.sleep(0.5)
       }
     )
+  }
+  
+  if (!all_buttons_loaded & iterations == 20) {
+    message(paste0("Couldn't find buttons on page ", page_index, ". Skipping."))
+    next
   }
 
   buttons <- remote_driver$
