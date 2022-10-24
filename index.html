@@ -12,7 +12,7 @@
   <meta name="generator" content="quarto-1.2.171">
 
   <meta name="author" content="Etienne Bacher">
-  <meta name="dcterms.date" content="2022-10-13">
+  <meta name="dcterms.date" content="2022-10-24">
   <title>Webscraping with RSelenium</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,7 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">October 13, 2022</p>
+  <p class="date">October 24, 2022</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
@@ -690,6 +690,17 @@ Etienne Bacher
 <span id="cb4-8"><a href="#cb4-8"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="installation-issues-2" class="slide level2">
+<h2>Installation issues</h2>
+<p><br></p>
+<ol start="3" type="1">
+<li>“Argument is of length zero”</li>
+</ol>
+<p><br></p>
+<p>If you have this error, this is bad news because I don’t really know how to fix it since I never had it.</p>
+<p><br></p>
+<p>You can try to follow <a href="https://stackoverflow.com/questions/46202062/i-got-error-like-error-in-if-file-accessphantompath-1-0-argument-is-o" class="external" target="_blank">this StackOverflow answer</a>.</p>
+</section>
 <section id="get-started-2" class="slide level2">
 <h2>Get started</h2>
 <p>From now on, the main thing is to call <code>&lt;function&gt;()</code> starting with <code>remote_driver$</code><sup>1</sup>.</p>
@@ -700,7 +711,7 @@ Etienne Bacher
 <p><br></p>
 <p>The clean way to close <code>Selenium</code> is to run <code>driver$server$stop()</code> (replace <code>driver</code> by the name you gave at the previous step).</p>
 <p><br></p>
-<p>If you clean the browser by hand and try to re-run the script, you may have the following error:</p>
+<p>If you close the browser by hand and try to re-run the script, you may have the following error:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="st">"Error in wdman::selenium(port = port, verbose = verbose, version = version,  : </span></span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="st">  Selenium server signals port = 4567 is already in use."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><br></p>
@@ -757,7 +768,7 @@ Etienne Bacher
 <p>To find the element, we need to open the console to see the structure of the page:</p>
 <ul>
 <li>right-click -&gt; “Inspect”</li>
-<li><code>Ctrl</code> + <code>Shift</code> + <code>C</code></li>
+<li>or <code>Ctrl</code> + <code>Shift</code> + <code>C</code></li>
 </ul>
 <div class="fragment">
 <p><img data-src="img/console.png" style="width:75.0%"></p>
@@ -797,6 +808,21 @@ Etienne Bacher
 <li>xpath ✔️</li>
 </ul>
 </div>
+</div>
+</section>
+<section class="slide level2">
+
+<p><br></p>
+<p>We must make a distinction between two classes of objects: <code>remoteDriver</code> and <code>webElement</code>.</p>
+<div class="fragment">
+<p><br></p>
+<p>Think of <code>remoteDriver</code> as the browser in general: you can navigate between pages, search elements, find if an element is present on the page, etc.</p>
+<p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; see the list of available methods with <code>?remoteDriver</code></p>
+</div>
+<div class="fragment">
+<p><br></p>
+<p>Think of <code>webElement</code> as a particular element on the page: you can highlight it, click it, get its text, etc.</p>
+<p><i class="fa-solid fa-arrow-right" aria-hidden="true"></i> &nbsp; see the list of available methods with <code>?webElement</code></p>
 </div>
 </section>
 <section class="slide level2">
@@ -971,8 +997,7 @@ Etienne Bacher
 <section id="make-an-example-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Make an example</h2>
 <p>Fill the field “NACIONALIDADE”:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb14-1" class="hljs-ln-code"><a href="#cb14-1"></a><span class="fu">library</span>(RSelenium)</span>
+<div class="sourceCode" id="cb14" data-code-line-numbers="10-13"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb14-1" class="hljs-ln-code"><a href="#cb14-1"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb14-2" class="hljs-ln-code"><a href="#cb14-2"></a></span>
 <span id="cb14-3" class="hljs-ln-code"><a href="#cb14-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
 <span id="cb14-4" class="hljs-ln-code"><a href="#cb14-4"></a></span>
@@ -985,13 +1010,11 @@ Etienne Bacher
 <span id="cb14-11" class="hljs-ln-code"><a href="#cb14-11"></a>remote_driver<span class="sc">$</span></span>
 <span id="cb14-12" class="hljs-ln-code"><a href="#cb14-12"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"id"</span>, <span class="at">value =</span> <span class="st">"nacionalidade"</span>)<span class="sc">$</span></span>
 <span id="cb14-13" class="hljs-ln-code"><a href="#cb14-13"></a>  <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="st">"PORTUGUESA"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="make-an-example-2" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Make an example</h2>
 <p>Find the button “Pesquisar” and click it:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb15-1" class="hljs-ln-code"><a href="#cb15-1"></a><span class="fu">library</span>(RSelenium)</span>
+<div class="sourceCode" id="cb15" data-code-line-numbers="15-18"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb15-1" class="hljs-ln-code"><a href="#cb15-1"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb15-2" class="hljs-ln-code"><a href="#cb15-2"></a></span>
 <span id="cb15-3" class="hljs-ln-code"><a href="#cb15-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
 <span id="cb15-4" class="hljs-ln-code"><a href="#cb15-4"></a></span>
@@ -1009,13 +1032,11 @@ Etienne Bacher
 <span id="cb15-16" class="hljs-ln-code"><a href="#cb15-16"></a>remote_driver<span class="sc">$</span></span>
 <span id="cb15-17" class="hljs-ln-code"><a href="#cb15-17"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'name'</span>, <span class="at">value =</span> <span class="st">"Reset2"</span>)<span class="sc">$</span></span>
 <span id="cb15-18" class="hljs-ln-code"><a href="#cb15-18"></a>  <span class="fu">clickElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="make-an-example-3" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Make an example</h2>
 <p>Find the button “Ver Mais” and click it:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb16-1" class="hljs-ln-code"><a href="#cb16-1"></a><span class="fu">library</span>(RSelenium)</span>
+<div class="sourceCode" id="cb16" data-code-line-numbers="20-23"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb16-1" class="hljs-ln-code"><a href="#cb16-1"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb16-2" class="hljs-ln-code"><a href="#cb16-2"></a></span>
 <span id="cb16-3" class="hljs-ln-code"><a href="#cb16-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
 <span id="cb16-4" class="hljs-ln-code"><a href="#cb16-4"></a></span>
@@ -1038,13 +1059,11 @@ Etienne Bacher
 <span id="cb16-21" class="hljs-ln-code"><a href="#cb16-21"></a>remote_driver<span class="sc">$</span></span>
 <span id="cb16-22" class="hljs-ln-code"><a href="#cb16-22"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)<span class="sc">$</span></span>
 <span id="cb16-23" class="hljs-ln-code"><a href="#cb16-23"></a>  <span class="fu">clickElement</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="make-an-example-4" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Make an example</h2>
 <p>Get the HTML that is displayed:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb17-1" class="hljs-ln-code"><a href="#cb17-1"></a><span class="fu">library</span>(RSelenium)</span>
+<div class="sourceCode" id="cb17" data-code-line-numbers="25-26"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb17-1" class="hljs-ln-code"><a href="#cb17-1"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb17-2" class="hljs-ln-code"><a href="#cb17-2"></a></span>
 <span id="cb17-3" class="hljs-ln-code"><a href="#cb17-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
 <span id="cb17-4" class="hljs-ln-code"><a href="#cb17-4"></a></span>
@@ -1070,13 +1089,11 @@ Etienne Bacher
 <span id="cb17-24" class="hljs-ln-code"><a href="#cb17-24"></a></span>
 <span id="cb17-25" class="hljs-ln-code"><a href="#cb17-25"></a><span class="co"># Get the HTML that is displayed in the modal</span></span>
 <span id="cb17-26" class="hljs-ln-code"><a href="#cb17-26"></a>x <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="make-an-example-5" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">Make an example</h2>
 <p>Exit the modal by pressing “Escape”:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb18-1" class="hljs-ln-code"><a href="#cb18-1"></a><span class="fu">library</span>(RSelenium)</span>
+<div class="sourceCode" id="cb18" data-code-line-numbers="28-31"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb18-1" class="hljs-ln-code"><a href="#cb18-1"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb18-2" class="hljs-ln-code"><a href="#cb18-2"></a></span>
 <span id="cb18-3" class="hljs-ln-code"><a href="#cb18-3"></a>link <span class="ot">&lt;-</span> <span class="st">"http://www.inci.org.br/acervodigital/livros.php"</span></span>
 <span id="cb18-4" class="hljs-ln-code"><a href="#cb18-4"></a></span>
@@ -1107,7 +1124,6 @@ Etienne Bacher
 <span id="cb18-29" class="hljs-ln-code"><a href="#cb18-29"></a>remote_driver<span class="sc">$</span></span>
 <span id="cb18-30" class="hljs-ln-code"><a href="#cb18-30"></a>  <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
 <span id="cb18-31" class="hljs-ln-code"><a href="#cb18-31"></a>  <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 </section>
 <section id="problem" class="slide level2">
 <h2>Problem</h2>
@@ -1201,7 +1217,7 @@ Etienne Bacher
 </section>
 <section id="section-1" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title"></h2>
-<p>How many pages? <strong>2348</strong></p>
+<p>How many pages? <strong>2348</strong> (but just put 2-3 to avoid too many requests)</p>
 <p><br></p>
 <p>Pseudo-code:</p>
 <div class="cell">
@@ -1221,95 +1237,95 @@ Etienne Bacher
 <span id="cb23-14" class="hljs-ln-code"><a href="#cb23-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="section-2" class="slide level2">
-<h2></h2>
-<p>How many pages? <strong>2348</strong></p>
+<section id="section-2" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<p>How many pages? <strong>2348</strong> (but just put 2-3 to avoid too many requests)</p>
 <p><br></p>
 <p>Pseudo-code:</p>
-<div class="sourceCode" id="cb24" data-code-line-numbers="3-5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb24-2"><a href="#cb24-2"></a>  </span>
-<span id="cb24-3"><a href="#cb24-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb24-4"><a href="#cb24-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb24-6"><a href="#cb24-6"></a>  </span>
-<span id="cb24-7"><a href="#cb24-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb24-8"><a href="#cb24-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb24-9"><a href="#cb24-9"></a>    <span class="co"># get HTML and save it in an external file</span></span>
-<span id="cb24-10"><a href="#cb24-10"></a>    <span class="co"># leave modal</span></span>
-<span id="cb24-11"><a href="#cb24-11"></a>  }</span>
-<span id="cb24-12"><a href="#cb24-12"></a>  </span>
-<span id="cb24-13"><a href="#cb24-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
-<span id="cb24-14"><a href="#cb24-14"></a>  <span class="co"># (except if we're on the last page)</span></span>
-<span id="cb24-15"><a href="#cb24-15"></a>  </span>
-<span id="cb24-16"><a href="#cb24-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24" data-code-line-numbers="3-5"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb24-1" class="hljs-ln-code"><a href="#cb24-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb24-2" class="hljs-ln-code"><a href="#cb24-2"></a>  </span>
+<span id="cb24-3" class="hljs-ln-code"><a href="#cb24-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb24-4" class="hljs-ln-code"><a href="#cb24-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb24-5" class="hljs-ln-code"><a href="#cb24-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb24-6" class="hljs-ln-code"><a href="#cb24-6"></a>  </span>
+<span id="cb24-7" class="hljs-ln-code"><a href="#cb24-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb24-8" class="hljs-ln-code"><a href="#cb24-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb24-9" class="hljs-ln-code"><a href="#cb24-9"></a>    <span class="co"># get HTML and save it in an external file</span></span>
+<span id="cb24-10" class="hljs-ln-code"><a href="#cb24-10"></a>    <span class="co"># leave modal</span></span>
+<span id="cb24-11" class="hljs-ln-code"><a href="#cb24-11"></a>  }</span>
+<span id="cb24-12" class="hljs-ln-code"><a href="#cb24-12"></a>  </span>
+<span id="cb24-13" class="hljs-ln-code"><a href="#cb24-13"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
+<span id="cb24-14" class="hljs-ln-code"><a href="#cb24-14"></a>  <span class="co"># (except if we're on the last page)</span></span>
+<span id="cb24-15" class="hljs-ln-code"><a href="#cb24-15"></a>  </span>
+<span id="cb24-16" class="hljs-ln-code"><a href="#cb24-16"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-3" class="slide level2">
-<h2></h2>
-<p>How many pages? <strong>2348</strong></p>
+<section id="section-3" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<p>How many pages? <strong>2348</strong> (but just put 2-3 to avoid too many requests)</p>
 <p><br></p>
 <p>Make the “modal loop”:</p>
-<div class="sourceCode" id="cb25" data-code-line-numbers="7-22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb25-2"><a href="#cb25-2"></a></span>
-<span id="cb25-3"><a href="#cb25-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb25-4"><a href="#cb25-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb25-6"><a href="#cb25-6"></a>  </span>
-<span id="cb25-7"><a href="#cb25-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb25-8"><a href="#cb25-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb25-9"><a href="#cb25-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb25-10"><a href="#cb25-10"></a></span>
-<span id="cb25-11"><a href="#cb25-11"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb25-12"><a href="#cb25-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb25-13"><a href="#cb25-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb25-14"><a href="#cb25-14"></a></span>
-<span id="cb25-15"><a href="#cb25-15"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb25-16"><a href="#cb25-16"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb25-17"><a href="#cb25-17"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
-<span id="cb25-18"><a href="#cb25-18"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb25-19"><a href="#cb25-19"></a></span>
-<span id="cb25-20"><a href="#cb25-20"></a>  }</span>
-<span id="cb25-21"><a href="#cb25-21"></a>  </span>
-<span id="cb25-22"><a href="#cb25-22"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
-<span id="cb25-23"><a href="#cb25-23"></a>  <span class="co"># (except if we're on the last page)</span></span>
-<span id="cb25-24"><a href="#cb25-24"></a>  </span>
-<span id="cb25-25"><a href="#cb25-25"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb25" data-code-line-numbers="7-22"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb25-1" class="hljs-ln-code"><a href="#cb25-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb25-2" class="hljs-ln-code"><a href="#cb25-2"></a></span>
+<span id="cb25-3" class="hljs-ln-code"><a href="#cb25-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb25-4" class="hljs-ln-code"><a href="#cb25-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb25-5" class="hljs-ln-code"><a href="#cb25-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb25-6" class="hljs-ln-code"><a href="#cb25-6"></a>  </span>
+<span id="cb25-7" class="hljs-ln-code"><a href="#cb25-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb25-8" class="hljs-ln-code"><a href="#cb25-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb25-9" class="hljs-ln-code"><a href="#cb25-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb25-10" class="hljs-ln-code"><a href="#cb25-10"></a></span>
+<span id="cb25-11" class="hljs-ln-code"><a href="#cb25-11"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb25-12" class="hljs-ln-code"><a href="#cb25-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb25-13" class="hljs-ln-code"><a href="#cb25-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb25-14" class="hljs-ln-code"><a href="#cb25-14"></a></span>
+<span id="cb25-15" class="hljs-ln-code"><a href="#cb25-15"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb25-16" class="hljs-ln-code"><a href="#cb25-16"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb25-17" class="hljs-ln-code"><a href="#cb25-17"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb25-18" class="hljs-ln-code"><a href="#cb25-18"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb25-19" class="hljs-ln-code"><a href="#cb25-19"></a></span>
+<span id="cb25-20" class="hljs-ln-code"><a href="#cb25-20"></a>  }</span>
+<span id="cb25-21" class="hljs-ln-code"><a href="#cb25-21"></a>  </span>
+<span id="cb25-22" class="hljs-ln-code"><a href="#cb25-22"></a>  <span class="co"># Once all modals of a page have been scraped, go to the next page </span></span>
+<span id="cb25-23" class="hljs-ln-code"><a href="#cb25-23"></a>  <span class="co"># (except if we're on the last page)</span></span>
+<span id="cb25-24" class="hljs-ln-code"><a href="#cb25-24"></a>  </span>
+<span id="cb25-25" class="hljs-ln-code"><a href="#cb25-25"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="section-4" class="slide level2">
-<h2></h2>
-<p>How many pages? <strong>2348</strong></p>
+<section id="section-4" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title"></h2>
+<p>How many pages? <strong>2348</strong> (but just put 2-3 to avoid too many requests)</p>
 <p><br></p>
 <p>Make the “page loop”:</p>
-<div class="sourceCode" id="cb26" data-code-line-numbers="25-33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
-<span id="cb26-2"><a href="#cb26-2"></a>  </span>
-<span id="cb26-3"><a href="#cb26-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
-<span id="cb26-4"><a href="#cb26-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb26-6"><a href="#cb26-6"></a>    </span>
-<span id="cb26-7"><a href="#cb26-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
-<span id="cb26-8"><a href="#cb26-8"></a>    <span class="co"># open modal</span></span>
-<span id="cb26-9"><a href="#cb26-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb26-10"><a href="#cb26-10"></a></span>
-<span id="cb26-11"><a href="#cb26-11"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb26-12"><a href="#cb26-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb26-13"><a href="#cb26-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
-<span id="cb26-14"><a href="#cb26-14"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb26-15"><a href="#cb26-15"></a></span>
-<span id="cb26-16"><a href="#cb26-16"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb26-17"><a href="#cb26-17"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb26-18"><a href="#cb26-18"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
-<span id="cb26-19"><a href="#cb26-19"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb26-20"><a href="#cb26-20"></a></span>
-<span id="cb26-21"><a href="#cb26-21"></a>  }</span>
-<span id="cb26-22"><a href="#cb26-22"></a>  </span>
-<span id="cb26-23"><a href="#cb26-23"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
-<span id="cb26-24"><a href="#cb26-24"></a>  <span class="co"># we're on the last one)</span></span>
-<span id="cb26-25"><a href="#cb26-25"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb26-26"><a href="#cb26-26"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb26-27"><a href="#cb26-27"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb26-28"><a href="#cb26-28"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb26-29"><a href="#cb26-29"></a>  }</span>
-<span id="cb26-30"><a href="#cb26-30"></a>  </span>
-<span id="cb26-31"><a href="#cb26-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb26" data-code-line-numbers="25-33"><pre class="sourceCode numberSource r number-lines code-with-copy" data-id="quarto-animate-code"><code class="sourceCode r hljs"><span id="cb26-1" class="hljs-ln-code"><a href="#cb26-1"></a><span class="cf">for</span> (page_index <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2348</span>) {</span>
+<span id="cb26-2" class="hljs-ln-code"><a href="#cb26-2"></a>  </span>
+<span id="cb26-3" class="hljs-ln-code"><a href="#cb26-3"></a>  <span class="co"># Find all buttons "Ver Mais" on the page </span></span>
+<span id="cb26-4" class="hljs-ln-code"><a href="#cb26-4"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb26-5" class="hljs-ln-code"><a href="#cb26-5"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb26-6" class="hljs-ln-code"><a href="#cb26-6"></a>    </span>
+<span id="cb26-7" class="hljs-ln-code"><a href="#cb26-7"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> buttons) {</span>
+<span id="cb26-8" class="hljs-ln-code"><a href="#cb26-8"></a>    <span class="co"># open modal</span></span>
+<span id="cb26-9" class="hljs-ln-code"><a href="#cb26-9"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb26-10" class="hljs-ln-code"><a href="#cb26-10"></a></span>
+<span id="cb26-11" class="hljs-ln-code"><a href="#cb26-11"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb26-12" class="hljs-ln-code"><a href="#cb26-12"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb26-13" class="hljs-ln-code"><a href="#cb26-13"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, </span>
+<span id="cb26-14" class="hljs-ln-code"><a href="#cb26-14"></a>                             <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb26-15" class="hljs-ln-code"><a href="#cb26-15"></a></span>
+<span id="cb26-16" class="hljs-ln-code"><a href="#cb26-16"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb26-17" class="hljs-ln-code"><a href="#cb26-17"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb26-18" class="hljs-ln-code"><a href="#cb26-18"></a>      <span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)<span class="sc">$</span></span>
+<span id="cb26-19" class="hljs-ln-code"><a href="#cb26-19"></a>      <span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb26-20" class="hljs-ln-code"><a href="#cb26-20"></a></span>
+<span id="cb26-21" class="hljs-ln-code"><a href="#cb26-21"></a>  }</span>
+<span id="cb26-22" class="hljs-ln-code"><a href="#cb26-22"></a>  </span>
+<span id="cb26-23" class="hljs-ln-code"><a href="#cb26-23"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb26-24" class="hljs-ln-code"><a href="#cb26-24"></a>  <span class="co"># we're on the last one)</span></span>
+<span id="cb26-25" class="hljs-ln-code"><a href="#cb26-25"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb26-26" class="hljs-ln-code"><a href="#cb26-26"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb26-27" class="hljs-ln-code"><a href="#cb26-27"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb26-28" class="hljs-ln-code"><a href="#cb26-28"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb26-29" class="hljs-ln-code"><a href="#cb26-29"></a>  }</span>
+<span id="cb26-30" class="hljs-ln-code"><a href="#cb26-30"></a>  </span>
+<span id="cb26-31" class="hljs-ln-code"><a href="#cb26-31"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section class="slide level2">
 
@@ -1913,44 +1929,45 @@ NULL
 <span id="cb51-22"><a href="#cb51-22"></a>  }</span>
 <span id="cb51-23"><a href="#cb51-23"></a>  </span>
 <span id="cb51-24"><a href="#cb51-24"></a>  <span class="cf">if</span> (<span class="sc">!</span>all_buttons_loaded <span class="sc">&amp;</span> iterations <span class="sc">==</span> <span class="dv">20</span>) {</span>
-<span id="cb51-25"><a href="#cb51-25"></a>    <span class="cf">next</span></span>
-<span id="cb51-26"><a href="#cb51-26"></a>  }</span>
-<span id="cb51-27"><a href="#cb51-27"></a></span>
-<span id="cb51-28"><a href="#cb51-28"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
-<span id="cb51-29"><a href="#cb51-29"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
-<span id="cb51-30"><a href="#cb51-30"></a></span>
-<span id="cb51-31"><a href="#cb51-31"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
-<span id="cb51-32"><a href="#cb51-32"></a></span>
-<span id="cb51-33"><a href="#cb51-33"></a>    <span class="co"># open modal</span></span>
-<span id="cb51-34"><a href="#cb51-34"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
-<span id="cb51-35"><a href="#cb51-35"></a></span>
-<span id="cb51-36"><a href="#cb51-36"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb51-37"><a href="#cb51-37"></a></span>
-<span id="cb51-38"><a href="#cb51-38"></a>    <span class="co"># Get the HTML and save it</span></span>
-<span id="cb51-39"><a href="#cb51-39"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
-<span id="cb51-40"><a href="#cb51-40"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
-<span id="cb51-41"><a href="#cb51-41"></a></span>
-<span id="cb51-42"><a href="#cb51-42"></a>    <span class="co"># Leave the modal</span></span>
-<span id="cb51-43"><a href="#cb51-43"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
-<span id="cb51-44"><a href="#cb51-44"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
-<span id="cb51-45"><a href="#cb51-45"></a></span>
-<span id="cb51-46"><a href="#cb51-46"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
-<span id="cb51-47"><a href="#cb51-47"></a></span>
-<span id="cb51-48"><a href="#cb51-48"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
-<span id="cb51-49"><a href="#cb51-49"></a></span>
-<span id="cb51-50"><a href="#cb51-50"></a>  }</span>
-<span id="cb51-51"><a href="#cb51-51"></a></span>
-<span id="cb51-52"><a href="#cb51-52"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
-<span id="cb51-53"><a href="#cb51-53"></a>  <span class="co"># we're on the last one)</span></span>
-<span id="cb51-54"><a href="#cb51-54"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
-<span id="cb51-55"><a href="#cb51-55"></a>    remote_driver<span class="sc">$</span></span>
-<span id="cb51-56"><a href="#cb51-56"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
-<span id="cb51-57"><a href="#cb51-57"></a>      <span class="fu">clickElement</span>()</span>
-<span id="cb51-58"><a href="#cb51-58"></a>  }</span>
-<span id="cb51-59"><a href="#cb51-59"></a></span>
-<span id="cb51-60"><a href="#cb51-60"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
-<span id="cb51-61"><a href="#cb51-61"></a></span>
-<span id="cb51-62"><a href="#cb51-62"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb51-25"><a href="#cb51-25"></a>    <span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">"Couldn't find buttons on page "</span>, page_index, <span class="st">". Skipping."</span>))</span>
+<span id="cb51-26"><a href="#cb51-26"></a>    <span class="cf">next</span></span>
+<span id="cb51-27"><a href="#cb51-27"></a>  }</span>
+<span id="cb51-28"><a href="#cb51-28"></a></span>
+<span id="cb51-29"><a href="#cb51-29"></a>  buttons <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span></span>
+<span id="cb51-30"><a href="#cb51-30"></a>    <span class="fu">findElements</span>(<span class="at">using =</span> <span class="st">'id'</span>, <span class="at">value =</span> <span class="st">"link_ver_detalhe"</span>)</span>
+<span id="cb51-31"><a href="#cb51-31"></a></span>
+<span id="cb51-32"><a href="#cb51-32"></a>  <span class="cf">for</span> (modal_index <span class="cf">in</span> <span class="fu">seq_along</span>(buttons)) {</span>
+<span id="cb51-33"><a href="#cb51-33"></a></span>
+<span id="cb51-34"><a href="#cb51-34"></a>    <span class="co"># open modal</span></span>
+<span id="cb51-35"><a href="#cb51-35"></a>    buttons[[modal_index]]<span class="sc">$</span><span class="fu">clickElement</span>()</span>
+<span id="cb51-36"><a href="#cb51-36"></a></span>
+<span id="cb51-37"><a href="#cb51-37"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb51-38"><a href="#cb51-38"></a></span>
+<span id="cb51-39"><a href="#cb51-39"></a>    <span class="co"># Get the HTML and save it</span></span>
+<span id="cb51-40"><a href="#cb51-40"></a>    tmp <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">getPageSource</span>()[[<span class="dv">1</span>]]</span>
+<span id="cb51-41"><a href="#cb51-41"></a>    <span class="fu">write</span>(tmp, <span class="at">file =</span> <span class="fu">paste0</span>(<span class="st">"data/modals/page-"</span>, page_index, <span class="st">"-modal-"</span>, modal_index, <span class="st">".html"</span>))</span>
+<span id="cb51-42"><a href="#cb51-42"></a></span>
+<span id="cb51-43"><a href="#cb51-43"></a>    <span class="co"># Leave the modal</span></span>
+<span id="cb51-44"><a href="#cb51-44"></a>    body <span class="ot">&lt;-</span> remote_driver<span class="sc">$</span><span class="fu">findElement</span>(<span class="at">using =</span> <span class="st">"xpath"</span>, <span class="at">value =</span> <span class="st">"/html/body"</span>)</span>
+<span id="cb51-45"><a href="#cb51-45"></a>    body<span class="sc">$</span><span class="fu">sendKeysToElement</span>(<span class="fu">list</span>(<span class="at">key =</span> <span class="st">"escape"</span>))</span>
+<span id="cb51-46"><a href="#cb51-46"></a></span>
+<span id="cb51-47"><a href="#cb51-47"></a>    <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"  Scraped modal"</span>, modal_index))</span>
+<span id="cb51-48"><a href="#cb51-48"></a></span>
+<span id="cb51-49"><a href="#cb51-49"></a>    <span class="fu">Sys.sleep</span>(<span class="fl">1.5</span>)</span>
+<span id="cb51-50"><a href="#cb51-50"></a></span>
+<span id="cb51-51"><a href="#cb51-51"></a>  }</span>
+<span id="cb51-52"><a href="#cb51-52"></a></span>
+<span id="cb51-53"><a href="#cb51-53"></a>  <span class="co"># When we got all modals of one page, go to the next page (except if </span></span>
+<span id="cb51-54"><a href="#cb51-54"></a>  <span class="co"># we're on the last one)</span></span>
+<span id="cb51-55"><a href="#cb51-55"></a>  <span class="cf">if</span> (page_index <span class="sc">!=</span> <span class="dv">2348</span>) {</span>
+<span id="cb51-56"><a href="#cb51-56"></a>    remote_driver<span class="sc">$</span></span>
+<span id="cb51-57"><a href="#cb51-57"></a>      <span class="fu">findElement</span>(<span class="st">"css"</span>, <span class="st">"#paginacao &gt; div.btn:nth-child(4)"</span>)<span class="sc">$</span></span>
+<span id="cb51-58"><a href="#cb51-58"></a>      <span class="fu">clickElement</span>()</span>
+<span id="cb51-59"><a href="#cb51-59"></a>  }</span>
+<span id="cb51-60"><a href="#cb51-60"></a></span>
+<span id="cb51-61"><a href="#cb51-61"></a>  <span class="fu">message</span>(<span class="fu">paste</span>(<span class="st">"Finished scraping of page"</span>, page_index))</span>
+<span id="cb51-62"><a href="#cb51-62"></a></span>
+<span id="cb51-63"><a href="#cb51-63"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>

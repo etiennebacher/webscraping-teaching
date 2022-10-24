@@ -332,6 +332,21 @@ driver <- rsDriver(
 ```
 
 
+## Installation issues
+
+<br>
+
+3. "Argument is of length zero"
+
+<br>
+
+If you have this error, this is bad news because I don't really know how to fix
+it since I never had it.
+
+<br>
+
+You can try to follow [this StackOverflow answer](https://stackoverflow.com/questions/46202062/i-got-error-like-error-in-if-file-accessphantompath-1-0-argument-is-o){.external target="_blank"}.
+
 
 
 ## Get started
@@ -355,7 +370,7 @@ The clean way to close `Selenium` is to run `driver$server$stop()` (replace
 
 <br>
 
-If you clean the browser by hand and try to re-run the script, you may have the
+If you close the browser by hand and try to re-run the script, you may have the
 following error:
 
 ```{.r}
@@ -434,7 +449,7 @@ To find the element, we need to open the console to see the structure of
 the page:
 
 -   right-click -> "Inspect"
--   `Ctrl` + `Shift` + `C`
+-   or `Ctrl` + `Shift` + `C`
 
 . . .
 
@@ -483,6 +498,33 @@ How can we find this link with `RSelenium`?
 -   xpath ✔️
 :::
 :::
+
+------------
+
+<br>
+
+We must make a distinction between two classes of objects: `remoteDriver` and
+`webElement`.
+
+. . .
+
+<br>
+
+Think of `remoteDriver` as the browser in general: you can navigate between pages,
+search elements, find if an element is present on the page, etc.
+
+{{< fa arrow-right >}} &nbsp; see the list of available methods with `?remoteDriver`
+
+. . .
+
+<br>
+
+Think of `webElement` as a particular element on the page: you can highlight it,
+click it, get its text, etc.
+
+{{< fa arrow-right >}} &nbsp; see the list of available methods with `?webElement`
+
+
 
 ------------
 
@@ -703,7 +745,7 @@ remote_driver$navigate(link)
 
 Fill the field "NACIONALIDADE":
 
-```{r}
+```{.r code-line-numbers="10-13"}
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -723,7 +765,7 @@ remote_driver$
 
 Find the button "Pesquisar" and click it:
 
-```{r}
+```{.r code-line-numbers="15-18"}
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -749,7 +791,7 @@ remote_driver$
 
 Find the button "Ver Mais" and click it:
 
-```{r}
+```{.r code-line-numbers="20-23"}
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -780,7 +822,7 @@ remote_driver$
 
 Get the HTML that is displayed:
 
-```{r}
+```{.r code-line-numbers="25-26"}
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -814,7 +856,7 @@ x <- remote_driver$getPageSource()
 
 Exit the modal by pressing "Escape":
 
-```{r}
+```{.r code-line-numbers="28-31"}
 library(RSelenium)
 
 link <- "http://www.inci.org.br/acervodigital/livros.php"
@@ -971,7 +1013,7 @@ Next step: compile all of this and make nested loops!
 
 ## {auto-animate=true}
 
-How many pages? **2348**
+How many pages? **2348** (but just put 2-3 to avoid too many requests)
 
 <br>
 
@@ -995,9 +1037,9 @@ for (page_index in 1:2348) {
 ```
 
 
-## 
+## {auto-animate=true}
 
-How many pages? **2348**
+How many pages? **2348** (but just put 2-3 to avoid too many requests)
 
 <br>
 
@@ -1023,9 +1065,9 @@ for (page_index in 1:2348) {
 ```
 
 
-## 
+## {auto-animate=true}
 
-How many pages? **2348**
+How many pages? **2348** (but just put 2-3 to avoid too many requests)
 
 <br>
 
@@ -1060,9 +1102,9 @@ for (page_index in 1:2348) {
 ```
 
 
-## 
+## {auto-animate=true}
 
-How many pages? **2348**
+How many pages? **2348** (but just put 2-3 to avoid too many requests)
 
 <br>
 
