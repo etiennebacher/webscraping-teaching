@@ -22,23 +22,7 @@ remote_driver$
   clickElement()
 
 
-# Alternatives to find the element
-
-# remote_driver$
-#   findElement("partial link text", "Contributors")$
-#   clickElement()
-#
-# remote_driver$
-#   findElement("xpath", "/html/body/div/div[1]/div[1]/div/div[1]/ul/li[3]/a")$
-#   clickElement()
-#
-# remote_driver$
-#   findElement("css selector", "div.col-xs-6:nth-child(1) > ul:nth-child(6) > li:nth-child(3) > a:nth-child(1)")$
-#   clickElement()
-
-
 # Get the whole HTML that is displayed
-
 remote_driver$getPageSource()
 
 x <- remote_driver$getPageSource()[[1]]
@@ -48,13 +32,11 @@ rvest::read_html(x)
 # Save this HTML in an external file
 write(x, file = "contributors.html")
 
-# Later and in another script
+# Read with rvest
 rvest::read_html("contributors.html")
 
-
-rvest::read_html("https://www.r-project.org/contributors.html")
-
-remote_driver$close()
+# Close RSelenium
+driver$server$close()
 
 
 

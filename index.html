@@ -596,8 +596,8 @@ Etienne Bacher
 <div class="fragment">
 <table>
 <colgroup>
-<col style="width: 62%">
-<col style="width: 37%">
+<col style="width: 65%">
+<col style="width: 34%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -2087,22 +2087,25 @@ NULL
 <p>Apply this function to all files:</p>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="co"># Get all paths to the html files</span></span>
-<span id="cb54-2"><a href="#cb54-2"></a>list_html_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/modals"</span>, <span class="at">pattern =</span> <span class="st">"page"</span>,</span>
-<span id="cb54-3"><a href="#cb54-3"></a>                              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb54-4"><a href="#cb54-4"></a></span>
-<span id="cb54-5"><a href="#cb54-5"></a><span class="co"># Apply the previous function to each of those file</span></span>
-<span id="cb54-6"><a href="#cb54-6"></a>list_out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(list_html_files, <span class="cf">function</span>(x) {</span>
-<span id="cb54-7"><a href="#cb54-7"></a>  <span class="fu">read_html</span>(x) <span class="sc">|&gt;</span> </span>
-<span id="cb54-8"><a href="#cb54-8"></a>    <span class="fu">extract_information</span>() </span>
-<span id="cb54-9"><a href="#cb54-9"></a>})</span>
-<span id="cb54-10"><a href="#cb54-10"></a></span>
-<span id="cb54-11"><a href="#cb54-11"></a><span class="co"># Aggregate the results in two (single) datasets</span></span>
-<span id="cb54-12"><a href="#cb54-12"></a>main <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb54-13"><a href="#cb54-13"></a>  <span class="fu">as_tibble</span>()</span>
-<span id="cb54-14"><a href="#cb54-14"></a></span>
-<span id="cb54-15"><a href="#cb54-15"></a>relations <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb54-16"><a href="#cb54-16"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb54-2"><a href="#cb54-2"></a><span class="fu">library</span>(rvest)</span>
+<span id="cb54-3"><a href="#cb54-3"></a></span>
+<span id="cb54-4"><a href="#cb54-4"></a><span class="co"># Get all paths to the html files</span></span>
+<span id="cb54-5"><a href="#cb54-5"></a>list_html_files <span class="ot">&lt;-</span> <span class="fu">list.files</span>(<span class="st">"data/modals"</span>, <span class="at">pattern =</span> <span class="st">"page"</span>,</span>
+<span id="cb54-6"><a href="#cb54-6"></a>                              <span class="at">full.names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb54-7"><a href="#cb54-7"></a></span>
+<span id="cb54-8"><a href="#cb54-8"></a><span class="co"># Apply the previous function to each of those file</span></span>
+<span id="cb54-9"><a href="#cb54-9"></a>list_out <span class="ot">&lt;-</span> <span class="fu">lapply</span>(list_html_files, <span class="cf">function</span>(x) {</span>
+<span id="cb54-10"><a href="#cb54-10"></a>  <span class="fu">read_html</span>(x) <span class="sc">|&gt;</span> </span>
+<span id="cb54-11"><a href="#cb54-11"></a>    <span class="fu">extract_information</span>() </span>
+<span id="cb54-12"><a href="#cb54-12"></a>})</span>
+<span id="cb54-13"><a href="#cb54-13"></a></span>
+<span id="cb54-14"><a href="#cb54-14"></a><span class="co"># Aggregate the results in two (single) datasets</span></span>
+<span id="cb54-15"><a href="#cb54-15"></a>main <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">1</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb54-16"><a href="#cb54-16"></a>  <span class="fu">as_tibble</span>()</span>
+<span id="cb54-17"><a href="#cb54-17"></a></span>
+<span id="cb54-18"><a href="#cb54-18"></a>relations <span class="ot">&lt;-</span> data.table<span class="sc">::</span><span class="fu">rbindlist</span>(purrr<span class="sc">::</span><span class="fu">map</span>(list_out, <span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb54-19"><a href="#cb54-19"></a>  <span class="fu">as_tibble</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>
