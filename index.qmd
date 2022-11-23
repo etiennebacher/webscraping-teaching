@@ -1892,7 +1892,9 @@ for (page_index in 1:3) {
   }
 
   message(paste("Finished scraping of page", page_index))
-
+  
+  # Wait a bit for page loading
+  Sys.sleep(3)
 }
 ```
 
