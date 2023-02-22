@@ -281,9 +281,12 @@ In the beginning was ~~the Word~~ `rsDriver()`:
 # install.packages("RSelenium")
 library(RSelenium)
 
-driver <- rsDriver(browser = "firefox") # can also be chrome
+driver <- rsDriver(browser = "firefox", chromever = NULL) # can also be "chrome"
 remote_driver <- driver[["client"]]
 ```
+
+ <!-- chromever = NULL necessary to avoid recent error: 
+ see: https://stackoverflow.com/a/74735571 -->
 
 . . .
 

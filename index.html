@@ -9,10 +9,10 @@
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/all.css" rel="stylesheet">
 <link href="index_files/libs/quarto-contrib/fontawesome6-0.1.0/latex-fontsize.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.171">
+  <meta name="generator" content="quarto-1.2.313">
 
   <meta name="author" content="Etienne Bacher">
-  <meta name="dcterms.date" content="2022-11-23">
+  <meta name="dcterms.date" content="2023-02-22">
   <title>Webscraping with RSelenium</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -405,7 +405,7 @@ Etienne Bacher
     </div>
 </div>
 
-  <p class="date">November 23, 2022</p>
+  <p class="date">February 22, 2023</p>
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
@@ -648,9 +648,10 @@ Etienne Bacher
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"># install.packages("RSelenium")</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(RSelenium)</span>
 <span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a>driver <span class="ot">&lt;-</span> <span class="fu">rsDriver</span>(<span class="at">browser =</span> <span class="st">"firefox"</span>) <span class="co"># can also be chrome</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>driver <span class="ot">&lt;-</span> <span class="fu">rsDriver</span>(<span class="at">browser =</span> <span class="st">"firefox"</span>, <span class="at">chromever =</span> <span class="cn">NULL</span>) <span class="co"># can also be "chrome"</span></span>
 <span id="cb3-6"><a href="#cb3-6"></a>remote_driver <span class="ot">&lt;-</span> driver[[<span class="st">"client"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p></p>
 <div class="fragment">
 <p><br></p>
 <p>If everything works fine, this will print a bunch of messages and open a “marionette browser”.</p>
@@ -2376,7 +2377,7 @@ NULL
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
  setting  value
- version  R version 4.2.1 (2022-06-23 ucrt)
+ version  R version 4.2.2 (2022-10-31 ucrt)
  os       Windows 10 x64 (build 19044)
  system   x86_64, mingw32
  ui       RTerm
@@ -2384,37 +2385,38 @@ NULL
  collate  English_Europe.utf8
  ctype    English_Europe.utf8
  tz       Europe/Paris
- date     2022-11-23
- pandoc   2.18 @ C:/Program Files/RStudio/bin/quarto/bin/tools/ (via rmarkdown)
+ date     2023-02-22
+ pandoc   3.1 @ C:/Users/etienne/AppData/Local/Pandoc/ (via rmarkdown)
 
 ─ Packages ───────────────────────────────────────────────────────────────────
- package     * version date (UTC) lib source
- cli           3.4.1   2022-09-23 [1] CRAN (R 4.2.1)
- digest        0.6.30  2022-10-18 [1] CRAN (R 4.2.2)
- evaluate      0.18    2022-11-07 [1] CRAN (R 4.2.2)
- fastmap       1.1.0   2021-01-25 [1] CRAN (R 4.2.0)
- glue          1.6.2   2022-02-24 [1] CRAN (R 4.2.0)
- htmltools     0.5.3   2022-07-18 [1] CRAN (R 4.2.1)
- httr          1.4.4   2022-08-17 [1] CRAN (R 4.2.1)
- jsonlite      1.8.3   2022-10-21 [1] CRAN (R 4.2.2)
- knitr         1.40    2022-08-24 [1] CRAN (R 4.2.1)
- lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.2.1)
- magrittr      2.0.3   2022-03-30 [1] CRAN (R 4.2.0)
- R6            2.5.1   2021-08-19 [1] CRAN (R 4.2.0)
- rlang         1.0.6   2022-09-24 [1] CRAN (R 4.2.1)
- rmarkdown     2.18    2022-11-09 [1] CRAN (R 4.2.2)
- rstudioapi    0.14    2022-08-22 [1] CRAN (R 4.2.1)
- rvest       * 1.0.3   2022-08-19 [1] CRAN (R 4.2.1)
- selectr       0.4-2   2019-11-20 [1] CRAN (R 4.2.0)
- sessioninfo   1.2.2   2021-12-06 [1] CRAN (R 4.2.0)
- stringi       1.7.8   2022-07-11 [1] CRAN (R 4.2.1)
- stringr       1.4.1   2022-08-20 [1] CRAN (R 4.2.1)
- xfun          0.34    2022-10-18 [1] CRAN (R 4.2.2)
- xml2          1.3.3   2021-11-30 [1] CRAN (R 4.2.0)
- yaml          2.3.6   2022-10-18 [1] CRAN (R 4.2.1)
+ package     * version    date (UTC) lib source
+ cli           3.6.0      2023-01-09 [1] CRAN (R 4.2.2)
+ digest        0.6.31     2022-12-11 [1] CRAN (R 4.2.2)
+ evaluate      0.20       2023-01-17 [1] CRAN (R 4.2.2)
+ fastmap       1.1.0      2021-01-25 [1] CRAN (R 4.2.0)
+ glue          1.6.2      2022-02-24 [1] CRAN (R 4.2.0)
+ htmltools     0.5.4      2022-12-07 [1] CRAN (R 4.2.2)
+ httr          1.4.4      2022-08-17 [1] CRAN (R 4.2.1)
+ jsonlite      1.8.4      2022-12-06 [1] CRAN (R 4.2.2)
+ knitr         1.42       2023-01-25 [1] CRAN (R 4.2.2)
+ lifecycle     1.0.3      2022-10-07 [1] CRAN (R 4.2.1)
+ magrittr      2.0.3      2022-03-30 [1] CRAN (R 4.2.0)
+ R6            2.5.1      2021-08-19 [1] CRAN (R 4.2.0)
+ rlang         1.0.6.9000 2023-02-20 [1] Github (r-lib/rlang@394204f)
+ rmarkdown     2.20       2023-01-19 [1] CRAN (R 4.2.2)
+ rstudioapi    0.14       2022-08-22 [1] CRAN (R 4.2.1)
+ rvest       * 1.0.3      2022-08-19 [1] CRAN (R 4.2.1)
+ selectr       0.4-2      2019-11-20 [1] CRAN (R 4.2.0)
+ sessioninfo   1.2.2      2021-12-06 [1] CRAN (R 4.2.0)
+ stringi       1.7.12     2023-01-11 [1] CRAN (R 4.2.2)
+ stringr       1.5.0      2022-12-02 [1] CRAN (R 4.2.2)
+ vctrs         0.5.2.9000 2023-02-20 [1] Github (r-lib/vctrs@303b5dd)
+ xfun          0.37       2023-01-31 [1] CRAN (R 4.2.2)
+ xml2          1.3.3      2021-11-30 [1] CRAN (R 4.2.0)
+ yaml          2.3.7      2023-01-23 [1] CRAN (R 4.2.2)
 
  [1] C:/Users/etienne/AppData/Local/R/win-library/4.2
- [2] C:/Users/etienne/AppData/Local/Programs/R/R-4.2.1/library
+ [2] C:/R/library
 
 ──────────────────────────────────────────────────────────────────────────────</code></pre>
 </div>
@@ -2641,12 +2643,15 @@ NULL
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -2657,13 +2662,6 @@ NULL
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
